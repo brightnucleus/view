@@ -1,0 +1,26 @@
+{
+  "name": "brightnucleus/view",
+  "description": "Reusable View component, that can provide different implementations.",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require-dev": {
+    "phpunit/phpunit": "~4",
+    "squizlabs/php_codesniffer": "~2.5"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Alain Schlesser",
+      "email": "alain.schlesser@gmail.com"
+    }
+  ],
+  "require": {
+    "brightnucleus/exceptions": ">=0.2",
+    "brightnucleus/config": ">=0.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "BrightNucleus\\": "src/"
+    }
+  }
+}
