@@ -124,7 +124,7 @@ class ViewBuilder
      *
      * @param string          $uri    URI to get a view for.
      * @param EngineInterface $engine Engine to use for the view.
-     * @param null            $type   Type of view to get.
+     * @param mixed           $type   Type of view to get.
      *
      * @return ViewInterface View that matches the given requirements.
      */
