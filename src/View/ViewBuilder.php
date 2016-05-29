@@ -147,8 +147,8 @@ class ViewBuilder
     public function getViewFinder()
     {
         if (null === $this->viewFinder) {
-            $viewFinderClass  = $this->config->getKey(ViewBuilder::VIEW_FINDER_KEY, 'ClassName');
-            $this->viewFinder = new $viewFinderClass($this->config->getSubConfig(ViewBuilder::VIEW_FINDER_KEY));
+            $viewFinderClass  = $this->config->getKey(static::VIEW_FINDER_KEY, 'ClassName');
+            $this->viewFinder = new $viewFinderClass($this->config->getSubConfig(static::VIEW_FINDER_KEY));
         }
 
         return $this->viewFinder;
@@ -164,8 +164,8 @@ class ViewBuilder
     public function getEngineFinder()
     {
         if (null === $this->engineFinder) {
-            $engineFinderClass  = $this->config->getKey(ViewBuilder::ENGINE_FINDER_KEY, 'ClassName');
-            $this->engineFinder = new $engineFinderClass($this->config->getSubConfig(ViewBuilder::ENGINE_FINDER_KEY));
+            $engineFinderClass  = $this->config->getKey(static::ENGINE_FINDER_KEY, 'ClassName');
+            $this->engineFinder = new $engineFinderClass($this->config->getSubConfig(static::ENGINE_FINDER_KEY));
         }
 
         return $this->engineFinder;
@@ -218,7 +218,7 @@ class ViewBuilder
      */
     protected function resolveType($type, $uri, EngineInterface $engine = null)
     {
-        if (is_string($type) && $this->config->hasKey(ViewBuilder::VIEW_FINDER_KEY)) {
+        if (is_string($type) && $this->config->hasKey(static::VIEW_FINDER_KEY)) {
             $type = new $type($uri, $engine);
         }
 
