@@ -25,15 +25,15 @@ class NullEngine implements EngineInterface, NullObject
 {
 
     /**
-     * Check whether the engine can render a given URI.
+     * Check whether the Findable can handle an individual criterion.
      *
      * @since 0.1.0
      *
-     * @param string $uri URI that wants to be rendered.
+     * @param mixed $criterion Criterion to check.
      *
-     * @return bool Whether the engine can render the given URI.
+     * @return bool Whether the Findable can handle the criterion.
      */
-    public function canRender($uri)
+    public function canHandle($criterion)
     {
         return true;
     }
