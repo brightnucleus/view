@@ -61,7 +61,9 @@ class EngineFinder extends AbstractFinder
             $engine = $this->initializeEngine($engine);
         }
 
-        $this->nullObject = $this->initializeEngine($this->nullObject);
+        if (! is_object($this->nullObject)) {
+            $this->nullObject = new $this->nullObject();
+        }
     }
 
     /**

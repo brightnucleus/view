@@ -67,7 +67,9 @@ class ViewFinder extends AbstractFinder
             $view = $this->initializeView($view, $uri, $engine);
         }
 
-        $this->nullObject = $this->initializeView($this->nullObject, $uri);
+        if (! is_object($this->nullObject)) {
+            $this->nullObject = new $this->nullObject();
+        }
     }
 
     /**
@@ -83,40 +85,6 @@ class ViewFinder extends AbstractFinder
      * @throws FailedToInstantiateViewException If the view could not be instantiated.
      */
     protected function initializeView($view, $uri, EngineInterface $engine = null)
-    {
-        if (is_string($view)) {
-            $view = new $view($uri, $engine);
-        }
-
-        if (is_callable($view)) {
-            $view = $view($uri, $engine);
-        }
-
-        if (! $view instanceof ViewInterface) {
-            throw new FailedToInstantiateViewException(
-                sprintf(
-                    _('Could not instantiate view "%s".'),
-                    serialize($view)
-                )
-            );
-        }
-
-        return $view;
-    }
-
-    /**
-     * Instantiate a view by instantiating class name strings and calling closures.
-     *
-     * @since 0.1.0
-     *
-     * @param mixed           $view   View to instantiate.
-     * @param string          $uri    URI to use for the view.
-     * @param EngineInterface $engine Optional. View to use with the view.
-     *
-     * @return ViewInterface Instantiated view.
-     * @throws FailedToInstantiateViewException If the view could not be instantiated.
-     */
-    protected function instantiateView($view, $uri, EngineInterface $engine = null)
     {
         if (is_string($view)) {
             $view = new $view($uri, $engine);
