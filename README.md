@@ -3,7 +3,7 @@
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/brightnucleus/view.svg)](https://scrutinizer-ci.com/g/brightnucleus/view/?branch=master)
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/brightnucleus/view.svg)](https://scrutinizer-ci.com/g/brightnucleus/view/?branch=master)
 [![Build Status](https://img.shields.io/scrutinizer/build/g/brightnucleus/view.svg)](https://scrutinizer-ci.com/g/brightnucleus/view/build-status/master)
-[![Codacy Badge](https://img.shields.io/codacy/e718c34afc46409b90fd72a107158009.svg)](https://www.codacy.com/app/BrightNucleus/view)
+[![Codacy Badge](https://img.shields.io/codacy/a7370932c3ce45fca747ce2aaf415b16.svg)](https://www.codacy.com/app/BrightNucleus/view)
 [![Code Climate](https://img.shields.io/codeclimate/github/brightnucleus/view.svg)](https://codeclimate.com/github/brightnucleus/view)
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/brightnucleus/view.svg)](https://packagist.org/packages/brightnucleus/view)
