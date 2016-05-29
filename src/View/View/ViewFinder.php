@@ -40,13 +40,38 @@ class ViewFinder extends AbstractFinder
     {
         $uri = $criteria[0];
 
-        return $this->instantiateView(BaseView::class, $uri, $engine);
+        $this->initializeViews($uri, $engine);
 
-        return $this->instantiateView($this->nullObject, $uri, $engine);
+        foreach ($criteria as $entry) {
+            foreach ($this->findables as $viewObject) {
+                if ($viewObject->canHandle($entry)) {
+                    return $viewObject;
+                }
+            }
+        }
+
+        return $this->nullObject;
     }
 
     /**
-     * Instantiate a view by instantiating class name strings and calling closures.
+     * Initialize the views that can be iterated.
+     *
+     * @since 0.1.0
+     *
+     * @param string          $uri    URI to use for the view.
+     * @param EngineInterface $engine Optional. Engine to use with the view.
+     */
+    protected function initializeViews($uri, EngineInterface $engine = null)
+    {
+        foreach ($this->findables as &$view) {
+            $view = $this->initializeView($view, $uri, $engine);
+        }
+
+        $this->nullObject = $this->initializeView($this->nullObject, $uri);
+    }
+
+    /**
+     * Initialize a single view by instantiating class name strings and calling closures.
      *
      * @since 0.1.0
      *
@@ -57,7 +82,41 @@ class ViewFinder extends AbstractFinder
      * @return ViewInterface Instantiated view.
      * @throws FailedToInstantiateViewException If the view could not be instantiated.
      */
-    protected function instantiateView($view, $uri, EngineInterface $engine)
+    protected function initializeView($view, $uri, EngineInterface $engine = null)
+    {
+        if (is_string($view)) {
+            $view = new $view($uri, $engine);
+        }
+
+        if (is_callable($view)) {
+            $view = $view($uri, $engine);
+        }
+
+        if (! $view instanceof ViewInterface) {
+            throw new FailedToInstantiateViewException(
+                sprintf(
+                    _('Could not instantiate view "%s".'),
+                    serialize($view)
+                )
+            );
+        }
+
+        return $view;
+    }
+
+    /**
+     * Instantiate a view by instantiating class name strings and calling closures.
+     *
+     * @since 0.1.0
+     *
+     * @param mixed           $view   View to instantiate.
+     * @param string          $uri    URI to use for the view.
+     * @param EngineInterface $engine Optional. View to use with the view.
+     *
+     * @return ViewInterface Instantiated view.
+     * @throws FailedToInstantiateViewException If the view could not be instantiated.
+     */
+    protected function instantiateView($view, $uri, EngineInterface $engine = null)
     {
         if (is_string($view)) {
             $view = new $view($uri, $engine);

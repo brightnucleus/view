@@ -22,4 +22,14 @@ namespace BrightNucleus\View\Support;
 interface Findable
 {
 
+    /**
+     * Check whether the Findable can handle an individual criterion.
+     *
+     * @since 0.1.0
+     *
+     * @param mixed $criterion Criterion to check.
+     *
+     * @return bool Whether the Findable can handle the criterion.
+     */
+    public function canHandle($criterion);
 }

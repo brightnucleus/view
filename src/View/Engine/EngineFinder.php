@@ -39,9 +39,8 @@ class EngineFinder extends AbstractFinder
         $this->initializeEngines();
 
         foreach ($criteria as $entry) {
-            /** @var EngineInterface $engine */
             foreach ($this->findables as $engine) {
-                if ($engine->canRender($entry)) {
+                if ($engine->canHandle($entry)) {
                     return $engine;
                 }
             }

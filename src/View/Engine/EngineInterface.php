@@ -23,17 +23,6 @@ interface EngineInterface
 {
 
     /**
-     * Check whether the engine can render a given URI.
-     *
-     * @since 0.1.0
-     *
-     * @param string $uri URI that wants to be rendered.
-     *
-     * @return bool Whether the engine can render the given URI.
-     */
-    public function canRender($uri);
-
-    /**
      * Render a given URI.
      *
      * @since 0.1.0
