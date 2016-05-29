@@ -108,7 +108,7 @@ class ViewBuilder
      *
      * @since 0.1.0
      *
-     * @param string $uri URI to get an engine for.
+     * @param string|false $uri URI to get an engine for.
      *
      * @return EngineInterface Instance of an engine that can deal with the given URI.
      */
