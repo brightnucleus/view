@@ -50,7 +50,7 @@ class ViewFinder extends AbstractFinder
             }
         }
 
-        return $this->nullObject;
+        return $this->getNullObject();
     }
 
     /**
@@ -65,10 +65,6 @@ class ViewFinder extends AbstractFinder
     {
         foreach ($this->findables as &$view) {
             $view = $this->initializeView($view, $uri, $engine);
-        }
-
-        if (! is_object($this->nullObject)) {
-            $this->nullObject = new $this->nullObject();
         }
     }
 

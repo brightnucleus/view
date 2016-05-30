@@ -89,6 +89,20 @@ abstract class AbstractFinder implements FinderInterface
     }
 
     /**
+     * Get the NullObject.
+     *
+     * @since 0.1.1
+     *
+     * @return NullObject NullObject for the current Finder.
+     */
+    public function getNullObject()
+    {
+        $this->initializeNullObject();
+
+        return $this->nullObject();
+    }
+
+    /**
      * Register a single Findable.
      *
      * @since 0.1.0
@@ -123,5 +137,17 @@ abstract class AbstractFinder implements FinderInterface
     protected function getNullObjectConfigKey()
     {
         return 'NullObject';
+    }
+
+    /**
+     * Initialize the NullObject.
+     *
+     * @since 0.1.1
+     */
+    protected function initializeNullObject()
+    {
+        if (! is_object($this->nullObject)) {
+            $this->nullObject = new $this->nullObject();
+        }
     }
 }

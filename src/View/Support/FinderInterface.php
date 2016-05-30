@@ -32,4 +32,13 @@ interface FinderInterface
      * @return mixed Result of the search.
      */
     public function find(array $criteria);
+
+    /**
+     * Get the NullObject.
+     *
+     * @since 0.1.1
+     *
+     * @return NullObject NullObject for the current Finder.
+     */
+    public function getNullObject();
 }

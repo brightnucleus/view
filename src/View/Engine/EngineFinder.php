@@ -32,7 +32,7 @@ class EngineFinder extends AbstractFinder
      *
      * @param array $criteria Criteria to search for.
      *
-     * @return mixed Result of the search.
+     * @return EngineInterface Result of the search.
      */
     public function find(array $criteria)
     {
@@ -46,7 +46,7 @@ class EngineFinder extends AbstractFinder
             }
         }
 
-        return $this->nullObject;
+        return $this->getNullObject();
     }
 
     /**
@@ -59,10 +59,6 @@ class EngineFinder extends AbstractFinder
     {
         foreach ($this->findables as &$engine) {
             $engine = $this->initializeEngine($engine);
-        }
-
-        if (! is_object($this->nullObject)) {
-            $this->nullObject = new $this->nullObject();
         }
     }
 

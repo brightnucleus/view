@@ -100,7 +100,9 @@ class ViewBuilder
         $uri    = $this->scanLocations([$view]);
         $engine = $this->getEngine($uri);
 
-        return $this->getView($uri, $engine, $type);
+        return $uri
+            ? $this->getView($uri, $engine, $type)
+            : $this->getViewFinder()->getNullObject();
     }
 
     /**
