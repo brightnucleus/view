@@ -11,6 +11,7 @@
 
 namespace BrightNucleus\View\Location;
 
+use BrightNucleus\View\Exception\InvalidLocationException;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -24,4 +25,48 @@ use Doctrine\Common\Collections\ArrayCollection;
 class LocationCollection extends ArrayCollection
 {
 
+    /**
+     * Adds a location at the end of the collection if it does not already exist.
+     *
+     * @param mixed $location The location to add.
+     *
+     * @return boolean Whether the location was added or not.
+     */
+    public function add($location)
+    {
+        if ($this->hasLocation($location)) {
+            return false;
+        }
+
+        return parent::add($location);
+    }
+
+    /**
+     * Check whether a given location is already registered.
+     *
+     * For two locations to be equal, both their path and their extensions must be the same.
+     *
+     * @since 0.1.1
+     *
+     * @param LocationInterface $location Location to check the existence of.
+     *
+     * @return bool Whether the location is already registered or not.
+     *
+     * @throws InvalidLocationException If the location is not valid.
+     */
+    public function hasLocation($location)
+    {
+        if (! $location instanceof LocationInterface) {
+            throw new InvalidLocationException(
+                sprintf(
+                    _('Invalid location to check existence for: "%s".'),
+                    serialize($location)
+                )
+            );
+        }
+
+        return $this->exists(function ($key, $element) use ($location) {
+            return $location == $element;
+        });
+    }
 }
