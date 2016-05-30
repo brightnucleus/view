@@ -83,7 +83,7 @@ class FilesystemLocation implements LocationInterface
      *
      * @param array $criteria Criteria to match.
      *
-     * @return array URI that matches the criteria or false if none found.
+     * @return array URIs that match the criteria or empty array if none found.
      */
     public function getURIs(array $criteria)
     {
