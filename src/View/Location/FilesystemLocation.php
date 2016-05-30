@@ -126,6 +126,7 @@ class FilesystemLocation implements LocationInterface
 
         $names[] = array_map(function ($criterion) use ($extension) {
             $criterion = URIHelper::getFilename($criterion);
+
             return empty($extension) || URIHelper::hasExtension($criterion, $extension)
                 ? $criterion
                 : $criterion . $extension;

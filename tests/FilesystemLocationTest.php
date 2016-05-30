@@ -75,6 +75,70 @@ class FilesystemLocationTest extends \PHPUnit_Framework_TestCase
                     $root . '/flat/test1.php',
                 ]),
             ],
+            [
+                $root . '/recursive',
+                ['.html', '.php'],
+                ['testA1'],
+                $root . '/recursive/levelA1/testA1.php',
+                new URICollection([
+                    $root . '/recursive/levelA1/testA1.php',
+                ]),
+            ],
+            [
+                $root . '/recursive',
+                ['.html', '.php'],
+                ['testA2'],
+                $root . '/recursive/levelA1/levelA2/testA2.php',
+                new URICollection([
+                    $root . '/recursive/levelA1/levelA2/testA2.php',
+                ]),
+            ],
+            [
+                $root . '/recursive',
+                ['.html', '.php'],
+                ['testA3'],
+                $root . '/recursive/levelA1/levelA2/levelA3/testA3.php',
+                new URICollection([
+                    $root . '/recursive/levelA1/levelA2/levelA3/testA3.php',
+                ]),
+            ],
+            [
+                $root . '/recursive',
+                ['.html', '.php'],
+                ['testB1'],
+                $root . '/recursive/levelB1/testB1.php',
+                new URICollection([
+                    $root . '/recursive/levelB1/testB1.php',
+                ]),
+            ],
+            [
+                $root . '/recursive',
+                ['.html', '.php'],
+                ['testB2'],
+                $root . '/recursive/levelB1/levelB2/testB2.php',
+                new URICollection([
+                    $root . '/recursive/levelB1/levelB2/testB2.php',
+                ]),
+            ],
+            [
+                $root . '/recursive',
+                ['.html', '.php'],
+                ['testB3'],
+                $root . '/recursive/levelB1/levelB2/levelB3/testB3.php',
+                new URICollection([
+                    $root . '/recursive/levelB1/levelB2/levelB3/testB3.php',
+                ]),
+            ],
+            [
+                $root . '/recursive',
+                ['.php', '.html'],
+                ['testC'],
+                $root . '/recursive/php/testC.php',
+                new URICollection([
+                    $root . '/recursive/php/testC.php',
+                    $root . '/recursive/html/testC.html',
+                ]),
+            ],
         ];
     }
 }
