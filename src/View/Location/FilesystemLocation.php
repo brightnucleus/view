@@ -38,7 +38,7 @@ class FilesystemLocation implements LocationInterface
      *
      * @since 0.1.0
      *
-     * @var array<string>
+     * @var array
      */
     protected $extensions;
 
