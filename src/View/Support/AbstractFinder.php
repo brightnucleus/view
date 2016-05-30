@@ -131,15 +131,13 @@ abstract class AbstractFinder implements FinderInterface
     /**
      * Initialize the NullObject.
      *
-     * @param mixed $arguments Optional. Arguments to use.
-     *
      * @since 0.1.1
+     *
+     * @param mixed $arguments Optional. Arguments to use.
      */
     protected function initializeNullObject($arguments = null)
     {
-        if (! is_object($this->nullObject)) {
-            $this->nullObject = new $this->nullObject(...$arguments);
-        }
+        $this->nullObject = $this->maybeInstantiateFindable($this->nullObject, $arguments);
     }
 
     /**
@@ -166,23 +164,10 @@ abstract class AbstractFinder implements FinderInterface
      * @param mixed $arguments Optional. Arguments to use.
      *
      * @return Findable Instantiated findable.
-     * @throws FailedToInstantiateFindableException If the findable could not be instantiated.
      */
     protected function initializeFindable($findable, $arguments = null)
     {
-        $findable = $this->maybeInstantiateFindable($findable, $arguments);
-
-        if (! $findable instanceof Findable) {
-            throw new FailedToInstantiateFindableException(
-                sprintf(
-                    _('Could not instantiate Findable "%s".'),
-                    serialize($findable)
-                ),
-                (array)$arguments
-            );
-        }
-
-        return $findable;
+        return $this->maybeInstantiateFindable($findable, $arguments);
     }
 
     /**
@@ -194,6 +179,7 @@ abstract class AbstractFinder implements FinderInterface
      * @param mixed $arguments Optional. Arguments to use.
      *
      * @return Findable Instantiated findable.
+     * @throws FailedToInstantiateFindableException If the findable could not be instantiated.
      */
     protected function maybeInstantiateFindable($findable, $arguments = null)
     {
@@ -203,6 +189,15 @@ abstract class AbstractFinder implements FinderInterface
 
         if (is_callable($findable)) {
             $findable = $this->instantiateFindableFromCallable($findable, $arguments);
+        }
+
+        if (! $findable instanceof Findable) {
+            throw new FailedToInstantiateFindableException(
+                sprintf(
+                    _('Could not instantiate Findable "%s".'),
+                    serialize($findable)
+                )
+            );
         }
 
         return $findable;

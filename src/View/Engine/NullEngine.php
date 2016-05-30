@@ -11,6 +11,7 @@
 
 namespace BrightNucleus\View\Engine;
 
+use BrightNucleus\View\Support\Findable;
 use BrightNucleus\View\Support\NullObject;
 
 /**
@@ -21,7 +22,7 @@ use BrightNucleus\View\Support\NullObject;
  * @package BrightNucleus\View\Engine
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-class NullEngine implements EngineInterface, NullObject
+class NullEngine implements EngineInterface, NullObject, Findable
 {
 
     /**
