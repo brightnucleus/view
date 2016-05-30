@@ -57,7 +57,7 @@ class FilesystemLocation implements LocationInterface
     }
 
     /**
-     * Get an URI that matches the given criteria.
+     * Get the first URI that matches the given criteria.
      *
      * @since 0.1.0
      *
@@ -74,6 +74,28 @@ class FilesystemLocation implements LocationInterface
         }
 
         return false;
+    }
+
+    /**
+     * Get all URIs that match the given criteria.
+     *
+     * @since 0.1.1
+     *
+     * @param array $criteria Criteria to match.
+     *
+     * @return array URI that matches the criteria or false if none found.
+     */
+    public function getURIs(array $criteria)
+    {
+        $uris = [];
+
+        foreach ($criteria as $entry) {
+            if ($uri = $this->transform($entry)) {
+                $uris[] = $uri;
+            }
+        }
+
+        return $uris;
     }
 
     /**
