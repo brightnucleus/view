@@ -14,9 +14,10 @@ namespace BrightNucleus\View\Support;
 use BrightNucleus\Config\ConfigInterface;
 use BrightNucleus\Config\ConfigTrait;
 use BrightNucleus\Config\Exception\FailedToProcessConfigException;
+use BrightNucleus\View\Exception\FailedToInstantiateFindableException;
 
 /**
- * Class EngineFinder.
+ * Abstract class AbstractFinder.
  *
  * @since   0.1.0
  *
@@ -29,11 +30,11 @@ abstract class AbstractFinder implements FinderInterface
     use ConfigTrait;
 
     /**
-     * Array of Findables that the Finder can iterate through to find a match.
+     * Findable collection that the Finder can iterate through to find a match.
      *
      * @since 0.1.0
      *
-     * @var Findable[]
+     * @var FindableCollection
      */
     protected $findables;
 
@@ -51,13 +52,14 @@ abstract class AbstractFinder implements FinderInterface
      *
      * @since 0.1.0
      *
-     * @param ConfigInterface $config Configuration of the EngineFinder.
+     * @param ConfigInterface $config Configuration of the AbstractFinder.
      *
      * @throws FailedToProcessConfigException If the config could not be processed.
      */
     public function __construct(ConfigInterface $config)
     {
         $this->processConfig($config);
+        $this->findables = new FindableCollection();
         $this->registerFindables($this->config);
         $this->registerNullObject($this->config);
     }
@@ -72,7 +74,7 @@ abstract class AbstractFinder implements FinderInterface
     public function registerFindables(ConfigInterface $config)
     {
         foreach ($config->getKey($this->getFindablesConfigKey()) as $findableKey => $findableObject) {
-            $this->registerFindable($findableKey, $findableObject);
+            $this->findables->set($findableKey, $findableObject);
         }
     }
 
@@ -103,19 +105,6 @@ abstract class AbstractFinder implements FinderInterface
     }
 
     /**
-     * Register a single Findable.
-     *
-     * @since 0.1.0
-     *
-     * @param string $key      Key used to reference the Findable.
-     * @param mixed  $findable Findable as a FQCN, callable or object.
-     */
-    protected function registerFindable($key, $findable)
-    {
-        $this->findables[$key] = $findable;
-    }
-
-    /**
      * Get the config key for the Findables definitions.
      *
      * @since 0.1.0
@@ -142,12 +131,110 @@ abstract class AbstractFinder implements FinderInterface
     /**
      * Initialize the NullObject.
      *
+     * @param mixed $arguments Optional. Arguments to use.
+     *
      * @since 0.1.1
      */
-    protected function initializeNullObject()
+    protected function initializeNullObject($arguments = null)
     {
         if (! is_object($this->nullObject)) {
-            $this->nullObject = new $this->nullObject();
+            $this->nullObject = new $this->nullObject(...$arguments);
         }
+    }
+
+    /**
+     * Initialize the Findables that can be iterated.
+     *
+     * @param mixed $arguments Optional. Arguments to use.
+     *
+     * @since 0.1.0
+     *
+     */
+    protected function initializeFindables($arguments = null)
+    {
+        $this->findables = $this->findables->map(function ($findable) use ($arguments) {
+            return $this->initializeFindable($findable, $arguments);
+        });
+    }
+
+    /**
+     * Initialize a single findable by instantiating class name strings and calling closures.
+     *
+     * @since 0.1.0
+     *
+     * @param mixed $findable  Findable to instantiate.
+     * @param mixed $arguments Optional. Arguments to use.
+     *
+     * @return Findable Instantiated findable.
+     * @throws FailedToInstantiateFindableException If the findable could not be instantiated.
+     */
+    protected function initializeFindable($findable, $arguments = null)
+    {
+        $findable = $this->maybeInstantiateFindable($findable, $arguments);
+
+        if (! $findable instanceof Findable) {
+            throw new FailedToInstantiateFindableException(
+                sprintf(
+                    _('Could not instantiate Findable "%s".'),
+                    serialize($findable)
+                ),
+                (array)$arguments
+            );
+        }
+
+        return $findable;
+    }
+
+    /**
+     * Maybe instantiate a Findable if it is not yet an object.
+     *
+     * @since 0.1.1
+     *
+     * @param mixed $findable  Findable to instantiate.
+     * @param mixed $arguments Optional. Arguments to use.
+     *
+     * @return Findable Instantiated findable.
+     */
+    protected function maybeInstantiateFindable($findable, $arguments = null)
+    {
+        if (is_string($findable)) {
+            $findable = $this->instantiateFindableFromString($findable, $arguments);
+        }
+
+        if (is_callable($findable)) {
+            $findable = $this->instantiateFindableFromCallable($findable, $arguments);
+        }
+
+        return $findable;
+    }
+
+    /**
+     * Instantiate a Findable from a string.
+     *
+     * @since 0.1.1
+     *
+     * @param string $string    String to use for instantiation.
+     * @param mixed  $arguments Optional. Arguments to use for instantiation.
+     *
+     * @return mixed
+     */
+    protected function instantiateFindableFromString($string, $arguments = null)
+    {
+        return new $string(...$arguments);
+    }
+
+    /**
+     * Instantiate a Findable from a callable.
+     *
+     * @since 0.1.1
+     *
+     * @param callable $callable  Callable to use for instantiation.
+     * @param mixed    $arguments Optional. Arguments to use for instantiation.
+     *
+     * @return mixed
+     */
+    protected function instantiateFindableFromCallable($callable, $arguments = null)
+    {
+        return $callable(...$arguments);
     }
 }

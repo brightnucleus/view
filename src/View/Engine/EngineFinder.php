@@ -11,7 +11,6 @@
 
 namespace BrightNucleus\View\Engine;
 
-use BrightNucleus\View\Exception\FailedToInstantiateEngineException;
 use BrightNucleus\View\Support\AbstractFinder;
 
 /**
@@ -36,7 +35,7 @@ class EngineFinder extends AbstractFinder
      */
     public function find(array $criteria)
     {
-        $this->initializeEngines();
+        $this->initializeFindables();
 
         foreach ($criteria as $entry) {
             foreach ($this->findables as $engine) {
@@ -47,51 +46,6 @@ class EngineFinder extends AbstractFinder
         }
 
         return $this->getNullObject();
-    }
-
-    /**
-     * Initialize the engines that can be iterated.
-     *
-     * @since 0.1.0
-     *
-     */
-    protected function initializeEngines()
-    {
-        foreach ($this->findables as &$engine) {
-            $engine = $this->initializeEngine($engine);
-        }
-    }
-
-    /**
-     * Initialize a single engine by instantiating class name strings and calling closures.
-     *
-     * @since 0.1.0
-     *
-     * @param mixed $engine Engine to instantiate.
-     *
-     * @return EngineInterface Instantiated engine.
-     * @throws FailedToInstantiateEngineException If the engine could not be instantiated.
-     */
-    protected function initializeEngine($engine)
-    {
-        if (is_string($engine)) {
-            $engine = new $engine();
-        }
-
-        if (is_callable($engine)) {
-            $engine = $engine();
-        }
-
-        if (! $engine instanceof EngineInterface) {
-            throw new FailedToInstantiateEngineException(
-                sprintf(
-                    _('Could not instantiate engine "%s".'),
-                    serialize($engine)
-                )
-            );
-        }
-
-        return $engine;
     }
 
     /**
