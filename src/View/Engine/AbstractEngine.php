@@ -24,24 +24,4 @@ use BrightNucleus\View\Support\Findable;
 abstract class AbstractEngine implements EngineInterface, Findable
 {
 
-    /**
-     * Check whether a given URI has a specific extension.
-     *
-     * @since 0.1.0
-     *
-     * @param string $uri       URI to check the extension of.
-     * @param string $extension Extension to check for.
-     *
-     * @return bool
-     */
-    protected function hasExtension($uri, $extension)
-    {
-        $uriLength       = mb_strlen($uri);
-        $extensionLength = mb_strlen($extension);
-        if ($extensionLength > $uriLength) {
-            return false;
-        }
-
-        return substr_compare($uri, $extension, $uriLength - $extensionLength, $extensionLength) === 0;
-    }
 }

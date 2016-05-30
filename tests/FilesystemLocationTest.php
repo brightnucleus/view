@@ -12,6 +12,7 @@
 namespace BrightNucleus\View;
 
 use BrightNucleus\View\Location\FilesystemLocation;
+use BrightNucleus\View\Location\URICollection;
 
 /**
  * Class FilesystemLocationTest.
@@ -25,13 +26,18 @@ class FilesystemLocationTest extends \PHPUnit_Framework_TestCase
 {
 
     /** @dataProvider FileSystemLocationDataProvider */
-    public function testFilesystemLocation($path, $extensions, $criteria, $expectedFirstURI, $expectedURIArray)
-    {
+    public function testFilesystemLocation(
+        $path,
+        $extensions,
+        $criteria,
+        $expectedFirstURI,
+        URICollection $expectedURIs
+    ) {
         $location = new FilesystemLocation($path, $extensions);
         $firstURI = $location->getURI($criteria);
         $this->assertEquals($expectedFirstURI, $firstURI);
         $allURIs = $location->getURIs($criteria);
-        $this->assertEquals($expectedURIArray, $allURIs);
+        $this->assertEquals($expectedURIs, $allURIs);
     }
 
     public function FileSystemLocationDataProvider()
@@ -39,35 +45,35 @@ class FilesystemLocationTest extends \PHPUnit_Framework_TestCase
         $root = __DIR__ . '/fixtures/locations';
 
         return [
-            // string $path, array $extensions, array $criteria, string $expectedFirstURI, array $expectedURIArray
+            // string $path, array $extensions, array $criteria, string $expectedFirstURI, URICollection $expectedURIs
             [
                 $root . '/flat',
                 ['.php'],
                 ['test1'],
                 $root . '/flat/test1.php',
-                [
+                new URICollection([
                     $root . '/flat/test1.php',
-                ],
+                ]),
             ],
             [
                 $root . '/flat',
                 ['.php', '.html'],
                 ['test1'],
                 $root . '/flat/test1.php',
-                [
+                new URICollection([
                     $root . '/flat/test1.php',
                     $root . '/flat/test1.html',
-                ],
+                ]),
             ],
             [
                 $root . '/flat',
                 ['.html', '.php'],
                 ['test1'],
                 $root . '/flat/test1.html',
-                [
+                new URICollection([
                     $root . '/flat/test1.html',
                     $root . '/flat/test1.php',
-                ],
+                ]),
             ],
         ];
     }

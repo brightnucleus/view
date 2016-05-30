@@ -40,7 +40,7 @@ interface LocationInterface
      *
      * @param array $criteria Criteria to match.
      *
-     * @return array URI that matches the criteria or false if none found.
+     * @return URICollection Collection of URIs that matches the criteria or an empty collection if none found.
      */
     public function getURIs(array $criteria);
 }

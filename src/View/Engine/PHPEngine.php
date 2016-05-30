@@ -12,6 +12,7 @@
 namespace BrightNucleus\View\Engine;
 
 use BrightNucleus\View\Exception\FailedToLoadViewException;
+use BrightNucleus\View\Support\URIHelper;
 use Exception;
 
 /**
@@ -38,7 +39,7 @@ class PHPEngine extends AbstractEngine
      */
     public function canHandle($criterion)
     {
-        return $this->hasExtension($criterion, static::PHP_EXTENSION)
+        return URIHelper::hasExtension($criterion, static::PHP_EXTENSION)
                && is_readable($criterion);
     }
 

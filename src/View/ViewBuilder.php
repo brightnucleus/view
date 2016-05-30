@@ -179,6 +179,18 @@ class ViewBuilder
     }
 
     /**
+     * Get the collection of locations registered with this ViewBuilder.
+     *
+     * @since 0.1.3
+     *
+     * @return LocationCollection Collection of locations.
+     */
+    public function getLocations()
+    {
+        return $this->locations;
+    }
+
+    /**
      * Scan Locations for an URI that matches the specified criteria.
      *
      * @since 0.1.0
@@ -189,12 +201,14 @@ class ViewBuilder
      */
     public function scanLocations(array $criteria)
     {
-        return $this->locations->map(function ($location) use ($criteria) {
+        $uris = $this->locations->map(function ($location) use ($criteria) {
             /** @var LocationInterface $location */
             return $location->getURI($criteria);
         })->filter(function ($uri) {
             return false !== $uri;
-        })->first() ?: false;
+        });
+
+        return $uris->count() > 0 ? $uris->first() : false;
     }
 
     /**

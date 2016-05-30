@@ -12,7 +12,10 @@
 namespace BrightNucleus\View\Location;
 
 use BrightNucleus\View\Support\ExtensionCollection;
+use BrightNucleus\View\Support\URIHelper;
 use Exception;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * Class FilesystemLocation.
@@ -68,13 +71,11 @@ class FilesystemLocation implements LocationInterface
      */
     public function getURI(array $criteria)
     {
-        foreach ($criteria as $entry) {
-            if ($uri = $this->transform($entry, true)) {
-                return $uri;
-            }
-        }
+        $uris = $this->getURIs($criteria);
 
-        return false;
+        return $uris->count() > 0
+            ? $this->getURIs($criteria)->first()
+            : false;
     }
 
     /**
@@ -84,19 +85,83 @@ class FilesystemLocation implements LocationInterface
      *
      * @param array $criteria Criteria to match.
      *
-     * @return array URIs that match the criteria or empty array if none found.
+     * @return URICollection URIs that match the criteria or an empty collection if none found.
      */
     public function getURIs(array $criteria)
     {
-        $uris = [];
+        $uris = new URICollection();
 
-        foreach ($criteria as $entry) {
-            if ($uri = $this->transform($entry, false)) {
-                $uris = array_merge($uris, (array)$uri);
+        foreach ($this->extensions as $extension) {
+            $finder = new Finder();
+
+            try {
+                $finder->files()
+                       ->name($this->getNamePattern($criteria, $extension))
+                       ->in($this->getPathPattern());
+                foreach ($finder as $file) {
+                    /** @var SplFileInfo $file */
+                    $uris->add($file->getPathname());
+                }
+            } catch (Exception $exception) {
+                // Fail silently;
             }
         }
 
         return $uris;
+    }
+
+    /**
+     * Get the name pattern to pass to the file finder.
+     *
+     * @since 0.1.3
+     *
+     * @param array  $criteria  Criteria to match.
+     * @param string $extension Extension to match.
+     *
+     * @return string Name pattern to pass to the file finder.
+     */
+    protected function getNamePattern(array $criteria, $extension)
+    {
+        $names = [];
+
+        $names[] = array_map(function ($criterion) use ($extension) {
+            $criterion = URIHelper::getFilename($criterion);
+            return empty($extension) || URIHelper::hasExtension($criterion, $extension)
+                ? $criterion
+                : $criterion . $extension;
+        }, $criteria)[0];
+
+        return $this->arrayToRegexPattern(array_unique($names));
+    }
+
+    /**
+     * Get the path pattern to pass to the file finder.
+     *
+     * @since 0.1.3
+     *
+     * @return string Path pattern to pass to the file finder.
+     */
+    protected function getPathPattern()
+    {
+        return $this->path;
+    }
+
+    /**
+     * Get an array as a regular expression pattern string.
+     *
+     * @since 0.1.3
+     *
+     * @param array $array Array to generate the pattern for.
+     *
+     * @return string Generated regular expression pattern.
+     */
+    protected function arrayToRegexPattern(array $array)
+    {
+        $array = array_map(function ($entry) {
+            return preg_quote($entry);
+        }, $array);
+
+        return '/' . implode('|', $array) . '/';
     }
 
     /**
@@ -110,65 +175,14 @@ class FilesystemLocation implements LocationInterface
      */
     protected function validateExtensions($extensions)
     {
+        if (empty($extensions)) {
+            $extensions = new ExtensionCollection(['']);
+        }
+
         if (! $extensions instanceof ExtensionCollection) {
             $extensions = new ExtensionCollection((array)$extensions);
         }
-        $extensions->add('');
 
         return $extensions;
-    }
-
-    /**
-     * Try to transform the entry into possible URIs.
-     *
-     * @since 0.1.0
-     *
-     * @param string $entry     Entry to transform.
-     * @param bool   $firstOnly Return the first result only.
-     *
-     * @return array|string|false If $firstOnly is true, returns a string with the URI of the view, or false if none
-     *                            found.
-     *                            If $firstOnly is false, returns an array with all matching URIs, or an empty array if
-     *                            none found.
-     */
-    protected function transform($entry, $firstOnly = true)
-    {
-        $uris = [];
-
-        try {
-            foreach ($this->getVariants($entry) as $uri) {
-                if (is_readable($uri)) {
-                    if ($firstOnly) {
-                        return $uri;
-                    }
-                    $uris [] = $uri;
-                }
-            }
-        } catch (Exception $exception) {
-            // Fail silently.
-        }
-
-        return $firstOnly ? false : $uris;
-    }
-
-    /**
-     * Get the individual variants that could be matched for the location.
-     *
-     * @since 0.1.1
-     *
-     * @param string $entry Entry to get the variants for.
-     *
-     * @return array Array of variants to check.
-     */
-    protected function getVariants($entry)
-    {
-        $variants = [];
-
-        $this->extensions->map(function ($extension) use ($entry, &$variants) {
-            $variants[] = $entry . $extension;
-            $variants[] = $this->path . DIRECTORY_SEPARATOR . $entry . $extension;
-        });
-
-        return $variants;
     }
 }

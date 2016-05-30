@@ -11,23 +11,21 @@
 
 namespace BrightNucleus\View\Support;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 /**
- * Class ExtensionCollection.
+ * Class URIHelper.
  *
  * @since   0.1.1
  *
  * @package BrightNucleus\View\Support
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-class ExtensionCollection extends ArrayCollection
+class URIHelper
 {
 
     /**
      * Check whether a given URI has a specific extension.
      *
-     * @since 0.1.0
+     * @since 0.1.3
      *
      * @param string $uri       URI to check the extension of.
      * @param string $extension Extension to check for.
@@ -43,5 +41,19 @@ class ExtensionCollection extends ArrayCollection
         }
 
         return substr_compare($uri, $extension, $uriLength - $extensionLength, $extensionLength) === 0;
+    }
+
+    /**
+     * Get the filename for an URI.
+     *
+     * @since 0.1.3
+     *
+     * @param string $uri URI to get the filename from.
+     *
+     * @return string Filename without path.
+     */
+    public static function getFilename($uri)
+    {
+        return basename($uri);
     }
 }

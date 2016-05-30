@@ -37,7 +37,7 @@ class ViewBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /** @dataProvider PHPViewDataProvider */
-    public function testPHPView($view, array $extensions)
+    public function testPHPView($view, $extensions)
     {
         $this->viewBuilder->addLocation(new FilesystemLocation(__DIR__ . '/fixtures', $extensions));
         $view = $this->viewBuilder->create($view);
@@ -54,7 +54,9 @@ class ViewBuilderTest extends \PHPUnit_Framework_TestCase
             ['php-view', ['.zip', '.txt', '.php', '.html']],
             ['php-view.php', ['.php']],
             ['php-view.php', ['.zip', '.txt', '.php', '.html']],
+            ['php-view.php', ['']],
             ['php-view.php', []],
+            ['php-view.php', null],
         ];
     }
 
