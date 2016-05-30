@@ -12,6 +12,9 @@
             <file>tests/ViewBuilderTest.php</file>
             <file>tests/ViewFacadeTest.php</file>
         </testsuite>
+        <testsuite name="location">
+            <file>tests/FilesystemLocationTest.php</file>
+        </testsuite>
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">

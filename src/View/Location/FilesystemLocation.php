@@ -68,7 +68,7 @@ class FilesystemLocation implements LocationInterface
     public function getURI(array $criteria)
     {
         foreach ($criteria as $entry) {
-            if ($uri = $this->transform($entry)) {
+            if ($uri = $this->transform($entry, true)) {
                 return $uri;
             }
         }
@@ -90,8 +90,8 @@ class FilesystemLocation implements LocationInterface
         $uris = [];
 
         foreach ($criteria as $entry) {
-            if ($uri = $this->transform($entry)) {
-                $uris[] = $uri;
+            if ($uri = $this->transform($entry, false)) {
+                $uris = array_merge($uris, (array)$uri);
             }
         }
 
@@ -103,29 +103,38 @@ class FilesystemLocation implements LocationInterface
      *
      * @since 0.1.0
      *
-     * @param string $entry Entry to transform.
+     * @param string $entry     Entry to transform.
+     * @param bool   $firstOnly Return the first result only.
      *
-     * @return string|false URI of the view, or false if none found.
+     * @return array|string|false If $firstOnly is true, returns a string with the URI of the view, or false if none
+     *                            found.
+     *                            If $firstOnly is false, returns an array with all matching URIs, or an empty array if
+     *                            none found.
      */
-    protected function transform($entry)
+    protected function transform($entry, $firstOnly = true)
     {
+        $uris = [];
         try {
             foreach ($this->extensions as $extension) {
 
-                $uri = $entry . $extension;
-                if (is_readable($uri)) {
-                    return $uri;
-                }
+                $variants = [
+                    $entry . $extension,
+                    $this->path . DIRECTORY_SEPARATOR . $entry . $extension,
+                ];
 
-                $uri = $this->path . DIRECTORY_SEPARATOR . $uri;
-                if (is_readable($uri)) {
-                    return $uri;
+                foreach ($variants as $uri) {
+                    if (is_readable($uri)) {
+                        if ($firstOnly) {
+                            return $uri;
+                        }
+                        $uris [] = $uri;
+                    }
                 }
             }
         } catch (Exception $exception) {
             // Fail silently.
         }
 
-        return false;
+        return $firstOnly ? false : $uris;
     }
 }
