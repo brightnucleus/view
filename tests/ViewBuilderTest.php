@@ -1,6 +1,6 @@
 <?php
 /**
- * View Test.
+ * ViewBuilder Test.
  *
  * @package   BrightNucleus\View
  * @author    Alain Schlesser <alain.schlesser@gmail.com>
