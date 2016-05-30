@@ -211,9 +211,9 @@ class ViewBuilder
      *
      * @since 0.1.0
      *
-     * @param mixed           $type   Type of view that was requested.
-     * @param string          $uri    URI to get a view for.
-     * @param EngineInterface $engine Engine to use for the view.
+     * @param mixed                $type   Type of view that was requested.
+     * @param string               $uri    URI to get a view for.
+     * @param EngineInterface|null $engine Engine to use for the view.
      *
      * @return ViewInterface Resolved View object.
      * @throws FailedToInstantiateViewException If the view type could not be resolved.
