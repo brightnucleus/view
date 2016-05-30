@@ -83,7 +83,7 @@ class FilesystemLocation implements LocationInterface
      *
      * @param string $entry Entry to transform.
      *
-     * @return string|bool URI of the view, or false if none found.
+     * @return string|false URI of the view, or false if none found.
      */
     protected function transform($entry)
     {

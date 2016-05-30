@@ -30,10 +30,14 @@ class NullView implements ViewInterface, NullObject
      * @since 0.1.0
      *
      * @param array $context Optional. The context in which to render the view.
+     * @param bool  $echo    Optional. Whether to echo the output immediately. Defaults to false.
      *
-     * @return string Rendered HTML.
+     * @return string|void Rendered HTML or nothing, depending on $echo argument.
      */
-    public function render(array $context = [])
+    public function render(array $context = [], $echo = false)
     {
+        if (! $echo) {
+            return '';
+        }
     }
 }
