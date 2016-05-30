@@ -31,8 +31,8 @@ class ViewFinder extends AbstractFinder
      *
      * @since 0.1.0
      *
-     * @param array           $criteria Criteria to search for.
-     * @param EngineInterface $engine   Optional. Engine to use with the view.
+     * @param array                $criteria Criteria to search for.
+     * @param EngineInterface|null $engine   Optional. Engine to use with the view.
      *
      * @return ViewInterface View that was found.
      */
@@ -58,8 +58,8 @@ class ViewFinder extends AbstractFinder
      *
      * @since 0.1.0
      *
-     * @param string          $uri    URI to use for the view.
-     * @param EngineInterface $engine Optional. Engine to use with the view.
+     * @param string               $uri    URI to use for the view.
+     * @param EngineInterface|null $engine Optional. Engine to use with the view.
      */
     protected function initializeViews($uri, EngineInterface $engine = null)
     {
@@ -73,9 +73,9 @@ class ViewFinder extends AbstractFinder
      *
      * @since 0.1.0
      *
-     * @param mixed           $view   View to instantiate.
-     * @param string          $uri    URI to use for the view.
-     * @param EngineInterface $engine Optional. Engine to use with the view.
+     * @param mixed                $view   View to instantiate.
+     * @param string               $uri    URI to use for the view.
+     * @param EngineInterface|null $engine Optional. Engine to use with the view.
      *
      * @return ViewInterface Instantiated view.
      * @throws FailedToInstantiateViewException If the view could not be instantiated.
