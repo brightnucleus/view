@@ -48,8 +48,8 @@ class FilesystemLocation implements LocationInterface
      *
      * @since 0.1.0
      *
-     * @param string                           $path       Path that this location points to.
-     * @param ExtensionCollection|array|string $extensions Extensions that this location can accept.
+     * @param string                                $path       Path that this location points to.
+     * @param ExtensionCollection|array|string|null $extensions Optional. Extensions that this location can accept.
      */
     public function __construct($path, $extensions = null)
     {
@@ -104,7 +104,7 @@ class FilesystemLocation implements LocationInterface
      *
      * @since 0.1.1
      *
-     * @param ExtensionCollection|array|string $extensions Extensions to validate.
+     * @param ExtensionCollection|array|string|null $extensions Extensions to validate.
      *
      * @return ExtensionCollection Validated extensions collection.
      */
