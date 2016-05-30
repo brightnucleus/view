@@ -211,7 +211,7 @@ abstract class AbstractFinder implements FinderInterface
      * @param string $string    String to use for instantiation.
      * @param mixed  $arguments Optional. Arguments to use for instantiation.
      *
-     * @return mixed
+     * @return Findable Instantiated Findable.
      */
     protected function instantiateFindableFromString($string, $arguments = null)
     {
@@ -226,7 +226,7 @@ abstract class AbstractFinder implements FinderInterface
      * @param callable $callable  Callable to use for instantiation.
      * @param mixed    $arguments Optional. Arguments to use for instantiation.
      *
-     * @return mixed
+     * @return Findable Instantiated Findable.
      */
     protected function instantiateFindableFromCallable($callable, $arguments = null)
     {
