@@ -11,8 +11,7 @@
 
 namespace BrightNucleus\View\View;
 
-use BrightNucleus\View\Support\Findable;
-use BrightNucleus\View\Support\NullObject;
+use BrightNucleus\View\Support\NullFindable;
 
 /**
  * Class NullView.
@@ -22,7 +21,7 @@ use BrightNucleus\View\Support\NullObject;
  * @package BrightNucleus\View\View
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-class NullView implements ViewInterface, NullObject, Findable
+class NullView implements ViewInterface, NullFindable
 {
 
     /**

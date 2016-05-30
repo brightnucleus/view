@@ -43,7 +43,7 @@ abstract class AbstractFinder implements FinderInterface
      *
      * @since 0.1.0
      *
-     * @var NullObject
+     * @var NullFindable
      */
     protected $nullObject;
 
@@ -95,7 +95,7 @@ abstract class AbstractFinder implements FinderInterface
      *
      * @since 0.1.1
      *
-     * @return NullObject NullObject for the current Finder.
+     * @return NullFindable NullObject for the current Finder.
      */
     public function getNullObject()
     {
