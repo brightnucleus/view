@@ -149,7 +149,7 @@ class ViewBuilder
      */
     public function getViewFinder()
     {
-        return $this->getFinder($this->viewFinder, ViewBuilder::VIEW_FINDER_KEY);
+        return $this->getFinder($this->viewFinder, static::VIEW_FINDER_KEY);
     }
 
     /**
@@ -161,7 +161,7 @@ class ViewBuilder
      */
     public function getEngineFinder()
     {
-        return $this->getFinder($this->engineFinder, ViewBuilder::ENGINE_FINDER_KEY);
+        return $this->getFinder($this->engineFinder, static::ENGINE_FINDER_KEY);
     }
 
     /**
