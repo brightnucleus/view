@@ -220,7 +220,12 @@ class ViewBuilder
      */
     protected function resolveType($type, $uri, EngineInterface $engine = null)
     {
-        if (is_string($type) && $this->config->hasKey(static::VIEW_FINDER_KEY)) {
+        if (is_string($type) && $this->config->hasKey(static::VIEW_FINDER_KEY, 'Views', $type)) {
+            $className = $this->config->getKey(static::VIEW_FINDER_KEY, 'Views', $type);
+            $type      = new $className($uri, $engine);
+        }
+
+        if (is_string($type)) {
             $type = new $type($uri, $engine);
         }
 
