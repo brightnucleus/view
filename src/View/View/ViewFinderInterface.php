@@ -30,8 +30,8 @@ interface ViewFinderInterface extends FinderInterface
      *
      * @since 0.1.0
      *
-     * @param array           $criteria Criteria to search for.
-     * @param EngineInterface $engine   Optional. Engine to use with the view.
+     * @param array                $criteria Criteria to search for.
+     * @param EngineInterface|null $engine   Optional. Engine to use with the view.
      *
      * @return ViewInterface View that was found.
      */
