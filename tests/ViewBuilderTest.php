@@ -66,4 +66,13 @@ class ViewBuilderTest extends \PHPUnit_Framework_TestCase
         $html = $view->render(['title' => 'Dynamic Title']);
         $this->assertEquals(file_get_contents(__DIR__ . '/fixtures/php-view-result.html'), $html);
     }
+
+    public function testNullView()
+    {
+        $this->viewBuilder->addLocation(new FilesystemLocation(__DIR__ . '/nonsense', []));
+        $view = $this->viewBuilder->create('nonsense');
+        $this->assertInstanceOf('BrightNucleus\View\View\NullView', $view);
+        $html = $view->render(['title' => 'Dynamic Title']);
+        $this->assertEquals('', $html);
+    }
 }

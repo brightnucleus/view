@@ -18,6 +18,7 @@ use BrightNucleus\View\Engine\EngineFinderInterface;
 use BrightNucleus\View\Engine\EngineInterface;
 use BrightNucleus\View\Engine\ViewFinderInterface;
 use BrightNucleus\View\Exception\FailedToInstantiateViewException;
+use BrightNucleus\View\Location\LocationCollection;
 use BrightNucleus\View\Location\LocationInterface;
 use BrightNucleus\View\Support\FinderInterface;
 use BrightNucleus\View\View\ViewInterface;
@@ -61,7 +62,7 @@ class ViewBuilder
      *
      * @since 0.1.0
      *
-     * @var LocationInterface[]
+     * @var LocationCollection
      */
     protected $locations;
 
@@ -84,6 +85,7 @@ class ViewBuilder
         $this->processConfig($config);
         $this->viewFinder   = $viewFinder;
         $this->engineFinder = $engineFinder;
+        $this->locations    = new LocationCollection();
     }
 
     /**
@@ -173,7 +175,7 @@ class ViewBuilder
      */
     public function addLocation(LocationInterface $location)
     {
-        $this->locations[] = $location;
+        $this->locations->add($location);
     }
 
     /**
@@ -187,14 +189,12 @@ class ViewBuilder
      */
     public function scanLocations(array $criteria)
     {
-        /** @var LocationInterface $location */
-        foreach ($this->locations as $location) {
-            if ($uri = $location->getURI($criteria)) {
-                return $uri;
-            }
-        }
-
-        return false;
+        return $this->locations->map(function ($location) use ($criteria) {
+            /** @var LocationInterface $location */
+            return $location->getURI($criteria);
+        })->filter(function ($uri) {
+            return false !== $uri;
+        })->first() ?: false;
     }
 
     /**

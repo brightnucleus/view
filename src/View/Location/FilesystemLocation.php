@@ -11,6 +11,7 @@
 
 namespace BrightNucleus\View\Location;
 
+use BrightNucleus\View\Support\ExtensionCollection;
 use Exception;
 
 /**
@@ -38,7 +39,7 @@ class FilesystemLocation implements LocationInterface
      *
      * @since 0.1.0
      *
-     * @var array
+     * @var ExtensionCollection
      */
     protected $extensions;
 
@@ -47,13 +48,13 @@ class FilesystemLocation implements LocationInterface
      *
      * @since 0.1.0
      *
-     * @param string $path       Path that this location points to.
-     * @param array  $extensions Array of extensions that this location can accept.
+     * @param string                           $path       Path that this location points to.
+     * @param ExtensionCollection|array|string $extensions Extensions that this location can accept.
      */
-    public function __construct($path, array $extensions = [])
+    public function __construct($path, $extensions = null)
     {
         $this->path       = $path;
-        $this->extensions = array_merge($extensions, ['']);
+        $this->extensions = $this->validateExtensions($extensions);
     }
 
     /**
@@ -96,6 +97,25 @@ class FilesystemLocation implements LocationInterface
         }
 
         return $uris;
+    }
+
+    /**
+     * Validate the extensions and return a collection.
+     *
+     * @since 0.1.1
+     *
+     * @param ExtensionCollection|array|string $extensions Extensions to validate.
+     *
+     * @return ExtensionCollection Validated extensions collection.
+     */
+    protected function validateExtensions($extensions)
+    {
+        if (! $extensions instanceof ExtensionCollection) {
+            $extensions = new ExtensionCollection((array)$extensions);
+        }
+        $extensions->add('');
+
+        return $extensions;
     }
 
     /**
@@ -144,10 +164,10 @@ class FilesystemLocation implements LocationInterface
     {
         $variants = [];
 
-        array_map(function ($extension) use ($entry, &$variants) {
+        $this->extensions->map(function ($extension) use ($entry, &$variants) {
             $variants[] = $entry . $extension;
             $variants[] = $this->path . DIRECTORY_SEPARATOR . $entry . $extension;
-        }, $this->extensions);
+        });
 
         return $variants;
     }
