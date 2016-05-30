@@ -19,6 +19,7 @@ use BrightNucleus\View\Engine\EngineInterface;
 use BrightNucleus\View\Engine\ViewFinderInterface;
 use BrightNucleus\View\Exception\FailedToInstantiateViewException;
 use BrightNucleus\View\Location\LocationInterface;
+use BrightNucleus\View\Support\FinderInterface;
 use BrightNucleus\View\View\ViewInterface;
 
 /**
@@ -148,12 +149,7 @@ class ViewBuilder
      */
     public function getViewFinder()
     {
-        if (null === $this->viewFinder) {
-            $viewFinderClass  = $this->config->getKey(static::VIEW_FINDER_KEY, 'ClassName');
-            $this->viewFinder = new $viewFinderClass($this->config->getSubConfig(static::VIEW_FINDER_KEY));
-        }
-
-        return $this->viewFinder;
+        return $this->getFinder($this->viewFinder, ViewBuilder::VIEW_FINDER_KEY);
     }
 
     /**
@@ -165,12 +161,7 @@ class ViewBuilder
      */
     public function getEngineFinder()
     {
-        if (null === $this->engineFinder) {
-            $engineFinderClass  = $this->config->getKey(static::ENGINE_FINDER_KEY, 'ClassName');
-            $this->engineFinder = new $engineFinderClass($this->config->getSubConfig(static::ENGINE_FINDER_KEY));
-        }
-
-        return $this->engineFinder;
+        return $this->getFinder($this->engineFinder, ViewBuilder::ENGINE_FINDER_KEY);
     }
 
     /**
@@ -204,6 +195,26 @@ class ViewBuilder
         }
 
         return false;
+    }
+
+    /**
+     * Get a finder instance.
+     *
+     * @since 0.1.1
+     *
+     * @param mixed  $property Property to use.
+     * @param string $key      Configuration key to use.
+     *
+     * @return FinderInterface The requested finder instance.
+     */
+    protected function getFinder(&$property, $key)
+    {
+        if (null === $property) {
+            $engineFinderClass = $this->config->getKey($key, 'ClassName');
+            $property          = new $engineFinderClass($this->config->getSubConfig($key));
+        }
+
+        return $property;
     }
 
     /**
