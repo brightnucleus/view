@@ -114,21 +114,14 @@ class FilesystemLocation implements LocationInterface
     protected function transform($entry, $firstOnly = true)
     {
         $uris = [];
+
         try {
-            foreach ($this->extensions as $extension) {
-
-                $variants = [
-                    $entry . $extension,
-                    $this->path . DIRECTORY_SEPARATOR . $entry . $extension,
-                ];
-
-                foreach ($variants as $uri) {
-                    if (is_readable($uri)) {
-                        if ($firstOnly) {
-                            return $uri;
-                        }
-                        $uris [] = $uri;
+            foreach ($this->getVariants($entry) as $uri) {
+                if (is_readable($uri)) {
+                    if ($firstOnly) {
+                        return $uri;
                     }
+                    $uris [] = $uri;
                 }
             }
         } catch (Exception $exception) {
@@ -136,5 +129,26 @@ class FilesystemLocation implements LocationInterface
         }
 
         return $firstOnly ? false : $uris;
+    }
+
+    /**
+     * Get the individual variants that could be matched for the location.
+     *
+     * @since 0.1.1
+     *
+     * @param string $entry Entry to get the variants for.
+     *
+     * @return array Array of variants to check.
+     */
+    protected function getVariants($entry)
+    {
+        $variants = [];
+
+        array_map(function ($extension) use ($entry, &$variants) {
+            $variants[] = $entry . $extension;
+            $variants[] = $this->path . DIRECTORY_SEPARATOR . $entry . $extension;
+        }, $this->extensions);
+
+        return $variants;
     }
 }
