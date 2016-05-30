@@ -99,7 +99,7 @@ abstract class AbstractFinder implements FinderInterface
     {
         $this->initializeNullObject();
 
-        return $this->nullObject();
+        return $this->nullObject;
     }
 
     /**
