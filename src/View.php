@@ -119,7 +119,7 @@ class View
      * @param array       $context Optional. The context in which to render the view.
      * @param string|null $type    Type of view to create.
      *
-     * @return ViewInterface Instance of the requested view.
+     * @return string Rendered HTML content.
      */
     public static function render($view, array $context = [], $type = null)
     {
