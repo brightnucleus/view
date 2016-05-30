@@ -90,8 +90,8 @@ class ViewBuilder
      *
      * @since 0.1.0
      *
-     * @param string      $view View identifier to create a view for.
-     * @param string|null $type Type of view to create.
+     * @param string $view View identifier to create a view for.
+     * @param mixed  $type Type of view to create.
      *
      * @return ViewInterface Instance of the requested view.
      */
@@ -192,7 +192,7 @@ class ViewBuilder
      *
      * @param array $criteria Criteria to match.
      *
-     * @return string|bool URI of the requested view, or false if not found.
+     * @return string|false URI of the requested view, or false if not found.
      */
     public function scanLocations(array $criteria)
     {
