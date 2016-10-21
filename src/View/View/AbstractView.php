@@ -107,8 +107,12 @@ abstract class AbstractView implements ViewInterface
      *
      * @return string Rendered HTML content.
      */
-    public function renderPart($view, array $context = [], $type = null)
+    public function renderPart($view, array $context = null, $type = null)
     {
+        if (null === $context) {
+            $context = $this->context;
+        }
+
         $this->initializeViewBuilder();
         $viewObject = $this->builder->create($view, $type);
 
