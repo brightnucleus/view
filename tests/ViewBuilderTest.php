@@ -116,4 +116,23 @@ class ViewBuilderTest extends \PHPUnit_Framework_TestCase
             ['partial.parent', ['.php'], 'PARTIAL.PARENT-PARTIAL.CHILD1-PARTIAL.CHILD2'],
         ];
     }
+
+    public function testCustomConfig()
+    {
+        $viewBuilder = new ViewBuilder(ConfigFactory::create([
+            'BrightNucleus' => [
+                'View' => [
+                    'EngineFinder' => [
+                        'Engines' => [
+                            'TestEngine' => 'BrightNucleus\View\Tests\TestEngine',
+                        ],
+                    ],
+                ],
+            ],
+        ]));
+        $viewBuilder->addLocation(new FilesystemLocation(__DIR__ . '/fixtures', ['.test']));
+        $view   = $viewBuilder->create('custom.engine');
+        $result = $view->render(['testdata' => 'testvalue']);
+        $this->assertEquals('Test Data = testvalue', $result);
+    }
 }

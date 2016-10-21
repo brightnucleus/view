@@ -11,7 +11,6 @@
 
 namespace BrightNucleus;
 
-use BrightNucleus\Config\ConfigFactory;
 use BrightNucleus\Config\ConfigInterface;
 use BrightNucleus\View\Location\Location;
 use BrightNucleus\View\View;
@@ -77,20 +76,7 @@ class Views
      */
     public static function instantiateViewBuilder(ConfigInterface $config = null)
     {
-        return static::$viewBuilder = new ViewBuilder($config ?: static::getDefaultConfig());
-    }
-
-    /**
-     * Get the default configuration to inject into the ViewBuilder.
-     *
-     * @since 0.1.0
-     *
-     * @return ConfigInterface Default configuration.
-     */
-    public static function getDefaultConfig()
-    {
-        return ConfigFactory::create(__DIR__ . '/../config/defaults.php')
-                            ->getSubConfig('BrightNucleus\View');
+        return static::$viewBuilder = new ViewBuilder($config);
     }
 
     /**

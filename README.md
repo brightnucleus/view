@@ -33,7 +33,9 @@ composer require brightnucleus/view
 
 ## Basic Usage
 
-The simplest way to use the `View` component is through its Facade: `BrightNucleus\View`.
+The simplest way to use the `View` component is through its Facade: `BrightNucleus\Views`.
+
+This Facade makes use of a basic `BaseView` View implementation as well as a basic `PHPEngine` Engine implementation. It can just be used as is and does not need additional configuration.  
 
 ### Adding Locations
 
@@ -55,7 +57,7 @@ $folders = [
 ];
 
 foreach ($folders as $folder) {
-    View::addLocation(new FilesystemLocation($folder));
+    Views::addLocation(new FilesystemLocation($folder));
 }
 ```
 
@@ -77,9 +79,9 @@ Here's how to render a simple view:
 <?php namespace View\Example;
 
 use View\Example\User;
-use BrightNucleus\View;
+use BrightNucleus\Views;
 
-echo View::render('welcome-user', [ 'userId' => User::getCurrentId() ]);
+echo Views::render('welcome-user', [ 'userId' => User::getCurrentId() ]);
 ```
 
 ### Context
@@ -118,7 +120,69 @@ Here's an example of how this works:
 
 ## Advanced Usage
 
-> TODO
+For more advanced use cases, you'll want to provide custom classes for your Views or Engines.
+
+### Instantiating A Custom ViewBuilder
+
+To do this, you'll want to create your `ViewBuilder` object manually, instead of relying on the `Views` Facade. By instantiating it manually, you can provide a custom Config to map your classes.
+
+Once, you've got a `ViewBuilder` instance, you can use the `addLocation($location)` method to add locations to scan for views and the `create($view, $type)` method for creating an actual View. This View can then be rendered through its `render($context)` method. 
+
+```PHP
+<?php namespace View\Example;
+
+use BrightNucleus\Config\ConfigFactory;
+use BrightNucleus\View\ViewBuilder;
+use BrightNucleus\View\Location\FilesystemLocation;
+
+// Fetch the Config from somewhere.
+$config = ConfigFactory::create(__DIR__. '/config/views.php');
+
+// Create a new instance of the ViewBuilder and add a location.
+$viewBuilder = new ViewBuilder( $config );
+$viewBuilder->addLocation(new FilesystemLocation(__DIR__ . '/views'));
+
+// Create a new instance of a specific View.
+$view = $viewBuilder->create('my-view');
+
+// Render the view.
+echo $view->render(['answer' => 42]);
+```
+
+### Configuration Schema
+
+Here's an example for providing a custom Config. In this case, we want to replace the default classes with more awesome ones.
+
+```PHP
+<?php namespace View\Example;
+
+$engineFinder = [
+    'ClassName'  => 'View\Example\AwesomeEngineFinder',
+    'Engines'    => [
+        'AwesomeEngine' => 'View\Example\AwesomeEngine',
+    ],
+    'NullObject' => 'View\Example\AwesomeNullEngine',
+];
+
+$viewFinder = [
+    'ClassName'  => 'View\Example\AwesomeViewFinder',
+    'Views'      => [
+        'AwesomeView' => 'View\Example\AwesomeView',
+    ],
+    'NullObject' => 'View\Example\AwesomeNullView',
+];
+
+return [
+    'BrightNucleus' => [
+        'View' => [
+            'EngineFinder' => $engineFinder,
+            'ViewFinder'   => $viewFinder,
+        ],
+    ],
+];
+```
+
+Of course you don't need to override all of the classes, views or engines. If you only override specific keys, the rest will be taken from the default values.
 
 ## Contributing
 

@@ -49,7 +49,7 @@ abstract class AbstractView implements View
     /**
      * ViewBuilder instance.
      *
-     * @since 0.1.4
+     * @since 0.2.0
      *
      * @var ViewBuilder
      */
@@ -100,7 +100,7 @@ abstract class AbstractView implements View
     /**
      * Render a partial view for a given URI.
      *
-     * @since 0.1.4
+     * @since 0.2.0
      *
      * @param string      $view    View identifier to create a view for.
      * @param array       $context Optional. The context in which to render the view.
@@ -123,7 +123,7 @@ abstract class AbstractView implements View
     /**
      * Associate a view builder with this view.
      *
-     * @since 0.1.4
+     * @since 0.2.0
      *
      * @param ViewBuilder $builder
      *
@@ -139,7 +139,7 @@ abstract class AbstractView implements View
     /**
      * Initialize the view builder associated with the view.
      *
-     * @since 0.1.4
+     * @since 0.2.0
      */
     protected function initializeViewBuilder()
     {
@@ -151,7 +151,7 @@ abstract class AbstractView implements View
     /**
      * Assimilate the context to make it available as properties.
      *
-     * @since 0.1.4
+     * @since 0.2.0
      *
      * @param array $context Context to assimilate.
      */

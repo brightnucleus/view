@@ -30,8 +30,8 @@ $viewFinder = [
 return [
     'BrightNucleus' => [
         'View' => [
-            'BaseEngineFinder' => $engineFinder,
-            'BaseViewFinder'   => $viewFinder,
+            'EngineFinder' => $engineFinder,
+            'ViewFinder'   => $viewFinder,
         ],
     ],
 ];

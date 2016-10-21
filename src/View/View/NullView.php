@@ -60,7 +60,7 @@ class NullView implements View, NullFindable
     /**
      * Render a partial view for a given URI.
      *
-     * @since 0.1.4
+     * @since 0.2.0
      *
      * @param string      $view    View identifier to create a view for.
      * @param array       $context Optional. The context in which to render the view.
@@ -76,7 +76,7 @@ class NullView implements View, NullFindable
     /**
      * Associate a view builder with this view.
      *
-     * @since 0.1.4
+     * @since 0.2.0
      *
      * @param ViewBuilder $builder
      *

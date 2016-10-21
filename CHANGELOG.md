@@ -2,10 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [0.1.4] - 2016-10-21
+## [0.2.0] - 2016-10-21
 ### Added
 - Templates are bound to the scope of the view.
-- Rendering of partials is available from the template through `$this->renderPart()` method.
+- Rendering of partials is available from the template through `$this->section()` method.
+- Default config is merged with overrides.
+- Completed documentation.
 
 ## [0.1.3] - 2016-05-30
 ### Added
@@ -34,7 +36,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Initial release to GitHub.
 
-[0.1.4]: https://github.com/brightnucleus/view/compare/v0.1.3...v0.1.4
+[0.1.4]: https://github.com/brightnucleus/view/compare/v0.1.3...v0.2.0
 [0.1.3]: https://github.com/brightnucleus/view/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/brightnucleus/view/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/brightnucleus/view/compare/v0.1.0...v0.1.1

@@ -11,6 +11,7 @@
 
 namespace BrightNucleus\View;
 
+use BrightNucleus\Config\ConfigFactory;
 use BrightNucleus\Config\ConfigInterface;
 use BrightNucleus\Config\ConfigTrait;
 use BrightNucleus\Config\Exception\FailedToProcessConfigException;
@@ -35,8 +36,8 @@ class ViewBuilder
 
     use ConfigTrait;
 
-    const ENGINE_FINDER_KEY = 'BaseEngineFinder';
-    const VIEW_FINDER_KEY   = 'BaseViewFinder';
+    const ENGINE_FINDER_KEY = 'EngineFinder';
+    const VIEW_FINDER_KEY   = 'ViewFinder';
 
     /**
      * BaseViewFinder instance.
@@ -70,18 +71,18 @@ class ViewBuilder
      *
      * @since 0.1.0
      *
-     * @param ConfigInterface       $config       Configuration settings.
-     * @param ViewFinder|null       $viewFinder   BaseViewFinder instance.
-     * @param BaseEngineFinder|null $engineFinder BaseEngineFinder instance.
+     * @param ConfigInterface       $config       Optional. Configuration settings.
+     * @param ViewFinder|null       $viewFinder   Optional. BaseViewFinder instance.
+     * @param BaseEngineFinder|null $engineFinder Optional. BaseEngineFinder instance.
      *
      * @throws FailedToProcessConfigException If the config could not be processed.
      */
     public function __construct(
-        ConfigInterface $config,
+        ConfigInterface $config = null,
         ViewFinder $viewFinder = null,
         BaseEngineFinder $engineFinder = null
     ) {
-        $this->processConfig($config);
+        $this->processConfig($this->getConfig($config));
         $this->viewFinder   = $viewFinder;
         $this->engineFinder = $engineFinder;
         $this->locations    = new Locations();
@@ -269,5 +270,22 @@ class ViewBuilder
         }
 
         return $type;
+    }
+
+    /**
+     * Get the configuration to use in the ViewBuilder.
+     *
+     * @since 0.2.0
+     *
+     * @return ConfigInterface Configuration passed in through the constructor.
+     */
+    protected function getConfig($config = null)
+    {
+        $defaults = ConfigFactory::create(__DIR__ . '/../../config/defaults.php', $config);
+        $config   = $config
+            ? ConfigFactory::createFromArray(array_merge_recursive($defaults->getArrayCopy(), $config->getArrayCopy()))
+            : $defaults;
+
+        return $config->getSubConfig('BrightNucleus\View');
     }
 }
