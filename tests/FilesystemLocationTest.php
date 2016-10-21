@@ -25,7 +25,7 @@ use BrightNucleus\View\Location\URICollection;
 class FilesystemLocationTest extends \PHPUnit_Framework_TestCase
 {
 
-    /** @dataProvider FileSystemLocationDataProvider */
+    /** @dataProvider fileSystemLocationDataProvider */
     public function testFilesystemLocation(
         $path,
         $extensions,
@@ -40,7 +40,7 @@ class FilesystemLocationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedURIs, $allURIs);
     }
 
-    public function FileSystemLocationDataProvider()
+    public function fileSystemLocationDataProvider()
     {
         $root = __DIR__ . '/fixtures/locations';
 
@@ -137,6 +137,42 @@ class FilesystemLocationTest extends \PHPUnit_Framework_TestCase
                 new URICollection([
                     $root . '/recursive/php/testC.php',
                     $root . '/recursive/html/testC.html',
+                ]),
+            ],
+            [
+                $root . '/recursive',
+                ['.php', '.html'],
+                ['testA.typeA'],
+                $root . '/recursive/combined/testA.typeA.php',
+                new URICollection([
+                    $root . '/recursive/combined/testA.typeA.php',
+                ]),
+            ],
+            [
+                $root . '/recursive',
+                ['.php', '.html'],
+                ['testA.typeB'],
+                $root . '/recursive/combined/testA.typeB.php',
+                new URICollection([
+                    $root . '/recursive/combined/testA.typeB.php',
+                ]),
+            ],
+            [
+                $root . '/recursive',
+                ['.php', '.html'],
+                ['testB.typeA'],
+                $root . '/recursive/combined/testB.typeA.php',
+                new URICollection([
+                    $root . '/recursive/combined/testB.typeA.php',
+                ]),
+            ],
+            [
+                $root . '/recursive',
+                ['.php', '.html'],
+                ['testB.typeB'],
+                $root . '/recursive/combined/testB.typeB.php',
+                new URICollection([
+                    $root . '/recursive/combined/testB.typeB.php',
                 ]),
             ],
         ];
