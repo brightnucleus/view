@@ -9,19 +9,20 @@
  * @copyright 2016 Alain Schlesser, Bright Nucleus
  */
 
-namespace BrightNucleus\View\Exception;
+namespace BrightNucleus\View\Support;
 
-use BrightNucleus\Exception\RuntimeException;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Class InvalidLocationException.
+ * Class Findables.
  *
- * @since   0.1.0
+ * @since   0.1.1
  *
- * @package BrightNucleus\View\Exception
+ * @package BrightNucleus\View\Support
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-class InvalidLocationException extends RuntimeException implements ViewException
+class Findables extends ArrayCollection
 {
 
 }
+

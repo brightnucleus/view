@@ -12,14 +12,14 @@
 namespace BrightNucleus\View\Location;
 
 /**
- * Interface LocationInterface.
+ * Interface Location.
  *
  * @since   0.1.0
  *
  * @package BrightNucleus\View\Location
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-interface LocationInterface
+interface Location
 {
 
     /**
@@ -40,7 +40,7 @@ interface LocationInterface
      *
      * @param array $criteria Criteria to match.
      *
-     * @return URICollection Collection of URIs that matches the criteria or an empty collection if none found.
+     * @return URIs Collection of URIs that matches the criteria or an empty collection if none found.
      */
     public function getURIs(array $criteria);
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * LocationCollection Test.
+ * Locations Test.
  *
  * @package   BrightNucleus\View
  * @author    Alain Schlesser <alain.schlesser@gmail.com>
@@ -12,7 +12,7 @@
 namespace BrightNucleus\View;
 
 use BrightNucleus\View\Location\FilesystemLocation;
-use BrightNucleus\View\Location\LocationCollection;
+use BrightNucleus\View\Location\Locations;
 
 /**
  * Class LocationCollectionTest.
@@ -29,7 +29,7 @@ class LocationCollectionTest extends \PHPUnit_Framework_TestCase
     {
         $root = __DIR__ . '/fixtures/locations';
 
-        $locations  = new LocationCollection();
+        $locations  = new Locations();
         $locationA1 = new FilesystemLocation($root . '/locationA', []);
         $locationA2 = new FilesystemLocation($root . '/locationA', []);
         $locationA3 = new FilesystemLocation($root . '/locationA', ['.ext']);

@@ -37,7 +37,7 @@ The simplest way to use the `View` component is through its Facade: `BrightNucle
 
 ### Adding Locations
 
-You can add locations via the static `View::addLocation($location)` method. Each location needs to implement the `LocationInterface`. The `View` component comes with one location provider out of the box: `FilesystemLocation`.
+You can add locations via the static `View::addLocation($location)` method. Each location needs to implement the `Location`. The `View` component comes with one location provider out of the box: `FilesystemLocation`.
 
 Here's how to add a set of folders as a new location:
 
@@ -80,6 +80,40 @@ use View\Example\User;
 use BrightNucleus\View;
 
 echo View::render('welcome-user', [ 'userId' => User::getCurrentId() ]);
+```
+
+### Context
+
+From within the template that is being rendered, the context variables are available as properties.
+
+As an example, for the view we rendered above, you could use `echo $this->userId;` from within the template to retrieve that specific piece of context data.
+
+The context as a whole is available as the property `$this->context`. 
+
+> Keep in mind that no automatic escaping is taking place, the value of the context data is passed as-is.
+
+### Sections
+
+To render a different template as a section from within the template currently being rendered, you can use the `$this->section($view, $context, $type)` method.
+
+This does basically the same thing as an external `render()` call of a `View` object, with the following differences:
+
+* It reuses the parent's `ViewBuilder`, with the same rendering engine, and the same locations.
+* If you don't provide a context, it defaults to the parent's context. 
+
+Here's an example of how this works:
+
+```PHP
+<?php namespace View\Example;
+
+// This is our template that is being rendered.
+
+?><h1>Welcome screen for User with ID <?= $this->userId ?></h1>
+<p>This is an example template to show the rendering of partials.</p>
+<hr>
+<?= $this->section('user-notifications') ?>
+<hr>
+<?= $this->section('user-dashboard') ?>
 ```
 
 ## Advanced Usage

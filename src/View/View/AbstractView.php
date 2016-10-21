@@ -11,9 +11,10 @@
 
 namespace BrightNucleus\View\View;
 
-use BrightNucleus\View;
-use BrightNucleus\View\Engine\EngineInterface;
+use BrightNucleus\View\View;
+use BrightNucleus\View\Engine\Engine;
 use BrightNucleus\View\ViewBuilder;
+use BrightNucleus\Views;
 use Closure;
 
 /**
@@ -24,7 +25,7 @@ use Closure;
  * @package BrightNucleus\View\View
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-abstract class AbstractView implements ViewInterface
+abstract class AbstractView implements View
 {
 
     /**
@@ -41,7 +42,7 @@ abstract class AbstractView implements ViewInterface
      *
      * @since 0.1.0
      *
-     * @var EngineInterface
+     * @var Engine
      */
     protected $engine;
 
@@ -59,10 +60,10 @@ abstract class AbstractView implements ViewInterface
      *
      * @since 0.1.0
      *
-     * @param string          $uri    URI for the view.
-     * @param EngineInterface $engine Engine to use for the view.
+     * @param string $uri    URI for the view.
+     * @param Engine $engine Engine to use for the view.
      */
-    public function __construct($uri, EngineInterface $engine)
+    public function __construct($uri, Engine $engine)
     {
         $this->uri    = $uri;
         $this->engine = $engine;
@@ -143,7 +144,7 @@ abstract class AbstractView implements ViewInterface
     protected function initializeViewBuilder()
     {
         if (null === $this->builder) {
-            $this->builder = View::getViewBuilder();
+            $this->builder = Views::getViewBuilder();
         }
     }
 

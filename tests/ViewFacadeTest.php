@@ -11,7 +11,7 @@
 
 namespace BrightNucleus\View;
 
-use BrightNucleus\View;
+use BrightNucleus\Views;
 use BrightNucleus\View\Location\FilesystemLocation;
 
 /**
@@ -28,8 +28,8 @@ class ViewFacadeTest extends \PHPUnit_Framework_TestCase
     /** @dataProvider PHPViewDataProvider */
     public function testPHPView($view, $extensions)
     {
-        View::addLocation(new FilesystemLocation(__DIR__ . '/fixtures', $extensions));
-        $view = View::create($view);
+        Views::addLocation(new FilesystemLocation(__DIR__ . '/fixtures', $extensions));
+        $view = Views::create($view);
         $this->assertInstanceOf('BrightNucleus\View\View\BaseView', $view);
         $html = $view->render(['title' => 'Dynamic Title']);
         $this->assertEquals(file_get_contents(__DIR__ . '/fixtures/php-view-result.html'), $html);
@@ -38,8 +38,8 @@ class ViewFacadeTest extends \PHPUnit_Framework_TestCase
     /** @dataProvider PHPViewDataProvider */
     public function testPHPViewDirectRender($view, $extensions)
     {
-        View::addLocation(new FilesystemLocation(__DIR__ . '/fixtures', $extensions));
-        $html = View::render($view, ['title' => 'Dynamic Title']);
+        Views::addLocation(new FilesystemLocation(__DIR__ . '/fixtures', $extensions));
+        $html = Views::render($view, ['title' => 'Dynamic Title']);
         $this->assertEquals(file_get_contents(__DIR__ . '/fixtures/php-view-result.html'), $html);
     }
 
@@ -59,8 +59,8 @@ class ViewFacadeTest extends \PHPUnit_Framework_TestCase
 
     public function testPHPViewWithFullPath()
     {
-        View::addLocation(new FilesystemLocation(__DIR__ . '/fixtures', ['.php']));
-        $view = View::create(__DIR__ . '/fixtures/php-view.php');
+        Views::addLocation(new FilesystemLocation(__DIR__ . '/fixtures', ['.php']));
+        $view = Views::create(__DIR__ . '/fixtures/php-view.php');
         $this->assertInstanceOf('BrightNucleus\View\View\BaseView', $view);
         $html = $view->render(['title' => 'Dynamic Title']);
         $this->assertEquals(file_get_contents(__DIR__ . '/fixtures/php-view-result.html'), $html);

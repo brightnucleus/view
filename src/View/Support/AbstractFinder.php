@@ -14,7 +14,7 @@ namespace BrightNucleus\View\Support;
 use BrightNucleus\Config\ConfigInterface;
 use BrightNucleus\Config\ConfigTrait;
 use BrightNucleus\Config\Exception\FailedToProcessConfigException;
-use BrightNucleus\View\Exception\FailedToInstantiateFindableException;
+use BrightNucleus\View\Exception\FailedToInstantiateFindable;
 
 /**
  * Abstract class AbstractFinder.
@@ -24,7 +24,7 @@ use BrightNucleus\View\Exception\FailedToInstantiateFindableException;
  * @package BrightNucleus\View\Support
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-abstract class AbstractFinder implements FinderInterface
+abstract class AbstractFinder implements Finder
 {
 
     use ConfigTrait;
@@ -34,7 +34,7 @@ abstract class AbstractFinder implements FinderInterface
      *
      * @since 0.1.0
      *
-     * @var FindableCollection
+     * @var Findables
      */
     protected $findables;
 
@@ -59,7 +59,7 @@ abstract class AbstractFinder implements FinderInterface
     public function __construct(ConfigInterface $config)
     {
         $this->processConfig($config);
-        $this->findables = new FindableCollection();
+        $this->findables = new Findables();
         $this->registerFindables($this->config);
         $this->registerNullObject($this->config);
     }
@@ -179,7 +179,7 @@ abstract class AbstractFinder implements FinderInterface
      * @param mixed $arguments Optional. Arguments to use.
      *
      * @return Findable Instantiated findable.
-     * @throws FailedToInstantiateFindableException If the findable could not be instantiated.
+     * @throws FailedToInstantiateFindable If the findable could not be instantiated.
      */
     protected function maybeInstantiateFindable($findable, $arguments = null)
     {
@@ -191,8 +191,8 @@ abstract class AbstractFinder implements FinderInterface
             $findable = $this->instantiateFindableFromCallable($findable, $arguments);
         }
 
-        if (! $findable instanceof Findable) {
-            throw new FailedToInstantiateFindableException(
+        if ( ! $findable instanceof Findable) {
+            throw new FailedToInstantiateFindable(
                 sprintf(
                     _('Could not instantiate Findable "%s".'),
                     serialize($findable)

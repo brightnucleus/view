@@ -4,7 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.1.4] - 2016-10-21
 ### Added
-- Context is now available as properties within the view template.
+- Templates are bound to the scope of the view.
+- Rendering of partials is available from the template through `$this->renderPart()` method.
 
 ## [0.1.3] - 2016-05-30
 ### Added
@@ -15,7 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.1.2] - 2016-05-30
 ### Added
-- LocationCollection unit tests added.
+- Locations unit tests added.
 
 ### Changed
 - Locations are only added when they haven't been registered before.

@@ -19,7 +19,7 @@ namespace BrightNucleus\View\Engine;
  * @package BrightNucleus\View\Engine
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-abstract class AbstractEngine implements EngineInterface
+abstract class AbstractEngine implements Engine
 {
 
 }

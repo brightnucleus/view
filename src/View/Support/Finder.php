@@ -12,14 +12,14 @@
 namespace BrightNucleus\View\Support;
 
 /**
- * Interface FinderInterface.
+ * Interface Finder.
  *
  * @since   0.1.0
  *
  * @package BrightNucleus\View\Support
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-interface FinderInterface
+interface Finder
 {
 
     /**

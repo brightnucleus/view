@@ -13,19 +13,19 @@ namespace BrightNucleus;
 
 use BrightNucleus\Config\ConfigFactory;
 use BrightNucleus\Config\ConfigInterface;
-use BrightNucleus\View\Location\LocationInterface;
-use BrightNucleus\View\View\ViewInterface;
+use BrightNucleus\View\Location\Location;
+use BrightNucleus\View\View;
 use BrightNucleus\View\ViewBuilder;
 
 /**
- * Class View.
+ * Class Views.
  *
  * @since   0.1.0
  *
  * @package BrightNucleus\View
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-class View
+class Views
 {
 
     /**
@@ -42,9 +42,9 @@ class View
      *
      * @since 0.1.0
      *
-     * @param LocationInterface $location Location to add.
+     * @param Location $location Location to add.
      */
-    public static function addLocation(LocationInterface $location)
+    public static function addLocation(Location $location)
     {
         $viewBuilder = static::getViewBuilder();
         $viewBuilder->addLocation($location);
@@ -101,7 +101,7 @@ class View
      * @param string      $view View identifier to create a view for.
      * @param string|null $type Type of view to create.
      *
-     * @return ViewInterface Instance of the requested view.
+     * @return View Instance of the requested view.
      */
     public static function create($view, $type = null)
     {

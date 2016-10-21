@@ -12,6 +12,7 @@
 namespace BrightNucleus\View\View;
 
 use BrightNucleus\View\Support\NullFindable;
+use BrightNucleus\View\View;
 use BrightNucleus\View\ViewBuilder;
 
 /**
@@ -22,7 +23,7 @@ use BrightNucleus\View\ViewBuilder;
  * @package BrightNucleus\View\View
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-class NullView implements ViewInterface, NullFindable
+class NullView implements View, NullFindable
 {
 
     /**

@@ -11,7 +11,7 @@
 
 namespace BrightNucleus\View\Location;
 
-use BrightNucleus\View\Support\ExtensionCollection;
+use BrightNucleus\View\Support\Extensions;
 use BrightNucleus\View\Support\URIHelper;
 use Exception;
 use Symfony\Component\Finder\Finder;
@@ -25,7 +25,7 @@ use Symfony\Component\Finder\SplFileInfo;
  * @package BrightNucleus\View\Location
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-class FilesystemLocation implements LocationInterface
+class FilesystemLocation implements Location
 {
 
     /**
@@ -42,7 +42,7 @@ class FilesystemLocation implements LocationInterface
      *
      * @since 0.1.0
      *
-     * @var ExtensionCollection
+     * @var Extensions
      */
     protected $extensions;
 
@@ -51,8 +51,8 @@ class FilesystemLocation implements LocationInterface
      *
      * @since 0.1.0
      *
-     * @param string                                $path       Path that this location points to.
-     * @param ExtensionCollection|array|string|null $extensions Optional. Extensions that this location can accept.
+     * @param string                       $path       Path that this location points to.
+     * @param Extensions|array|string|null $extensions Optional. Extensions that this location can accept.
      */
     public function __construct($path, $extensions = null)
     {
@@ -85,11 +85,11 @@ class FilesystemLocation implements LocationInterface
      *
      * @param array $criteria Criteria to match.
      *
-     * @return URICollection URIs that match the criteria or an empty collection if none found.
+     * @return URIs URIs that match the criteria or an empty collection if none found.
      */
     public function getURIs(array $criteria)
     {
-        $uris = new URICollection();
+        $uris = new URIs();
 
         foreach ($this->extensions as $extension) {
             $finder = new Finder();
@@ -170,18 +170,18 @@ class FilesystemLocation implements LocationInterface
      *
      * @since 0.1.1
      *
-     * @param ExtensionCollection|array|string|null $extensions Extensions to validate.
+     * @param Extensions|array|string|null $extensions Extensions to validate.
      *
-     * @return ExtensionCollection Validated extensions collection.
+     * @return Extensions Validated extensions collection.
      */
     protected function validateExtensions($extensions)
     {
         if (empty($extensions)) {
-            $extensions = new ExtensionCollection(['']);
+            $extensions = new Extensions(['']);
         }
 
-        if (! $extensions instanceof ExtensionCollection) {
-            $extensions = new ExtensionCollection((array)$extensions);
+        if ( ! $extensions instanceof Extensions) {
+            $extensions = new Extensions((array)$extensions);
         }
 
         return $extensions;

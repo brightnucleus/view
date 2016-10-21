@@ -14,14 +14,14 @@ namespace BrightNucleus\View\Exception;
 use BrightNucleus\Exception\RuntimeException;
 
 /**
- * Class FailedToInstantiateViewException.
+ * Class FailedToLoadView.
  *
  * @since   0.1.0
  *
  * @package BrightNucleus\View\Exception
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-class FailedToInstantiateViewException extends RuntimeException implements ViewException
+class FailedToLoadView extends RuntimeException implements ViewException
 {
 
 }

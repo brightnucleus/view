@@ -14,14 +14,14 @@ namespace BrightNucleus\View\Exception;
 use BrightNucleus\Exception\RuntimeException;
 
 /**
- * Class FailedToInstantiateFindableException.
+ * Class FailedToInstantiateEngine.
  *
  * @since   0.1.0
  *
  * @package BrightNucleus\View\Exception
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-class FailedToInstantiateFindableException extends RuntimeException implements ViewException
+class FailedToInstantiateEngine extends RuntimeException implements ViewException
 {
 
 }

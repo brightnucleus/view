@@ -14,14 +14,14 @@ namespace BrightNucleus\View\Support;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Class ExtensionCollection.
+ * Class Extensions.
  *
  * @since   0.1.1
  *
  * @package BrightNucleus\View\Support
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-class ExtensionCollection extends ArrayCollection
+class Extensions extends ArrayCollection
 {
 
     /**

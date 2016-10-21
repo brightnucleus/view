@@ -21,7 +21,7 @@ use BrightNucleus\View\Support\NullFindable;
  * @package BrightNucleus\View\Engine
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-class NullEngine implements EngineInterface, NullFindable
+class NullEngine implements Engine, NullFindable
 {
 
     /**

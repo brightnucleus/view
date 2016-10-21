@@ -9,20 +9,19 @@
  * @copyright 2016 Alain Schlesser, Bright Nucleus
  */
 
-namespace BrightNucleus\View\Support;
+namespace BrightNucleus\View\Exception;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use BrightNucleus\Exception\RuntimeException;
 
 /**
- * Class FindableCollection.
+ * Class FailedToInstantiateFindable.
  *
- * @since   0.1.1
+ * @since   0.1.0
  *
- * @package BrightNucleus\View\Support
+ * @package BrightNucleus\View\Exception
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-class FindableCollection extends ArrayCollection
+class FailedToInstantiateFindable extends RuntimeException implements ViewException
 {
 
 }
-

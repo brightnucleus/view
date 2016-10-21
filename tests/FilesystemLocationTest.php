@@ -12,7 +12,7 @@
 namespace BrightNucleus\View;
 
 use BrightNucleus\View\Location\FilesystemLocation;
-use BrightNucleus\View\Location\URICollection;
+use BrightNucleus\View\Location\URIs;
 
 /**
  * Class FilesystemLocationTest.
@@ -31,7 +31,7 @@ class FilesystemLocationTest extends \PHPUnit_Framework_TestCase
         $extensions,
         $criteria,
         $expectedFirstURI,
-        URICollection $expectedURIs
+        URIs $expectedURIs
     ) {
         $location = new FilesystemLocation($path, $extensions);
         $firstURI = $location->getURI($criteria);
@@ -45,13 +45,13 @@ class FilesystemLocationTest extends \PHPUnit_Framework_TestCase
         $root = __DIR__ . '/fixtures/locations';
 
         return [
-            // string $path, array $extensions, array $criteria, string $expectedFirstURI, URICollection $expectedURIs
+            // string $path, array $extensions, array $criteria, string $expectedFirstURI, URIs $expectedURIs
             [
                 $root . '/flat',
                 ['.php'],
                 ['test1'],
                 $root . '/flat/test1.php',
-                new URICollection([
+                new URIs([
                     $root . '/flat/test1.php',
                 ]),
             ],
@@ -60,7 +60,7 @@ class FilesystemLocationTest extends \PHPUnit_Framework_TestCase
                 ['.php', '.html'],
                 ['test1'],
                 $root . '/flat/test1.php',
-                new URICollection([
+                new URIs([
                     $root . '/flat/test1.php',
                     $root . '/flat/test1.html',
                 ]),
@@ -70,7 +70,7 @@ class FilesystemLocationTest extends \PHPUnit_Framework_TestCase
                 ['.html', '.php'],
                 ['test1'],
                 $root . '/flat/test1.html',
-                new URICollection([
+                new URIs([
                     $root . '/flat/test1.html',
                     $root . '/flat/test1.php',
                 ]),
@@ -80,7 +80,7 @@ class FilesystemLocationTest extends \PHPUnit_Framework_TestCase
                 ['.html', '.php'],
                 ['testA1'],
                 $root . '/recursive/levelA1/testA1.php',
-                new URICollection([
+                new URIs([
                     $root . '/recursive/levelA1/testA1.php',
                 ]),
             ],
@@ -89,7 +89,7 @@ class FilesystemLocationTest extends \PHPUnit_Framework_TestCase
                 ['.html', '.php'],
                 ['testA2'],
                 $root . '/recursive/levelA1/levelA2/testA2.php',
-                new URICollection([
+                new URIs([
                     $root . '/recursive/levelA1/levelA2/testA2.php',
                 ]),
             ],
@@ -98,7 +98,7 @@ class FilesystemLocationTest extends \PHPUnit_Framework_TestCase
                 ['.html', '.php'],
                 ['testA3'],
                 $root . '/recursive/levelA1/levelA2/levelA3/testA3.php',
-                new URICollection([
+                new URIs([
                     $root . '/recursive/levelA1/levelA2/levelA3/testA3.php',
                 ]),
             ],
@@ -107,7 +107,7 @@ class FilesystemLocationTest extends \PHPUnit_Framework_TestCase
                 ['.html', '.php'],
                 ['testB1'],
                 $root . '/recursive/levelB1/testB1.php',
-                new URICollection([
+                new URIs([
                     $root . '/recursive/levelB1/testB1.php',
                 ]),
             ],
@@ -116,7 +116,7 @@ class FilesystemLocationTest extends \PHPUnit_Framework_TestCase
                 ['.html', '.php'],
                 ['testB2'],
                 $root . '/recursive/levelB1/levelB2/testB2.php',
-                new URICollection([
+                new URIs([
                     $root . '/recursive/levelB1/levelB2/testB2.php',
                 ]),
             ],
@@ -125,7 +125,7 @@ class FilesystemLocationTest extends \PHPUnit_Framework_TestCase
                 ['.html', '.php'],
                 ['testB3'],
                 $root . '/recursive/levelB1/levelB2/levelB3/testB3.php',
-                new URICollection([
+                new URIs([
                     $root . '/recursive/levelB1/levelB2/levelB3/testB3.php',
                 ]),
             ],
@@ -134,7 +134,7 @@ class FilesystemLocationTest extends \PHPUnit_Framework_TestCase
                 ['.php', '.html'],
                 ['testC'],
                 $root . '/recursive/php/testC.php',
-                new URICollection([
+                new URIs([
                     $root . '/recursive/php/testC.php',
                     $root . '/recursive/html/testC.html',
                 ]),
@@ -144,7 +144,7 @@ class FilesystemLocationTest extends \PHPUnit_Framework_TestCase
                 ['.php', '.html'],
                 ['testA.typeA'],
                 $root . '/recursive/combined/testA.typeA.php',
-                new URICollection([
+                new URIs([
                     $root . '/recursive/combined/testA.typeA.php',
                 ]),
             ],
@@ -153,7 +153,7 @@ class FilesystemLocationTest extends \PHPUnit_Framework_TestCase
                 ['.php', '.html'],
                 ['testA.typeB'],
                 $root . '/recursive/combined/testA.typeB.php',
-                new URICollection([
+                new URIs([
                     $root . '/recursive/combined/testA.typeB.php',
                 ]),
             ],
@@ -162,7 +162,7 @@ class FilesystemLocationTest extends \PHPUnit_Framework_TestCase
                 ['.php', '.html'],
                 ['testB.typeA'],
                 $root . '/recursive/combined/testB.typeA.php',
-                new URICollection([
+                new URIs([
                     $root . '/recursive/combined/testB.typeA.php',
                 ]),
             ],
@@ -171,7 +171,7 @@ class FilesystemLocationTest extends \PHPUnit_Framework_TestCase
                 ['.php', '.html'],
                 ['testB.typeB'],
                 $root . '/recursive/combined/testB.typeB.php',
-                new URICollection([
+                new URIs([
                     $root . '/recursive/combined/testB.typeB.php',
                 ]),
             ],

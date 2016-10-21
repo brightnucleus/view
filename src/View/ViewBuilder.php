@@ -14,14 +14,13 @@ namespace BrightNucleus\View;
 use BrightNucleus\Config\ConfigInterface;
 use BrightNucleus\Config\ConfigTrait;
 use BrightNucleus\Config\Exception\FailedToProcessConfigException;
-use BrightNucleus\View\Engine\EngineFinderInterface;
-use BrightNucleus\View\Engine\EngineInterface;
-use BrightNucleus\View\Engine\ViewFinderInterface;
-use BrightNucleus\View\Exception\FailedToInstantiateViewException;
-use BrightNucleus\View\Location\LocationCollection;
-use BrightNucleus\View\Location\LocationInterface;
-use BrightNucleus\View\Support\FinderInterface;
-use BrightNucleus\View\View\ViewInterface;
+use BrightNucleus\View\Engine\BaseEngineFinder;
+use BrightNucleus\View\Engine\Engine;
+use BrightNucleus\View\Engine\ViewFinder;
+use BrightNucleus\View\Exception\FailedToInstantiateView;
+use BrightNucleus\View\Location\Locations;
+use BrightNucleus\View\Location\Location;
+use BrightNucleus\View\Support\Finder;
 
 /**
  * Class ViewBuilder.
@@ -36,24 +35,24 @@ class ViewBuilder
 
     use ConfigTrait;
 
-    const ENGINE_FINDER_KEY = 'EngineFinder';
-    const VIEW_FINDER_KEY   = 'ViewFinder';
+    const ENGINE_FINDER_KEY = 'BaseEngineFinder';
+    const VIEW_FINDER_KEY   = 'BaseViewFinder';
 
     /**
-     * ViewFinder instance.
+     * BaseViewFinder instance.
      *
      * @since 0.1.0
      *
-     * @var ViewFinderInterface
+     * @var ViewFinder
      */
     protected $viewFinder;
 
     /**
-     * EngineFinder instance.
+     * BaseEngineFinder instance.
      *
      * @since 0.1.0
      *
-     * @var EngineFinderInterface
+     * @var BaseEngineFinder
      */
     protected $engineFinder;
 
@@ -62,7 +61,7 @@ class ViewBuilder
      *
      * @since 0.1.0
      *
-     * @var LocationCollection
+     * @var Locations
      */
     protected $locations;
 
@@ -71,21 +70,21 @@ class ViewBuilder
      *
      * @since 0.1.0
      *
-     * @param ConfigInterface            $config       Configuration settings.
-     * @param ViewFinderInterface|null   $viewFinder   ViewFinder instance.
-     * @param EngineFinderInterface|null $engineFinder EngineFinder instance.
+     * @param ConfigInterface       $config       Configuration settings.
+     * @param ViewFinder|null       $viewFinder   BaseViewFinder instance.
+     * @param BaseEngineFinder|null $engineFinder BaseEngineFinder instance.
      *
      * @throws FailedToProcessConfigException If the config could not be processed.
      */
     public function __construct(
         ConfigInterface $config,
-        ViewFinderInterface $viewFinder = null,
-        EngineFinderInterface $engineFinder = null
+        ViewFinder $viewFinder = null,
+        BaseEngineFinder $engineFinder = null
     ) {
         $this->processConfig($config);
         $this->viewFinder   = $viewFinder;
         $this->engineFinder = $engineFinder;
-        $this->locations    = new LocationCollection();
+        $this->locations    = new Locations();
     }
 
     /**
@@ -96,7 +95,7 @@ class ViewBuilder
      * @param string $view View identifier to create a view for.
      * @param mixed  $type Type of view to create.
      *
-     * @return ViewInterface Instance of the requested view.
+     * @return View Instance of the requested view.
      */
     public function create($view, $type = null)
     {
@@ -115,7 +114,7 @@ class ViewBuilder
      *
      * @param string|false $uri URI to get an engine for.
      *
-     * @return EngineInterface Instance of an engine that can deal with the given URI.
+     * @return Engine Instance of an engine that can deal with the given URI.
      */
     public function getEngine($uri)
     {
@@ -127,13 +126,13 @@ class ViewBuilder
      *
      * @since 0.1.0
      *
-     * @param string          $uri    URI to get a view for.
-     * @param EngineInterface $engine Engine to use for the view.
-     * @param mixed           $type   Type of view to get.
+     * @param string $uri    URI to get a view for.
+     * @param Engine $engine Engine to use for the view.
+     * @param mixed  $type   Type of view to get.
      *
-     * @return ViewInterface View that matches the given requirements.
+     * @return View View that matches the given requirements.
      */
-    public function getView($uri, EngineInterface $engine, $type = null)
+    public function getView($uri, Engine $engine, $type = null)
     {
         $view = (null === $type)
             ? $this->getViewFinder()->find([$uri], $engine)
@@ -143,11 +142,11 @@ class ViewBuilder
     }
 
     /**
-     * Get the ViewFinder instance.
+     * Get the BaseViewFinder instance.
      *
      * @since 0.1.0
      *
-     * @return ViewFinderInterface Instance of a ViewFinder.
+     * @return ViewFinder Instance of a BaseViewFinder.
      */
     public function getViewFinder()
     {
@@ -155,11 +154,11 @@ class ViewBuilder
     }
 
     /**
-     * Get the EngineFinder instance.
+     * Get the BaseEngineFinder instance.
      *
      * @since 0.1.0
      *
-     * @return EngineFinderInterface Instance of a EngineFinder.
+     * @return BaseEngineFinder Instance of a BaseEngineFinder.
      */
     public function getEngineFinder()
     {
@@ -167,13 +166,13 @@ class ViewBuilder
     }
 
     /**
-     * Add a location to scan with the ViewFinder.
+     * Add a location to scan with the BaseViewFinder.
      *
      * @since 0.1.0
      *
-     * @param LocationInterface $location Location to scan with the ViewFinder.
+     * @param Location $location Location to scan with the BaseViewFinder.
      */
-    public function addLocation(LocationInterface $location)
+    public function addLocation(Location $location)
     {
         $this->locations->add($location);
     }
@@ -183,7 +182,7 @@ class ViewBuilder
      *
      * @since 0.1.3
      *
-     * @return LocationCollection Collection of locations.
+     * @return Locations Collection of locations.
      */
     public function getLocations()
     {
@@ -202,7 +201,7 @@ class ViewBuilder
     public function scanLocations(array $criteria)
     {
         $uris = $this->locations->map(function ($location) use ($criteria) {
-            /** @var LocationInterface $location */
+            /** @var Location $location */
             return $location->getURI($criteria);
         })->filter(function ($uri) {
             return false !== $uri;
@@ -219,7 +218,7 @@ class ViewBuilder
      * @param mixed  $property Property to use.
      * @param string $key      Configuration key to use.
      *
-     * @return FinderInterface The requested finder instance.
+     * @return Finder The requested finder instance.
      */
     protected function getFinder(&$property, $key)
     {
@@ -236,14 +235,14 @@ class ViewBuilder
      *
      * @since 0.1.0
      *
-     * @param mixed                $type   Type of view that was requested.
-     * @param string               $uri    URI to get a view for.
-     * @param EngineInterface|null $engine Engine to use for the view.
+     * @param mixed       $type   Type of view that was requested.
+     * @param string      $uri    URI to get a view for.
+     * @param Engine|null $engine Engine to use for the view.
      *
-     * @return ViewInterface Resolved View object.
-     * @throws FailedToInstantiateViewException If the view type could not be resolved.
+     * @return View Resolved View object.
+     * @throws FailedToInstantiateView If the view type could not be resolved.
      */
-    protected function resolveType($type, $uri, EngineInterface $engine = null)
+    protected function resolveType($type, $uri, Engine $engine = null)
     {
         $configKey = [static::VIEW_FINDER_KEY, 'Views', $type];
 
@@ -260,8 +259,8 @@ class ViewBuilder
             $type = $type($uri, $engine);
         }
 
-        if ( ! $type instanceof ViewInterface) {
-            throw new FailedToInstantiateViewException(
+        if ( ! $type instanceof View) {
+            throw new FailedToInstantiateView(
                 sprintf(
                     _('Could not instantiate view "%s".'),
                     serialize($type)

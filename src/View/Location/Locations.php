@@ -11,18 +11,18 @@
 
 namespace BrightNucleus\View\Location;
 
-use BrightNucleus\View\Exception\InvalidLocationException;
+use BrightNucleus\View\Exception\InvalidLocation;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Class LocationCollection.
+ * Class Locations.
  *
  * @since   0.1.1
  *
  * @package BrightNucleus\View\Location
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-class LocationCollection extends ArrayCollection
+class Locations extends ArrayCollection
 {
 
     /**
@@ -48,16 +48,16 @@ class LocationCollection extends ArrayCollection
      *
      * @since 0.1.1
      *
-     * @param LocationInterface $location Location to check the existence of.
+     * @param Location $location Location to check the existence of.
      *
      * @return bool Whether the location is already registered or not.
      *
-     * @throws InvalidLocationException If the location is not valid.
+     * @throws InvalidLocation If the location is not valid.
      */
     public function hasLocation($location)
     {
-        if (! $location instanceof LocationInterface) {
-            throw new InvalidLocationException(
+        if ( ! $location instanceof Location) {
+            throw new InvalidLocation(
                 sprintf(
                     _('Invalid location to check existence for: "%s".'),
                     serialize($location)

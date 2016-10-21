@@ -11,7 +11,7 @@
 
 namespace BrightNucleus\View\Engine;
 
-use BrightNucleus\View\Exception\FailedToLoadViewException;
+use BrightNucleus\View\Exception\FailedToLoadView;
 use BrightNucleus\View\Support\URIHelper;
 use Exception;
 
@@ -52,13 +52,13 @@ class PHPEngine extends AbstractEngine
      * @param array  $context Context in which to render.
      *
      * @return callable Rendering callback.
-     * @throws FailedToLoadViewException If the View URI is not accessible or readable.
-     * @throws FailedToLoadViewException If the View URI could not be loaded.
+     * @throws FailedToLoadView If the View URI is not accessible or readable.
+     * @throws FailedToLoadView If the View URI could not be loaded.
      */
     public function getRenderCallback($uri, array $context = [])
     {
         if ( ! is_readable($uri)) {
-            throw new FailedToLoadViewException(
+            throw new FailedToLoadView(
                 sprintf(
                     _('The View URI "%1$s" is not accessible or readable.'),
                     $uri
@@ -82,7 +82,7 @@ class PHPEngine extends AbstractEngine
                     ob_end_clean();
                 }
 
-                throw new FailedToLoadViewException(
+                throw new FailedToLoadView(
                     sprintf(
                         _('Could not load the View URI "%1$s". Reason: "%2$s".'),
                         $uri,

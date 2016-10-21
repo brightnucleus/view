@@ -9,20 +9,19 @@
  * @copyright 2016 Alain Schlesser, Bright Nucleus
  */
 
-namespace BrightNucleus\View\View;
+namespace BrightNucleus\View;
 
 use BrightNucleus\View\Support\Findable;
-use BrightNucleus\View\ViewBuilder;
 
 /**
- * Interface ViewInterface.
+ * Interface View.
  *
  * @since   0.1.0
  *
  * @package BrightNucleus\View\View
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-interface ViewInterface extends Findable
+interface View extends Findable
 {
 
     /**
