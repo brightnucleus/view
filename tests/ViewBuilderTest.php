@@ -77,4 +77,25 @@ class ViewBuilderTest extends \PHPUnit_Framework_TestCase
         $html = $view->render(['title' => 'Dynamic Title']);
         $this->assertEquals('', $html);
     }
+
+    /** @dataProvider combinedPHPViewDataProvider */
+    public function testCombinedPHPView($view, $extensions, $regex)
+    {
+        $this->viewBuilder->addLocation(new FilesystemLocation(__DIR__ . '/fixtures', $extensions));
+        $view = $this->viewBuilder->create($view);
+        $this->assertInstanceOf('BrightNucleus\View\View\BaseView', $view);
+        $html = $view->render(['title' => 'Dynamic Title']);
+        $this->assertContains($regex, $html);
+    }
+
+    public function combinedPHPViewDataProvider()
+    {
+        return [
+            // string $view, array $extensions
+            ['testA.typeA', ['.php'], 'AA'],
+            ['testA.typeB', ['.php'], 'AB'],
+            ['testB.typeA', ['.php'], 'BA'],
+            ['testB.typeB', ['.php'], 'BB'],
+        ];
+    }
 }
