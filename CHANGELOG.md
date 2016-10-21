@@ -7,7 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - FilesystemLocation recursive tests added.
 
 ### Changed
-- FilesystemLocation uses Symfony Finder to traverse foders recursively.
+- FilesystemLocation uses Symfony Finder to traverse folders recursively.
 
 ## [0.1.2] - 2016-05-30
 ### Added
