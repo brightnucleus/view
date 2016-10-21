@@ -12,6 +12,7 @@
 namespace BrightNucleus\View\View;
 
 use BrightNucleus\View\Support\NullFindable;
+use BrightNucleus\View\ViewBuilder;
 
 /**
  * Class NullView.
@@ -50,8 +51,38 @@ class NullView implements ViewInterface, NullFindable
      */
     public function render(array $context = [], $echo = false)
     {
-        if (! $echo) {
+        if ( ! $echo) {
             return '';
         }
+    }
+
+    /**
+     * Render a partial view for a given URI.
+     *
+     * @since 0.1.4
+     *
+     * @param string      $view    View identifier to create a view for.
+     * @param array       $context Optional. The context in which to render the view.
+     * @param string|null $type    Type of view to create.
+     *
+     * @return string Rendered HTML content.
+     */
+    public function renderPart($view, array $context = [], $type = null)
+    {
+        return '';
+    }
+
+    /**
+     * Associate a view builder with this view.
+     *
+     * @since 0.1.4
+     *
+     * @param ViewBuilder $builder
+     *
+     * @return static
+     */
+    public function setBuilder(ViewBuilder $builder)
+    {
+        return $this;
     }
 }

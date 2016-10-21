@@ -11,6 +11,8 @@
 
 namespace BrightNucleus\View\Engine;
 
+use BrightNucleus\View\Support\Findable;
+
 /**
  * Interface EngineInterface.
  *
@@ -19,11 +21,11 @@ namespace BrightNucleus\View\Engine;
  * @package BrightNucleus\View\Engine
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-interface EngineInterface
+interface EngineInterface extends Findable
 {
 
     /**
-     * Render a given URI.
+     * Get the rendering callback for a given URI.
      *
      * @since 0.1.0
      *
@@ -32,5 +34,5 @@ interface EngineInterface
      *
      * @return string Rendered HTML.
      */
-    public function render($uri, array $context = []);
+    public function getRenderCallback($uri, array $context = []);
 }

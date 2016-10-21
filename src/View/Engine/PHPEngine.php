@@ -44,20 +44,20 @@ class PHPEngine extends AbstractEngine
     }
 
     /**
-     * Render a given URI.
+     * Get the rendering callback for a given URI.
      *
      * @since 0.1.0
      *
      * @param string $uri     URI to render.
      * @param array  $context Context in which to render.
      *
-     * @return string Rendered HTML.
+     * @return callable Rendering callback.
      * @throws FailedToLoadViewException If the View URI is not accessible or readable.
      * @throws FailedToLoadViewException If the View URI could not be loaded.
      */
-    public function render($uri, array $context = [])
+    public function getRenderCallback($uri, array $context = [])
     {
-        if (! is_readable($uri)) {
+        if ( ! is_readable($uri)) {
             throw new FailedToLoadViewException(
                 sprintf(
                     _('The View URI "%1$s" is not accessible or readable.'),
@@ -66,33 +66,36 @@ class PHPEngine extends AbstractEngine
             );
         }
 
-        extract($context, EXTR_SKIP);
+        $closure = function () use ($uri, $context) {
 
-        // Save current buffering level so we can backtrack in case of an error.
-        // This is needed because the view itself might also add an unknown number of output buffering levels.
-        $bufferLevel = ob_get_level();
-        ob_start();
+            // Save current buffering level so we can backtrack in case of an error.
+            // This is needed because the view itself might also add an unknown number of output buffering levels.
+            $bufferLevel = ob_get_level();
+            ob_start();
 
-        try {
-            include($uri);
-        } catch (Exception $exception) {
+            try {
+                include($uri);
+            } catch (Exception $exception) {
 
-            // Remove whatever levels were added up until now.
-            while (ob_get_level() > $bufferLevel) {
-                ob_end_clean();
+                // Remove whatever levels were added up until now.
+                while (ob_get_level() > $bufferLevel) {
+                    ob_end_clean();
+                }
+
+                throw new FailedToLoadViewException(
+                    sprintf(
+                        _('Could not load the View URI "%1$s". Reason: "%2$s".'),
+                        $uri,
+                        $exception->getMessage()
+                    ),
+                    $exception->getCode(),
+                    $exception
+                );
             }
 
-            throw new FailedToLoadViewException(
-                sprintf(
-                    _('Could not load the View URI "%1$s". Reason: "%2$s".'),
-                    $uri,
-                    $exception->getMessage()
-                ),
-                $exception->getCode(),
-                $exception
-            );
-        }
+            return ob_get_clean();
+        };
 
-        return ob_get_clean();
+        return $closure;
     }
 }

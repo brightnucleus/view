@@ -39,7 +39,7 @@ class NullEngine implements EngineInterface, NullFindable
     }
 
     /**
-     * Render a given URI.
+     * Get the rendering callback for a given URI.
      *
      * @since 0.1.0
      *
@@ -48,7 +48,7 @@ class NullEngine implements EngineInterface, NullFindable
      *
      * @return string Rendered HTML.
      */
-    public function render($uri, array $context = [])
+    public function getRenderCallback($uri, array $context = [])
     {
         return '';
     }

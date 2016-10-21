@@ -11,6 +11,9 @@
 
 namespace BrightNucleus\View\View;
 
+use BrightNucleus\View\Support\Findable;
+use BrightNucleus\View\ViewBuilder;
+
 /**
  * Interface ViewInterface.
  *
@@ -19,8 +22,19 @@ namespace BrightNucleus\View\View;
  * @package BrightNucleus\View\View
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-interface ViewInterface
+interface ViewInterface extends Findable
 {
+
+    /**
+     * Check whether the Findable can handle an individual criterion.
+     *
+     * @since 0.1.0
+     *
+     * @param mixed $criterion Criterion to check.
+     *
+     * @return bool Whether the Findable can handle the criterion.
+     */
+    public function canHandle($criterion);
 
     /**
      * Render the view.
@@ -32,4 +46,28 @@ interface ViewInterface
      * @return string Rendered HTML.
      */
     public function render(array $context = []);
+
+    /**
+     * Render a partial view for a given URI.
+     *
+     * @since 0.1.4
+     *
+     * @param string      $view    View identifier to create a view for.
+     * @param array       $context Optional. The context in which to render the view.
+     * @param string|null $type    Type of view to create.
+     *
+     * @return string Rendered HTML content.
+     */
+    public function renderPart($view, array $context = [], $type = null);
+
+    /**
+     * Associate a view builder with this view.
+     *
+     * @since 0.1.4
+     *
+     * @param ViewBuilder $builder
+     *
+     * @return static
+     */
+    public function setBuilder(ViewBuilder $builder);
 }

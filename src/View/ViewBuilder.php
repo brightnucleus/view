@@ -135,11 +135,11 @@ class ViewBuilder
      */
     public function getView($uri, EngineInterface $engine, $type = null)
     {
-        if (null === $type) {
-            return $this->getViewFinder()->find([$uri], $engine);
-        }
+        $view = (null === $type)
+            ? $this->getViewFinder()->find([$uri], $engine)
+            : $this->resolveType($type, $uri, $engine);
 
-        return $this->resolveType($type, $uri, $engine);
+        return $view->setBuilder($this);
     }
 
     /**
@@ -151,7 +151,7 @@ class ViewBuilder
      */
     public function getViewFinder()
     {
-        return $this->getFinder($this->viewFinder, static::VIEW_FINDER_KEY);
+        return $this->getFinder($viewFinder, static::VIEW_FINDER_KEY);
     }
 
     /**
@@ -224,8 +224,8 @@ class ViewBuilder
     protected function getFinder(&$property, $key)
     {
         if (null === $property) {
-            $engineFinderClass = $this->config->getKey($key, 'ClassName');
-            $property          = new $engineFinderClass($this->config->getSubConfig($key));
+            $finderClass = $this->config->getKey($key, 'ClassName');
+            $property    = new $finderClass($this->config->getSubConfig($key));
         }
 
         return $property;
@@ -260,7 +260,7 @@ class ViewBuilder
             $type = $type($uri, $engine);
         }
 
-        if (! $type instanceof ViewInterface) {
+        if ( ! $type instanceof ViewInterface) {
             throw new FailedToInstantiateViewException(
                 sprintf(
                     _('Could not instantiate view "%s".'),

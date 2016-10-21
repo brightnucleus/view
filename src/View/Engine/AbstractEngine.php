@@ -11,8 +11,6 @@
 
 namespace BrightNucleus\View\Engine;
 
-use BrightNucleus\View\Support\Findable;
-
 /**
  * Abstract class AbstractEngine.
  *
@@ -21,7 +19,7 @@ use BrightNucleus\View\Support\Findable;
  * @package BrightNucleus\View\Engine
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-abstract class AbstractEngine implements EngineInterface, Findable
+abstract class AbstractEngine implements EngineInterface
 {
 
 }

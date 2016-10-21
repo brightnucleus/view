@@ -11,8 +11,10 @@
 
 namespace BrightNucleus\View\View;
 
+use BrightNucleus\View;
 use BrightNucleus\View\Engine\EngineInterface;
-use BrightNucleus\View\Support\Findable;
+use BrightNucleus\View\ViewBuilder;
+use Closure;
 
 /**
  * Abstract class AbstractView.
@@ -22,7 +24,7 @@ use BrightNucleus\View\Support\Findable;
  * @package BrightNucleus\View\View
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-abstract class AbstractView implements ViewInterface, Findable
+abstract class AbstractView implements ViewInterface
 {
 
     /**
@@ -42,6 +44,15 @@ abstract class AbstractView implements ViewInterface, Findable
      * @var EngineInterface
      */
     protected $engine;
+
+    /**
+     * ViewBuilder instance.
+     *
+     * @since 0.1.4
+     *
+     * @var ViewBuilder
+     */
+    protected $builder;
 
     /**
      * Instantiate an AbstractView object.
@@ -69,11 +80,81 @@ abstract class AbstractView implements ViewInterface, Findable
      */
     public function render(array $context = [], $echo = false)
     {
-        $output = $this->engine->render($this->uri, $context);
-        if ($echo) {
-            echo $output;
-        } else {
-            return $output;
+        $this->initializeViewBuilder();
+        $this->assimilateContext($context);
+
+        $closure = Closure::bind(
+            $this->engine->getRenderCallback($this->uri, $context),
+            $this,
+            static::class
+        );
+
+        if ( ! $echo) {
+            return $closure();
+        }
+
+        echo $closure();
+    }
+
+    /**
+     * Render a partial view for a given URI.
+     *
+     * @since 0.1.4
+     *
+     * @param string      $view    View identifier to create a view for.
+     * @param array       $context Optional. The context in which to render the view.
+     * @param string|null $type    Type of view to create.
+     *
+     * @return string Rendered HTML content.
+     */
+    public function renderPart($view, array $context = [], $type = null)
+    {
+        $this->initializeViewBuilder();
+        $viewObject = $this->builder->create($view, $type);
+
+        return $viewObject->render($context);
+    }
+
+    /**
+     * Associate a view builder with this view.
+     *
+     * @since 0.1.4
+     *
+     * @param ViewBuilder $builder
+     *
+     * @return static
+     */
+    public function setBuilder(ViewBuilder $builder)
+    {
+        $this->builder = $builder;
+
+        return $this;
+    }
+
+    /**
+     * Initialize the view builder associated with the view.
+     *
+     * @since 0.1.4
+     */
+    protected function initializeViewBuilder()
+    {
+        if (null === $this->builder) {
+            $this->builder = View::getViewBuilder();
+        }
+    }
+
+    /**
+     * Assimilate the context to make it available as properties.
+     *
+     * @since 0.1.4
+     *
+     * @param array $context Context to assimilate.
+     */
+    protected function assimilateContext(array $context = [])
+    {
+        $this->context = $context;
+        foreach ($context as $key => $value) {
+            $this->$key = $value;
         }
     }
 }
