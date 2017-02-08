@@ -213,9 +213,9 @@ abstract class AbstractFinder implements Finder
      *
      * @return Findable Instantiated Findable.
      */
-    protected function instantiateFindableFromString($string, $arguments = null)
+    protected function instantiateFindableFromString($string, $arguments = [])
     {
-        return new $string(...$arguments);
+        return new $string(...(array)$arguments);
     }
 
     /**
@@ -228,8 +228,8 @@ abstract class AbstractFinder implements Finder
      *
      * @return Findable Instantiated Findable.
      */
-    protected function instantiateFindableFromCallable($callable, $arguments = null)
+    protected function instantiateFindableFromCallable($callable, $arguments = [])
     {
-        return $callable(...$arguments);
+        return $callable(...(array)$arguments);
     }
 }
