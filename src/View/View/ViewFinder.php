@@ -9,13 +9,14 @@
  * @copyright 2016 Alain Schlesser, Bright Nucleus
  */
 
-namespace BrightNucleus\View\Engine;
+namespace BrightNucleus\View\View;
 
+use BrightNucleus\View\Engine\Engine;
 use BrightNucleus\View\Support\Finder;
 use BrightNucleus\View\View;
 
 /**
- * Interface BaseViewFinder.
+ * Interface ViewFinder.
  *
  * @since   0.1.0
  *

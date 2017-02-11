@@ -17,7 +17,7 @@ use BrightNucleus\Config\ConfigTrait;
 use BrightNucleus\Config\Exception\FailedToProcessConfigException;
 use BrightNucleus\View\Engine\BaseEngineFinder;
 use BrightNucleus\View\Engine\Engine;
-use BrightNucleus\View\Engine\ViewFinder;
+use BrightNucleus\View\View\ViewFinder;
 use BrightNucleus\View\Exception\FailedToInstantiateView;
 use BrightNucleus\View\Location\Locations;
 use BrightNucleus\View\Location\Location;
