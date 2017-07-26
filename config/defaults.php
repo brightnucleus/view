@@ -12,19 +12,19 @@
 namespace BrightNucleus\View;
 
 $engineFinder = [
-    'ClassName'  => 'BrightNucleus\View\Engine\BaseEngineFinder',
+    'ClassName'  => Engine\BaseEngineFinder::class,
     'Engines'    => [
-        'PHPEngine' => 'BrightNucleus\View\Engine\PHPEngine',
+        'PHPEngine' => Engine\PHPEngine::class,
     ],
-    'NullObject' => 'BrightNucleus\View\Engine\NullEngine',
+    'NullObject' => Engine\NullEngine::class,
 ];
 
 $viewFinder = [
-    'ClassName'  => 'BrightNucleus\View\View\BaseViewFinder',
+    'ClassName'  => View\BaseViewFinder::class,
     'Views'      => [
-        'BaseView' => 'BrightNucleus\View\View\BaseView',
+        'BaseView' => View\BaseView::class,
     ],
-    'NullObject' => 'BrightNucleus\View\View\NullView',
+    'NullObject' => View\NullView::class,
 ];
 
 return [
