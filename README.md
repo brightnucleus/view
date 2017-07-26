@@ -157,19 +157,19 @@ Here's an example for providing a custom Config. In this case, we want to replac
 <?php namespace View\Example;
 
 $engineFinder = [
-    'ClassName'  => 'View\Example\AwesomeEngineFinder',
+    'ClassName'  => AwesomeEngineFinder::class,
     'Engines'    => [
-        'AwesomeEngine' => 'View\Example\AwesomeEngine',
+        'AwesomeEngine' => AwesomeEngine::class,
     ],
-    'NullObject' => 'View\Example\AwesomeNullEngine',
+    'NullObject' => AwesomeNullEngine::class,
 ];
 
 $viewFinder = [
-    'ClassName'  => 'View\Example\AwesomeViewFinder',
+    'ClassName'  => AwesomeViewFinder::class,
     'Views'      => [
-        'AwesomeView' => 'View\Example\AwesomeView',
+        'AwesomeView' => AwesomeView::class,
     ],
-    'NullObject' => 'View\Example\AwesomeNullView',
+    'NullObject' => AwesomeNullView::class,
 ];
 
 return [
