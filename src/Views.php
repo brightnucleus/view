@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Bright Nucleus View Component.
  *
@@ -12,6 +12,7 @@
 namespace BrightNucleus;
 
 use BrightNucleus\Config\ConfigInterface;
+use BrightNucleus\Config\Exception\FailedToProcessConfigException;
 use BrightNucleus\View\Location\Location;
 use BrightNucleus\View\View;
 use BrightNucleus\View\ViewBuilder;
@@ -42,6 +43,8 @@ class Views
      * @since 0.1.0
      *
      * @param Location $location Location to add.
+     *
+     * @throws FailedToProcessConfigException If the Config could not be processed.
      */
     public static function addLocation(Location $location)
     {
@@ -55,6 +58,7 @@ class Views
      * @since 0.1.0
      *
      * @return ViewBuilder
+     * @throws FailedToProcessConfigException If the Config could not be processed.
      */
     public static function getViewBuilder()
     {
@@ -73,6 +77,7 @@ class Views
      * @param ConfigInterface|null $config Optional. Configuration to pass into the ViewBuilder.
      *
      * @return ViewBuilder Instance of the ViewBuilder.
+     * @throws FailedToProcessConfigException If the Config could not be processed.
      */
     public static function instantiateViewBuilder(ConfigInterface $config = null)
     {
@@ -88,6 +93,7 @@ class Views
      * @param string|null $type Type of view to create.
      *
      * @return View Instance of the requested view.
+     * @throws FailedToProcessConfigException If the Config could not be processed.
      */
     public static function create($view, $type = null)
     {
@@ -106,6 +112,7 @@ class Views
      * @param string|null $type    Type of view to create.
      *
      * @return string Rendered HTML content.
+     * @throws FailedToProcessConfigException If the Config could not be processed.
      */
     public static function render($view, array $context = [], $type = null)
     {

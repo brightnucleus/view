@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Bright Nucleus View Component.
  *
@@ -36,5 +36,5 @@ interface ViewFinder extends Finder
      *
      * @return View View that was found.
      */
-    public function find(array $criteria, Engine $engine = null);
+    public function find(array $criteria, Engine $engine = null): View;
 }

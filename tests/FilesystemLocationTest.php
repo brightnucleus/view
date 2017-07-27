@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * FilesystemLocation Test.
  *
@@ -25,12 +25,20 @@ use BrightNucleus\View\Location\URIs;
 class FilesystemLocationTest extends \PHPUnit_Framework_TestCase
 {
 
-    /** @dataProvider fileSystemLocationDataProvider */
+    /**
+     * @dataProvider fileSystemLocationDataProvider
+     *
+     * @param string $path
+     * @param array  $extensions
+     * @param array  $criteria
+     * @param string $expectedFirstURI
+     * @param URIs   $expectedURIs
+     */
     public function testFilesystemLocation(
-        $path,
-        $extensions,
-        $criteria,
-        $expectedFirstURI,
+        string $path,
+        array $extensions,
+        array $criteria,
+        string $expectedFirstURI,
         URIs $expectedURIs
     ) {
         $location = new FilesystemLocation($path, $extensions);
@@ -40,7 +48,7 @@ class FilesystemLocationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedURIs, $allURIs);
     }
 
-    public function fileSystemLocationDataProvider()
+    public function fileSystemLocationDataProvider(): array
     {
         $root = __DIR__ . '/fixtures/locations';
 

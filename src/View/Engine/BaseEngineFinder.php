@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Bright Nucleus View Component.
  *
@@ -11,6 +11,7 @@
 
 namespace BrightNucleus\View\Engine;
 
+use BrightNucleus\View\Exception\FailedToInstantiateFindable;
 use BrightNucleus\View\Support\AbstractFinder;
 
 /**
@@ -21,7 +22,7 @@ use BrightNucleus\View\Support\AbstractFinder;
  * @package BrightNucleus\View\Engine
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-class BaseEngineFinder extends AbstractFinder
+class BaseEngineFinder extends AbstractFinder implements EngineFinder
 {
 
     /**
@@ -32,8 +33,9 @@ class BaseEngineFinder extends AbstractFinder
      * @param array $criteria Criteria to search for.
      *
      * @return Engine Result of the search.
+     * @throws FailedToInstantiateFindable If the Findable could not be instantiated.
      */
-    public function find(array $criteria)
+    public function find(array $criteria): Engine
     {
         $this->initializeFindables();
 
@@ -55,7 +57,7 @@ class BaseEngineFinder extends AbstractFinder
      *
      * @return string Config key use to define the Findables.
      */
-    protected function getFindablesConfigKey()
+    protected function getFindablesConfigKey(): string
     {
         return 'Engines';
     }

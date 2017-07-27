@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Bright Nucleus View Component.
  *
@@ -54,7 +54,7 @@ class FilesystemLocation implements Location
      * @param string                       $path       Path that this location points to.
      * @param Extensions|array|string|null $extensions Optional. Extensions that this location can accept.
      */
-    public function __construct($path, $extensions = null)
+    public function __construct(string $path, $extensions = null)
     {
         $this->path       = $path;
         $this->extensions = $this->validateExtensions($extensions);
@@ -87,7 +87,7 @@ class FilesystemLocation implements Location
      *
      * @return URIs URIs that match the criteria or an empty collection if none found.
      */
-    public function getURIs(array $criteria)
+    public function getURIs(array $criteria): URIs
     {
         $uris = new URIs();
 
@@ -96,8 +96,8 @@ class FilesystemLocation implements Location
 
             try {
                 $finder->files()
-                       ->name($this->getNamePattern($criteria, $extension))
-                       ->in($this->getPathPattern());
+                    ->name($this->getNamePattern($criteria, $extension))
+                    ->in($this->getPathPattern());
                 foreach ($finder as $file) {
                     /** @var SplFileInfo $file */
                     $uris->add($file->getPathname());
@@ -120,7 +120,7 @@ class FilesystemLocation implements Location
      *
      * @return string Name pattern to pass to the file finder.
      */
-    protected function getNamePattern(array $criteria, $extension)
+    protected function getNamePattern(array $criteria, string $extension): string
     {
         $names = [];
 
@@ -142,7 +142,7 @@ class FilesystemLocation implements Location
      *
      * @return string Path pattern to pass to the file finder.
      */
-    protected function getPathPattern()
+    protected function getPathPattern(): string
     {
         return $this->path;
     }
@@ -156,7 +156,7 @@ class FilesystemLocation implements Location
      *
      * @return string Generated regular expression pattern.
      */
-    protected function arrayToRegexPattern(array $array)
+    protected function arrayToRegexPattern(array $array): string
     {
         $array = array_map(function ($entry) {
             return preg_quote($entry);
@@ -174,13 +174,13 @@ class FilesystemLocation implements Location
      *
      * @return Extensions Validated extensions collection.
      */
-    protected function validateExtensions($extensions)
+    protected function validateExtensions($extensions): Extensions
     {
         if (empty($extensions)) {
             $extensions = new Extensions(['']);
         }
 
-        if ( ! $extensions instanceof Extensions) {
+        if (! $extensions instanceof Extensions) {
             $extensions = new Extensions((array)$extensions);
         }
 

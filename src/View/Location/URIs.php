@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Bright Nucleus View Component.
  *
@@ -32,9 +32,9 @@ class URIs extends ArrayCollection
      *
      * @param Finder $finder The Finder instance to create the URI collection from.
      *
-     * @return static New URIs instance.
+     * @return URIs New URIs instance.
      */
-    public static function fromFinder(Finder $finder)
+    public static function fromFinder(Finder $finder): URIs
     {
         $elements = array_keys(iterator_to_array($finder));
 

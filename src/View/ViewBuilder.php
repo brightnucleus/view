@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Bright Nucleus View Component.
  *
@@ -17,11 +17,11 @@ use BrightNucleus\Config\ConfigTrait;
 use BrightNucleus\Config\Exception\FailedToProcessConfigException;
 use BrightNucleus\View\Engine\BaseEngineFinder;
 use BrightNucleus\View\Engine\Engine;
+use BrightNucleus\View\Engine\EngineFinder;
 use BrightNucleus\View\View\ViewFinder;
 use BrightNucleus\View\Exception\FailedToInstantiateView;
 use BrightNucleus\View\Location\Locations;
 use BrightNucleus\View\Location\Location;
-use BrightNucleus\View\Support\Finder;
 
 /**
  * Class ViewBuilder.
@@ -37,7 +37,7 @@ class ViewBuilder
     use ConfigTrait;
 
     const ENGINE_FINDER_KEY = 'EngineFinder';
-    const VIEW_FINDER_KEY   = 'ViewFinder';
+    const VIEW_FINDER_KEY = 'ViewFinder';
 
     /**
      * BaseViewFinder instance.
@@ -97,13 +97,16 @@ class ViewBuilder
      * @param mixed  $type Type of view to create.
      *
      * @return View Instance of the requested view.
+     * @throws FailedToInstantiateView If the view could not be instantiated.
      */
-    public function create($view, $type = null)
+    public function create(string $view, $type = null): View
     {
         $uri    = $this->scanLocations([$view]);
-        $engine = $this->getEngine($uri);
+        $engine = $uri
+            ? $this->getEngine($uri)
+            : false;
 
-        return $uri
+        return ($uri && $engine)
             ? $this->getView($uri, $engine, $type)
             : $this->getViewFinder()->getNullObject();
     }
@@ -113,11 +116,11 @@ class ViewBuilder
      *
      * @since 0.1.0
      *
-     * @param string|false $uri URI to get an engine for.
+     * @param string $uri URI to get an engine for.
      *
      * @return Engine Instance of an engine that can deal with the given URI.
      */
-    public function getEngine($uri)
+    public function getEngine(string $uri): Engine
     {
         return $this->getEngineFinder()->find([$uri]);
     }
@@ -132,8 +135,9 @@ class ViewBuilder
      * @param mixed  $type   Type of view to get.
      *
      * @return View View that matches the given requirements.
+     * @throws FailedToInstantiateView If the view could not be instantiated.
      */
-    public function getView($uri, Engine $engine, $type = null)
+    public function getView(string $uri, Engine $engine, $type = null): View
     {
         $view = (null === $type)
             ? $this->getViewFinder()->find([$uri], $engine)
@@ -143,25 +147,25 @@ class ViewBuilder
     }
 
     /**
-     * Get the BaseViewFinder instance.
+     * Get the ViewFinder instance.
      *
      * @since 0.1.0
      *
      * @return ViewFinder Instance of a BaseViewFinder.
      */
-    public function getViewFinder()
+    public function getViewFinder(): ViewFinder
     {
         return $this->getFinder($viewFinder, static::VIEW_FINDER_KEY);
     }
 
     /**
-     * Get the BaseEngineFinder instance.
+     * Get the EngineFinder instance.
      *
      * @since 0.1.0
      *
-     * @return BaseEngineFinder Instance of a BaseEngineFinder.
+     * @return EngineFinder Instance of a BaseEngineFinder.
      */
-    public function getEngineFinder()
+    public function getEngineFinder(): EngineFinder
     {
         return $this->getFinder($this->engineFinder, static::ENGINE_FINDER_KEY);
     }
@@ -219,7 +223,7 @@ class ViewBuilder
      * @param mixed  $property Property to use.
      * @param string $key      Configuration key to use.
      *
-     * @return Finder The requested finder instance.
+     * @return ViewFinder|EngineFinder The requested finder instance.
      */
     protected function getFinder(&$property, $key)
     {
@@ -243,7 +247,7 @@ class ViewBuilder
      * @return View Resolved View object.
      * @throws FailedToInstantiateView If the view type could not be resolved.
      */
-    protected function resolveType($type, $uri, Engine $engine = null)
+    protected function resolveType($type, string $uri, Engine $engine = null): View
     {
         $configKey = [static::VIEW_FINDER_KEY, 'Views', $type];
 
@@ -260,7 +264,7 @@ class ViewBuilder
             $type = $type($uri, $engine);
         }
 
-        if ( ! $type instanceof View) {
+        if (! $type instanceof View) {
             throw new FailedToInstantiateView(
                 sprintf(
                     _('Could not instantiate view "%s".'),
@@ -277,11 +281,13 @@ class ViewBuilder
      *
      * @since 0.2.0
      *
+     * @param ConfigInterface|array $config Config to merge with defaults.
+     *
      * @return ConfigInterface Configuration passed in through the constructor.
      */
-    protected function getConfig($config = null)
+    protected function getConfig($config = []): ConfigInterface
     {
-        $defaults = ConfigFactory::create(__DIR__ . '/../../config/defaults.php', $config);
+        $defaults = ConfigFactory::create(dirname(__DIR__, 2) . '/config/defaults.php', $config);
         $config   = $config
             ? ConfigFactory::createFromArray(array_merge_recursive($defaults->getArrayCopy(), $config->getArrayCopy()))
             : $defaults;

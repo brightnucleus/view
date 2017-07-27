@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Bright Nucleus View Component.
  *
@@ -34,7 +34,7 @@ class Extensions extends ArrayCollection
      *
      * @return bool
      */
-    public static function hasExtension($uri, $extension)
+    public static function hasExtension(string $uri, string $extension): bool
     {
         $uriLength       = mb_strlen($uri);
         $extensionLength = mb_strlen($extension);

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Bright Nucleus View Component.
  *
@@ -38,7 +38,7 @@ interface Finder
      *
      * @since 0.1.1
      *
-     * @return NullObject NullObject for the current Finder.
+     * @return NullFindable NullObject for the current Finder.
      */
-    public function getNullObject();
+    public function getNullObject(): NullFindable;
 }

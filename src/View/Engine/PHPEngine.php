@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Bright Nucleus View Component.
  *
@@ -37,10 +37,10 @@ class PHPEngine extends AbstractEngine
      *
      * @return bool Whether the Findable can handle the criterion.
      */
-    public function canHandle($criterion)
+    public function canHandle($criterion): bool
     {
         return URIHelper::hasExtension($criterion, static::PHP_EXTENSION)
-               && is_readable($criterion);
+            && is_readable($criterion);
     }
 
     /**
@@ -55,9 +55,9 @@ class PHPEngine extends AbstractEngine
      * @throws FailedToLoadView If the View URI is not accessible or readable.
      * @throws FailedToLoadView If the View URI could not be loaded.
      */
-    public function getRenderCallback($uri, array $context = [])
+    public function getRenderCallback(string $uri, array $context = []): callable
     {
-        if ( ! is_readable($uri)) {
+        if (! is_readable($uri)) {
             throw new FailedToLoadView(
                 sprintf(
                     _('The View URI "%1$s" is not accessible or readable.'),
@@ -74,9 +74,8 @@ class PHPEngine extends AbstractEngine
             ob_start();
 
             try {
-                include($uri);
+                include $uri;
             } catch (Exception $exception) {
-
                 // Remove whatever levels were added up until now.
                 while (ob_get_level() > $bufferLevel) {
                     ob_end_clean();

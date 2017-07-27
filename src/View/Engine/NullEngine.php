@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Bright Nucleus View Component.
  *
@@ -33,7 +33,7 @@ class NullEngine implements Engine, NullFindable
      *
      * @return bool Whether the Findable can handle the criterion.
      */
-    public function canHandle($criterion)
+    public function canHandle($criterion): bool
     {
         return true;
     }
@@ -46,9 +46,9 @@ class NullEngine implements Engine, NullFindable
      * @param string $uri     URI to render.
      * @param array  $context Context in which to render.
      *
-     * @return string Rendered HTML.
+     * @return callable Rendering callback.
      */
-    public function getRenderCallback($uri, array $context = [])
+    public function getRenderCallback(string $uri, array $context = []): callable
     {
         return '';
     }

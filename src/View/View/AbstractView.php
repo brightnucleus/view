@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Bright Nucleus View Component.
  *
@@ -11,6 +11,8 @@
 
 namespace BrightNucleus\View\View;
 
+use BrightNucleus\Config\Exception\FailedToProcessConfigException;
+use BrightNucleus\View\Exception\FailedToInstantiateView;
 use BrightNucleus\View\View;
 use BrightNucleus\View\Engine\Engine;
 use BrightNucleus\View\ViewBuilder;
@@ -56,6 +58,15 @@ abstract class AbstractView implements View
     protected $builder;
 
     /**
+     * The context with which the view will be rendered.
+     *
+     * @since 0.4.0
+     *
+     * @var array
+     */
+    protected $context = [];
+
+    /**
      * Instantiate an AbstractView object.
      *
      * @since 0.1.0
@@ -63,7 +74,7 @@ abstract class AbstractView implements View
      * @param string $uri    URI for the view.
      * @param Engine $engine Engine to use for the view.
      */
-    public function __construct($uri, Engine $engine)
+    public function __construct(string $uri, Engine $engine)
     {
         $this->uri    = $uri;
         $this->engine = $engine;
@@ -77,9 +88,10 @@ abstract class AbstractView implements View
      * @param array $context Optional. The context in which to render the view.
      * @param bool  $echo    Optional. Whether to echo the output immediately. Defaults to false.
      *
-     * @return string|void Rendered HTML or nothing, depending on $echo argument.
+     * @return string Rendered HTML.
+     * @throws FailedToProcessConfigException If the Config could not be processed.
      */
-    public function render(array $context = [], $echo = false)
+    public function render(array $context = [], bool $echo = false): string
     {
         $this->initializeViewBuilder();
         $this->assimilateContext($context);
@@ -90,11 +102,13 @@ abstract class AbstractView implements View
             static::class
         );
 
-        if ( ! $echo) {
-            return $closure();
+        $output = $closure();
+
+        if ($echo) {
+            echo $output;
         }
 
-        echo $closure();
+        return $output;
     }
 
     /**
@@ -107,8 +121,10 @@ abstract class AbstractView implements View
      * @param string|null $type    Type of view to create.
      *
      * @return string Rendered HTML content.
+     * @throws FailedToProcessConfigException If the Config could not be processed.
+     * @throws FailedToInstantiateView If the View could not be instantiated.
      */
-    public function renderPart($view, array $context = null, $type = null)
+    public function renderPart(string $view, array $context = null, $type = null): string
     {
         if (null === $context) {
             $context = $this->context;
@@ -127,9 +143,9 @@ abstract class AbstractView implements View
      *
      * @param ViewBuilder $builder
      *
-     * @return static
+     * @return View
      */
-    public function setBuilder(ViewBuilder $builder)
+    public function setBuilder(ViewBuilder $builder): View
     {
         $this->builder = $builder;
 
@@ -140,6 +156,8 @@ abstract class AbstractView implements View
      * Initialize the view builder associated with the view.
      *
      * @since 0.2.0
+     *
+     * @throws FailedToProcessConfigException If the Config could not be processed.
      */
     protected function initializeViewBuilder()
     {

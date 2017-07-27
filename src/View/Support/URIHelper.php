@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Bright Nucleus View Component.
  *
@@ -32,7 +32,7 @@ class URIHelper
      *
      * @return bool
      */
-    public static function hasExtension($uri, $extension)
+    public static function hasExtension(string $uri, string $extension): bool
     {
         $uriLength       = mb_strlen($uri);
         $extensionLength = mb_strlen($extension);
@@ -52,7 +52,7 @@ class URIHelper
      *
      * @return string Filename without path.
      */
-    public static function getFilename($uri)
+    public static function getFilename(string $uri): String
     {
         return basename($uri);
     }

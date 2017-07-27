@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * ViewBuilder Test.
  *
@@ -30,10 +30,10 @@ class TestEngine extends AbstractEngine
      *
      * @return bool Whether the Findable can handle the criterion.
      */
-    public function canHandle($criterion)
+    public function canHandle($criterion): bool
     {
         return URIHelper::hasExtension($criterion, static::TEST_EXTENSION)
-               && is_readable($criterion);
+            && is_readable($criterion);
     }
 
     /**
@@ -48,9 +48,9 @@ class TestEngine extends AbstractEngine
      * @throws FailedToLoadView If the View URI is not accessible or readable.
      * @throws FailedToLoadView If the View URI could not be loaded.
      */
-    public function getRenderCallback($uri, array $context = [])
+    public function getRenderCallback(string $uri, array $context = []): callable
     {
-        if ( ! is_readable($uri)) {
+        if (! is_readable($uri)) {
             throw new FailedToLoadView(
                 sprintf(
                     _('The View URI "%1$s" is not accessible or readable.'),
@@ -66,7 +66,6 @@ class TestEngine extends AbstractEngine
 
                 return str_replace('{{placeholder}}', $context['testdata'], $template);
             } catch (Exception $exception) {
-
                 throw new FailedToLoadView(
                     sprintf(
                         _('Could not load the View URI "%1$s". Reason: "%2$s".'),

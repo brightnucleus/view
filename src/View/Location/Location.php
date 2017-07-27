@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Bright Nucleus View Component.
  *
@@ -42,5 +42,5 @@ interface Location
      *
      * @return URIs Collection of URIs that matches the criteria or an empty collection if none found.
      */
-    public function getURIs(array $criteria);
+    public function getURIs(array $criteria): URIs;
 }

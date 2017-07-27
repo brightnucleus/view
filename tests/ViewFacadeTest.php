@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * View Test.
  *
@@ -25,8 +25,13 @@ use BrightNucleus\View\Location\FilesystemLocation;
 class ViewFacadeTest extends \PHPUnit_Framework_TestCase
 {
 
-    /** @dataProvider PHPViewDataProvider */
-    public function testPHPView($view, $extensions)
+    /**
+     * @dataProvider PHPViewDataProvider
+     *
+     * @param string     $view
+     * @param array|null $extensions
+     */
+    public function testPHPView(string $view, $extensions)
     {
         Views::addLocation(new FilesystemLocation(__DIR__ . '/fixtures', $extensions));
         $view = Views::create($view);
@@ -35,15 +40,20 @@ class ViewFacadeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(file_get_contents(__DIR__ . '/fixtures/php-view-result.html'), $html);
     }
 
-    /** @dataProvider PHPViewDataProvider */
-    public function testPHPViewDirectRender($view, $extensions)
+    /**
+     * @dataProvider PHPViewDataProvider
+     *
+     * @param string     $view
+     * @param array|null $extensions
+     */
+    public function testPHPViewDirectRender(string $view, $extensions)
     {
         Views::addLocation(new FilesystemLocation(__DIR__ . '/fixtures', $extensions));
         $html = Views::render($view, ['title' => 'Dynamic Title']);
         $this->assertEquals(file_get_contents(__DIR__ . '/fixtures/php-view-result.html'), $html);
     }
 
-    public function PHPViewDataProvider()
+    public function PHPViewDataProvider(): array
     {
         return [
             // string $view, array $extensions

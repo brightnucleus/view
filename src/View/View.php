@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Bright Nucleus View Component.
  *
@@ -33,7 +33,7 @@ interface View extends Findable
      *
      * @return bool Whether the Findable can handle the criterion.
      */
-    public function canHandle($criterion);
+    public function canHandle($criterion): bool;
 
     /**
      * Render the view.
@@ -44,7 +44,7 @@ interface View extends Findable
      *
      * @return string Rendered HTML.
      */
-    public function render(array $context = []);
+    public function render(array $context = []): string;
 
     /**
      * Render a partial view for a given URI.
@@ -57,7 +57,7 @@ interface View extends Findable
      *
      * @return string Rendered HTML content.
      */
-    public function renderPart($view, array $context = [], $type = null);
+    public function renderPart(string $view, array $context = [], $type = null): string;
 
     /**
      * Associate a view builder with this view.
@@ -66,7 +66,7 @@ interface View extends Findable
      *
      * @param ViewBuilder $builder
      *
-     * @return static
+     * @return View
      */
-    public function setBuilder(ViewBuilder $builder);
+    public function setBuilder(ViewBuilder $builder): View;
 }

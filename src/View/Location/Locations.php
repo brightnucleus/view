@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Bright Nucleus View Component.
  *
@@ -11,7 +11,6 @@
 
 namespace BrightNucleus\View\Location;
 
-use BrightNucleus\View\Exception\InvalidLocation;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -30,9 +29,9 @@ class Locations extends ArrayCollection
      *
      * @param mixed $location The location to add.
      *
-     * @return boolean Whether the location was added or not.
+     * @return bool Whether the location was added or not.
      */
-    public function add($location)
+    public function add($location): bool
     {
         if ($this->hasLocation($location)) {
             return false;
@@ -51,20 +50,9 @@ class Locations extends ArrayCollection
      * @param Location $location Location to check the existence of.
      *
      * @return bool Whether the location is already registered or not.
-     *
-     * @throws InvalidLocation If the location is not valid.
      */
-    public function hasLocation($location)
+    public function hasLocation(Location $location): bool
     {
-        if ( ! $location instanceof Location) {
-            throw new InvalidLocation(
-                sprintf(
-                    _('Invalid location to check existence for: "%s".'),
-                    serialize($location)
-                )
-            );
-        }
-
         return $this->exists(function ($key, $element) use ($location) {
             return $location == $element;
         });

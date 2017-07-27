@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Bright Nucleus View Component.
  *
@@ -73,7 +73,8 @@ abstract class AbstractFinder implements Finder
      */
     public function registerFindables(ConfigInterface $config)
     {
-        foreach ($config->getKey($this->getFindablesConfigKey()) as $findableKey => $findableObject) {
+        $findables = (array) $config->getKey($this->getFindablesConfigKey());
+        foreach ($findables as $findableKey => $findableObject) {
             $this->findables->set($findableKey, $findableObject);
         }
     }
@@ -96,8 +97,9 @@ abstract class AbstractFinder implements Finder
      * @since 0.1.1
      *
      * @return NullFindable NullObject for the current Finder.
+     * @throws FailedToInstantiateFindable If the Findable could not be instantiated.
      */
-    public function getNullObject()
+    public function getNullObject(): NullFindable
     {
         $this->initializeNullObject();
 
@@ -111,7 +113,7 @@ abstract class AbstractFinder implements Finder
      *
      * @return string Config key use to define the Findables.
      */
-    protected function getFindablesConfigKey()
+    protected function getFindablesConfigKey(): string
     {
         return 'Findables';
     }
@@ -123,7 +125,7 @@ abstract class AbstractFinder implements Finder
      *
      * @return string Config key use to define the NullObject.
      */
-    protected function getNullObjectConfigKey()
+    protected function getNullObjectConfigKey(): string
     {
         return 'NullObject';
     }
@@ -134,6 +136,8 @@ abstract class AbstractFinder implements Finder
      * @since 0.1.1
      *
      * @param mixed $arguments Optional. Arguments to use.
+     *
+     * @throws FailedToInstantiateFindable If the Findable could not be instantiated.
      */
     protected function initializeNullObject($arguments = null)
     {
@@ -147,6 +151,7 @@ abstract class AbstractFinder implements Finder
      *
      * @since 0.1.0
      *
+     * @throws FailedToInstantiateFindable If the Findable could not be instantiated.
      */
     protected function initializeFindables($arguments = null)
     {
@@ -164,8 +169,9 @@ abstract class AbstractFinder implements Finder
      * @param mixed $arguments Optional. Arguments to use.
      *
      * @return Findable Instantiated findable.
+     * @throws FailedToInstantiateFindable If the Findable could not be instantiated.
      */
-    protected function initializeFindable($findable, $arguments = null)
+    protected function initializeFindable($findable, $arguments = null): Findable
     {
         return $this->maybeInstantiateFindable($findable, $arguments);
     }
@@ -181,7 +187,7 @@ abstract class AbstractFinder implements Finder
      * @return Findable Instantiated findable.
      * @throws FailedToInstantiateFindable If the findable could not be instantiated.
      */
-    protected function maybeInstantiateFindable($findable, $arguments = null)
+    protected function maybeInstantiateFindable($findable, $arguments = null): Findable
     {
         if (is_string($findable)) {
             $findable = $this->instantiateFindableFromString($findable, $arguments);
@@ -191,7 +197,7 @@ abstract class AbstractFinder implements Finder
             $findable = $this->instantiateFindableFromCallable($findable, $arguments);
         }
 
-        if ( ! $findable instanceof Findable) {
+        if (! $findable instanceof Findable) {
             throw new FailedToInstantiateFindable(
                 sprintf(
                     _('Could not instantiate Findable "%s".'),
@@ -213,7 +219,7 @@ abstract class AbstractFinder implements Finder
      *
      * @return Findable Instantiated Findable.
      */
-    protected function instantiateFindableFromString($string, $arguments = [])
+    protected function instantiateFindableFromString(string $string, $arguments = []): Findable
     {
         return new $string(...(array)$arguments);
     }
@@ -228,7 +234,7 @@ abstract class AbstractFinder implements Finder
      *
      * @return Findable Instantiated Findable.
      */
-    protected function instantiateFindableFromCallable($callable, $arguments = [])
+    protected function instantiateFindableFromCallable(callable $callable, $arguments = []): Findable
     {
         return $callable(...(array)$arguments);
     }

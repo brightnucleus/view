@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Bright Nucleus View Component.
  *
@@ -35,7 +35,7 @@ class NullView implements View, NullFindable
      *
      * @return bool Whether the Findable can handle the criterion.
      */
-    public function canHandle($criterion)
+    public function canHandle($criterion): bool
     {
         return true;
     }
@@ -48,13 +48,11 @@ class NullView implements View, NullFindable
      * @param array $context Optional. The context in which to render the view.
      * @param bool  $echo    Optional. Whether to echo the output immediately. Defaults to false.
      *
-     * @return string|void Rendered HTML or nothing, depending on $echo argument.
+     * @return string Rendered HTML.
      */
-    public function render(array $context = [], $echo = false)
+    public function render(array $context = [], bool $echo = false): string
     {
-        if ( ! $echo) {
-            return '';
-        }
+        return '';
     }
 
     /**
@@ -68,7 +66,7 @@ class NullView implements View, NullFindable
      *
      * @return string Rendered HTML content.
      */
-    public function renderPart($view, array $context = [], $type = null)
+    public function renderPart(string $view, array $context = [], $type = null): string
     {
         return '';
     }
@@ -80,9 +78,9 @@ class NullView implements View, NullFindable
      *
      * @param ViewBuilder $builder
      *
-     * @return static
+     * @return View
      */
-    public function setBuilder(ViewBuilder $builder)
+    public function setBuilder(ViewBuilder $builder): View
     {
         return $this;
     }

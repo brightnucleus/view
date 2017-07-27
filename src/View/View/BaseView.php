@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Bright Nucleus View Component.
  *
@@ -31,7 +31,7 @@ class BaseView extends AbstractView
      *
      * @return bool Whether the Findable can handle the criterion.
      */
-    public function canHandle($criterion)
+    public function canHandle($criterion): bool
     {
         return true;
     }

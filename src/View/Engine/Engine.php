@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Bright Nucleus View Component.
  *
@@ -32,7 +32,7 @@ interface Engine extends Findable
      * @param string $uri     URI to render.
      * @param array  $context Context in which to render.
      *
-     * @return string Rendered HTML.
+     * @return callable Render callback.
      */
-    public function getRenderCallback($uri, array $context = []);
+    public function getRenderCallback(string $uri, array $context = []): callable;
 }
