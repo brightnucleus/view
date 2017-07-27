@@ -112,7 +112,7 @@ abstract class AbstractView implements View
     }
 
     /**
-     * Render a partial view for a given URI.
+     * Render a partial view (or section) for a given URI.
      *
      * @since 0.2.0
      *
@@ -124,7 +124,7 @@ abstract class AbstractView implements View
      * @throws FailedToProcessConfigException If the Config could not be processed.
      * @throws FailedToInstantiateView If the View could not be instantiated.
      */
-    public function renderPart(string $view, array $context = null, $type = null): string
+    public function section(string $view, array $context = null, $type = null): string
     {
         if (null === $context) {
             $context = $this->context;

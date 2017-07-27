@@ -56,7 +56,7 @@ class NullView implements View, NullFindable
     }
 
     /**
-     * Render a partial view for a given URI.
+     * Render a partial view (or section) for a given URI.
      *
      * @since 0.2.0
      *
@@ -66,7 +66,7 @@ class NullView implements View, NullFindable
      *
      * @return string Rendered HTML content.
      */
-    public function renderPart(string $view, array $context = [], $type = null): string
+    public function section(string $view, array $context = [], $type = null): string
     {
         return '';
     }

@@ -47,7 +47,7 @@ interface View extends Findable
     public function render(array $context = []): string;
 
     /**
-     * Render a partial view for a given URI.
+     * Render a partial view (or section) for a given URI.
      *
      * @since 0.2.0
      *
@@ -57,7 +57,7 @@ interface View extends Findable
      *
      * @return string Rendered HTML content.
      */
-    public function renderPart(string $view, array $context = [], $type = null): string;
+    public function section(string $view, array $context = [], $type = null): string;
 
     /**
      * Associate a view builder with this view.
