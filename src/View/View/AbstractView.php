@@ -33,38 +33,46 @@ abstract class AbstractView implements View
     /**
      * URI of the view.
      *
+     * The underscores are used to prevent accidental use of these properties from within the rendering closure.
+     *
      * @since 0.1.0
      *
      * @var string
      */
-    protected $uri;
+    protected $_uri_;
 
     /**
      * Engine to use for the view.
+     *
+     * The underscores are used to prevent accidental use of these properties from within the rendering closure.
      *
      * @since 0.1.0
      *
      * @var Engine
      */
-    protected $engine;
+    protected $_engine_;
 
     /**
      * ViewBuilder instance.
+     *
+     * The underscores are used to prevent accidental use of these properties from within the rendering closure.
      *
      * @since 0.2.0
      *
      * @var ViewBuilder
      */
-    protected $builder;
+    protected $_builder_;
 
     /**
      * The context with which the view will be rendered.
+     *
+     * The underscores are used to prevent accidental use of these properties from within the rendering closure.
      *
      * @since 0.4.0
      *
      * @var array
      */
-    protected $context = [];
+    protected $_context_ = [];
 
     /**
      * Instantiate an AbstractView object.
@@ -76,8 +84,8 @@ abstract class AbstractView implements View
      */
     public function __construct(string $uri, Engine $engine)
     {
-        $this->uri    = $uri;
-        $this->engine = $engine;
+        $this->_uri_    = $uri;
+        $this->_engine_ = $engine;
     }
 
     /**
@@ -97,7 +105,7 @@ abstract class AbstractView implements View
         $this->assimilateContext($context);
 
         $closure = Closure::bind(
-            $this->engine->getRenderCallback($this->uri, $context),
+            $this->_engine_->getRenderCallback($this->_uri_, $context),
             $this,
             static::class
         );
@@ -127,13 +135,25 @@ abstract class AbstractView implements View
     public function section(string $view, array $context = null, $type = null): string
     {
         if (null === $context) {
-            $context = $this->context;
+            $context = $this->_context_;
         }
 
         $this->initializeViewBuilder();
-        $viewObject = $this->builder->create($view, $type);
+        $viewObject = $this->_builder_->create($view, $type);
 
         return $viewObject->render($context);
+    }
+
+    /**
+     * Get the entire array of contextual data.
+     *
+     * @since 0.4.0
+     *
+     * @return array Array of contextual data.
+     */
+    public function getContext(): array
+    {
+        return $this->_context_;
     }
 
     /**
@@ -147,7 +167,7 @@ abstract class AbstractView implements View
      */
     public function setBuilder(ViewBuilder $builder): View
     {
-        $this->builder = $builder;
+        $this->_builder_ = $builder;
 
         return $this;
     }
@@ -161,8 +181,8 @@ abstract class AbstractView implements View
      */
     protected function initializeViewBuilder()
     {
-        if (null === $this->builder) {
-            $this->builder = Views::getViewBuilder();
+        if (null === $this->_builder_) {
+            $this->_builder_ = Views::getViewBuilder();
         }
     }
 
@@ -175,7 +195,7 @@ abstract class AbstractView implements View
      */
     protected function assimilateContext(array $context = [])
     {
-        $this->context = $context;
+        $this->_context_ = $context;
         foreach ($context as $key => $value) {
             $this->$key = $value;
         }

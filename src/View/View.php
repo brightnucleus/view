@@ -60,6 +60,15 @@ interface View extends Findable
     public function section(string $view, array $context = [], $type = null): string;
 
     /**
+     * Get the entire array of contextual data.
+     *
+     * @since 0.4.0
+     *
+     * @return array Array of contextual data.
+     */
+    public function getContext(): array;
+
+    /**
      * Associate a view builder with this view.
      *
      * @since 0.2.0
