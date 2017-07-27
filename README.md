@@ -156,20 +156,23 @@ Here's an example for providing a custom Config. In this case, we want to replac
 ```PHP
 <?php namespace View\Example;
 
+use BrightNucleus\View\Engine\EngineFinder;
+use BrightNucleus\View\View\ViewFinder;
+
 $engineFinder = [
-    'ClassName'  => AwesomeEngineFinder::class,
-    'Engines'    => [
+    EngineFinder::CLASS_NAME_KEY => AwesomeEngineFinder::class,
+    EngineFinder::ENGINES_KEY    => [
         'AwesomeEngine' => AwesomeEngine::class,
     ],
-    'NullObject' => AwesomeNullEngine::class,
+    EngineFinder::NULL_OBJECT    => AwesomeNullEngine::class,
 ];
 
 $viewFinder = [
-    'ClassName'  => AwesomeViewFinder::class,
-    'Views'      => [
+    ViewFinder::CLASS_NAME_KEY => AwesomeViewFinder::class,
+    ViewFinder::VIEWS_KEY      => [
         'AwesomeView' => AwesomeView::class,
     ],
-    'NullObject' => AwesomeNullView::class,
+    ViewFinder::NULL_OBJECT    => AwesomeNullView::class,
 ];
 
 return [
