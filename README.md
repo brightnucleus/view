@@ -193,6 +193,6 @@ All feedback / bug reports / pull requests are welcome.
 
 ## License
 
-Copyright (c) 2016 Alain Schlesser, Bright Nucleus
+Copyright (c) 2016-2017 Alain Schlesser, Bright Nucleus
 
 This code is licensed under the [MIT License](LICENSE).
