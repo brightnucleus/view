@@ -23,5 +23,8 @@ use BrightNucleus\View\Support\Finder;
  */
 interface EngineFinder extends Finder
 {
-
+    // Constants to be used for the Config file sections.
+    const CLASS_NAME_KEY = 'ClassName';
+    const ENGINES_KEY = 'Engines';
+    const NULL_OBJECT = 'NullObject';
 }

@@ -26,6 +26,11 @@ use BrightNucleus\View\View;
 interface ViewFinder extends Finder
 {
 
+    // Constants to be used for the Config file sections.
+    const CLASS_NAME_KEY = 'ClassName';
+    const VIEWS_KEY = 'Views';
+    const NULL_OBJECT = 'NullObject';
+
     /**
      * Find a result based on a specific criteria.
      *
