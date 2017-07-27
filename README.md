@@ -51,9 +51,9 @@ use BrightNucleus\View;
 use BrightNucleus\View\Location\FilesystemLocation;
 
 $folders = [
-    App::ROOT_FOLDER . '/plugin/templates',
     App::ROOT_FOLDER . '/child-theme/templates',
     App::ROOT_FOLDER . '/parent-theme/templates',
+    App::ROOT_FOLDER . '/plugin/templates',
 ];
 
 foreach ($folders as $folder) {
