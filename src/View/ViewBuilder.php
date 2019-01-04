@@ -176,10 +176,14 @@ class ViewBuilder
      * @since 0.1.0
      *
      * @param Location $location Location to scan with the BaseViewFinder.
+     *
+     * @return static
      */
     public function addLocation(Location $location)
     {
         $this->locations->add($location);
+
+        return $this;
     }
 
     /**
