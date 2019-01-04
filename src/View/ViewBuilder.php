@@ -211,8 +211,17 @@ class ViewBuilder
         })->filter(function ($uri) {
             return false !== $uri;
         });
+        
+        // Fall back for absolute paths on current filesystem.
+        if ($uris->isEmpty()) {
+            foreach ($criteria as $criterion) {
+                if (file_exists($criterion)) {
+                    return $criterion;
+                }
+            }
+        }
 
-        return $uris->count() > 0 ? $uris->first() : false;
+        return $uris->isEmpty() ? false : $uris->first();
     }
 
     /**

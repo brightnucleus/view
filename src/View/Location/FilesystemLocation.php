@@ -158,9 +158,7 @@ class FilesystemLocation implements Location
      */
     protected function arrayToRegexPattern(array $array): string
     {
-        $array = array_map(function ($entry) {
-            return preg_quote($entry);
-        }, $array);
+        $array = array_map('preg_quote', $array);
 
         return '/' . implode('|', $array) . '/';
     }

@@ -74,6 +74,21 @@ class ViewBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(file_get_contents(__DIR__ . '/fixtures/php-view-result.html'), $html);
     }
 
+    public function testFullPathOutsideOfKnownLocation() {
+        $this->viewBuilder->addLocation(new FilesystemLocation(__DIR__ . '/../src', ['.php']));
+        $view = $this->viewBuilder->create(__DIR__ . '/fixtures/php-view.php');
+        $this->assertInstanceOf(View\BaseView::class, $view);
+        $html = $view->render(['title' => 'Dynamic Title']);
+        $this->assertEquals(file_get_contents(__DIR__ . '/fixtures/php-view-result.html'), $html);
+    }
+
+    public function testFullPathWithoutLocation() {
+        $view = $this->viewBuilder->create(__DIR__ . '/fixtures/php-view.php');
+        $this->assertInstanceOf(View\BaseView::class, $view);
+        $html = $view->render(['title' => 'Dynamic Title']);
+        $this->assertEquals(file_get_contents(__DIR__ . '/fixtures/php-view-result.html'), $html);
+    }
+
     public function testNullView()
     {
         $this->viewBuilder->addLocation(new FilesystemLocation(__DIR__ . '/nonsense', []));
@@ -152,4 +167,5 @@ class ViewBuilderTest extends \PHPUnit_Framework_TestCase
         $result = $view->render(['testdata' => 'testvalue']);
         $this->assertEquals('Test Data = testvalue', $result);
     }
+
 }
