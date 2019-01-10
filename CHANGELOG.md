@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.4.3] - 2019-01-10
+### Added
+- Allow for invokable objects to be add as properties to the context.
+
+### Changed
+- Make view file selection more rigid.
+- Improve passing on existing ViewBuilder instances.
+
 ## [0.4.2] - 2019-01-04
 ### Changed
 - Let `ViewBuilder::addLocation()` return the view builder instance for fluent interfaces.
@@ -67,6 +75,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Initial release to GitHub.
 
+[0.4.3]: https://github.com/brightnucleus/view/compare/v0.4.2...v0.4.3
 [0.4.2]: https://github.com/brightnucleus/view/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/brightnucleus/view/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/brightnucleus/view/compare/v0.3.0...v0.4.0

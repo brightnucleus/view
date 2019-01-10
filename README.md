@@ -90,6 +90,8 @@ From within the template that is being rendered, the context variables are avail
 
 As an example, for the view we rendered above, you could use `echo $this->userId;` from within the template to retrieve that specific piece of context data.
 
+If you add invokable object to the context as properties, they will in effect act as methods within the view template.
+
 The context as a whole is available through the method `$this->getContext()`, which will return an associative array. 
 
 > Keep in mind that no automatic escaping is taking place, the value of the context data is passed as-is.
