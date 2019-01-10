@@ -200,4 +200,25 @@ abstract class AbstractView implements View
             $this->$key = $value;
         }
     }
+
+    /**
+     * Turn invokable objects as properties into methods of the view.
+     *
+     * @param string $method    Method that was called on the view.
+     * @param array  $arguments Array of arguments that were used.
+     * @return mixed Return value of the invokable object.
+     */
+    public function __call($method, $arguments) {
+        if ( ! property_exists($this, $method)
+             || ! is_callable($this->$method)) {
+            trigger_error(
+                "Call to undefined method {$method} on a view.",
+                E_USER_ERROR
+            );
+        }
+
+        $callable = $this->$method;
+
+        return $callable(...$arguments);
+    }
 }
