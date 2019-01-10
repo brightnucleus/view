@@ -42,4 +42,13 @@ interface ViewFinder extends Finder
      * @return View View that was found.
      */
     public function find(array $criteria, Engine $engine = null): View;
+
+    /**
+     * Get the NullObject.
+     *
+     * @since 0.1.1
+     *
+     * @return NullView NullObject for the current Finder.
+     */
+    public function getNullObject(): NullView;
 }

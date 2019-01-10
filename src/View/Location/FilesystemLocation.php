@@ -74,7 +74,7 @@ class FilesystemLocation implements Location
         $uris = $this->getURIs($criteria);
 
         return $uris->count() > 0
-            ? $this->getURIs($criteria)->first()
+            ? $uris->first()
             : false;
     }
 
@@ -125,14 +125,28 @@ class FilesystemLocation implements Location
         $names = [];
 
         $names[] = array_map(function ($criterion) use ($extension) {
-            $criterion = URIHelper::getFilename($criterion);
+            $uriExtension = URIHelper::containsExtension($criterion);
+            if (! empty($extension)) {
+                $extension = ltrim($extension, '.');
 
-            return empty($extension) || URIHelper::hasExtension($criterion, $extension)
-                ? $criterion
-                : $criterion . $extension;
+                if ($uriExtension === $extension) {
+                    $criterion = substr($criterion,0,-strlen(".{$extension}"));
+                }
+            } else {
+                $extension = URIHelper::containsExtension($criterion);
+                if (!empty($extension)) {
+                    $criterion = substr($criterion,0,-strlen(".{$extension}"));
+                }
+            }
+
+            $criterion = preg_quote(URIHelper::getFilename($criterion), chr(1));
+
+            return (empty($extension) || URIHelper::hasExtension($criterion, $extension))
+                ? "{$criterion}(?:\..*?)$"
+                : "{$criterion}\.{$extension}$";
         }, $criteria)[0];
 
-        return $this->arrayToRegexPattern(array_unique($names));
+        return chr(1) . implode('|', array_unique($names)) . chr(1);
     }
 
     /**
@@ -145,22 +159,6 @@ class FilesystemLocation implements Location
     protected function getPathPattern(): string
     {
         return $this->path;
-    }
-
-    /**
-     * Get an array as a regular expression pattern string.
-     *
-     * @since 0.1.3
-     *
-     * @param array $array Array to generate the pattern for.
-     *
-     * @return string Generated regular expression pattern.
-     */
-    protected function arrayToRegexPattern(array $array): string
-    {
-        $array = array_map('preg_quote', $array);
-
-        return '/' . implode('|', $array) . '/';
     }
 
     /**

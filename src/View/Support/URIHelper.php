@@ -34,6 +34,7 @@ class URIHelper
      */
     public static function hasExtension(string $uri, string $extension): bool
     {
+        $extension       = '.' . ltrim($extension, '.');
         $uriLength       = mb_strlen($uri);
         $extensionLength = mb_strlen($extension);
         if ($extensionLength > $uriLength) {
@@ -41,6 +42,25 @@ class URIHelper
         }
 
         return substr_compare($uri, $extension, $uriLength - $extensionLength, $extensionLength) === 0;
+    }
+
+    /**
+     * Check whether a given URI contains an extension and return it.
+     *
+     * @param string $uri URI to check.
+     * @return string Extension that was found, empty string if none found.
+     */
+    public static function containsExtension(string $uri): string
+    {
+        $pathParts     = explode('/', $uri);
+        $filename      = array_pop($pathParts);
+        $filenameParts = explode('.', $filename);
+
+        if (count($filenameParts) > 1) {
+            return array_pop($filenameParts);
+        }
+
+        return '';
     }
 
     /**

@@ -42,10 +42,10 @@ class BaseViewFinder extends AbstractFinder implements ViewFinder
     {
         $uri = $criteria[0];
 
-        $this->initializeFindables([$uri, $engine]);
+        $views = $this->initializeFindables([$uri, $engine]);
 
         foreach ($criteria as $entry) {
-            foreach ($this->findables as $viewObject) {
+            foreach ($views as $viewObject) {
                 if ($viewObject->canHandle($entry)) {
                     return $viewObject;
                 }
@@ -65,5 +65,18 @@ class BaseViewFinder extends AbstractFinder implements ViewFinder
     protected function getFindablesConfigKey(): string
     {
         return 'Views';
+    }
+
+    /**
+     * Get the NullObject.
+     *
+     * @since 0.1.1
+     *
+     * @return NullView NullObject for the current Finder.
+     * @throws FailedToInstantiateFindable If the Findable could not be instantiated.
+     */
+    public function getNullObject(): NullView
+    {
+        return parent::getNullObject();
     }
 }

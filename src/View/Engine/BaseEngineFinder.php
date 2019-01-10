@@ -37,7 +37,7 @@ class BaseEngineFinder extends AbstractFinder implements EngineFinder
      */
     public function find(array $criteria): Engine
     {
-        $this->initializeFindables();
+        $this->findables = $this->initializeFindables();
 
         foreach ($criteria as $entry) {
             foreach ($this->findables as $engine) {
@@ -60,5 +60,18 @@ class BaseEngineFinder extends AbstractFinder implements EngineFinder
     protected function getFindablesConfigKey(): string
     {
         return 'Engines';
+    }
+
+    /**
+     * Get the NullObject.
+     *
+     * @since 0.1.1
+     *
+     * @return NullEngine NullObject for the current Finder.
+     * @throws FailedToInstantiateFindable If the Findable could not be instantiated.
+     */
+    public function getNullObject(): NullEngine
+    {
+        return parent::getNullObject();
     }
 }

@@ -27,4 +27,13 @@ interface EngineFinder extends Finder
     const CLASS_NAME_KEY = 'ClassName';
     const ENGINES_KEY = 'Engines';
     const NULL_OBJECT = 'NullObject';
+
+    /**
+     * Get the NullObject.
+     *
+     * @since 0.1.1
+     *
+     * @return NullEngine NullObject for the current Finder.
+     */
+    public function getNullObject(): NullEngine;
 }

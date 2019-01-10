@@ -15,7 +15,6 @@ use BrightNucleus\Config\ConfigFactory;
 use BrightNucleus\Config\ConfigInterface;
 use BrightNucleus\Config\ConfigTrait;
 use BrightNucleus\Config\Exception\FailedToProcessConfigException;
-use BrightNucleus\View\Engine\BaseEngineFinder;
 use BrightNucleus\View\Engine\Engine;
 use BrightNucleus\View\Engine\EngineFinder;
 use BrightNucleus\View\View\ViewFinder;
@@ -53,7 +52,7 @@ class ViewBuilder
      *
      * @since 0.1.0
      *
-     * @var BaseEngineFinder
+     * @var EngineFinder
      */
     protected $engineFinder;
 
@@ -71,20 +70,20 @@ class ViewBuilder
      *
      * @since 0.1.0
      *
-     * @param ConfigInterface       $config       Optional. Configuration settings.
-     * @param ViewFinder|null       $viewFinder   Optional. BaseViewFinder instance.
-     * @param BaseEngineFinder|null $engineFinder Optional. BaseEngineFinder instance.
+     * @param ConfigInterface   $config       Optional. Configuration settings.
+     * @param ViewFinder|null   $viewFinder   Optional. ViewFinder instance.
+     * @param EngineFinder|null $engineFinder Optional. EngineFinder instance.
      *
      * @throws FailedToProcessConfigException If the config could not be processed.
      */
     public function __construct(
         ConfigInterface $config = null,
         ViewFinder $viewFinder = null,
-        BaseEngineFinder $engineFinder = null
+        EngineFinder $engineFinder = null
     ) {
         $this->processConfig($this->getConfig($config));
-        $this->viewFinder   = $viewFinder;
-        $this->engineFinder = $engineFinder;
+        $this->viewFinder   = $viewFinder ?? $this->getViewFinder();
+        $this->engineFinder = $engineFinder ?? $this->getEngineFinder();
         $this->locations    = new Locations();
     }
 
@@ -102,6 +101,7 @@ class ViewBuilder
     public function create(string $view, $type = null): View
     {
         $uri    = $this->scanLocations([$view]);
+
         $engine = $uri
             ? $this->getEngine($uri)
             : false;
@@ -139,11 +139,12 @@ class ViewBuilder
      */
     public function getView(string $uri, Engine $engine, $type = null): View
     {
-        $view = (null === $type)
-            ? $this->getViewFinder()->find([$uri], $engine)
-            : $this->resolveType($type, $uri, $engine);
+        if (null === $type) {
+            $view = $this->getViewFinder()->find([$uri], $engine);
+            return $view->setBuilder( $this );
+        }
 
-        return $view->setBuilder($this);
+        return $this->resolveType($type, $uri, $engine);
     }
 
     /**
@@ -155,7 +156,7 @@ class ViewBuilder
      */
     public function getViewFinder(): ViewFinder
     {
-        return $this->getFinder($viewFinder, static::VIEW_FINDER_KEY);
+        return $this->viewFinder ?? $this->getFinder(static::VIEW_FINDER_KEY);
     }
 
     /**
@@ -167,7 +168,7 @@ class ViewBuilder
      */
     public function getEngineFinder(): EngineFinder
     {
-        return $this->getFinder($this->engineFinder, static::ENGINE_FINDER_KEY);
+        return $this->engineFinder ?? $this->getFinder(static::ENGINE_FINDER_KEY);
     }
 
     /**
@@ -233,19 +234,14 @@ class ViewBuilder
      *
      * @since 0.1.1
      *
-     * @param mixed  $property Property to use.
-     * @param string $key      Configuration key to use.
+     * @param string $key Configuration key to use.
      *
      * @return ViewFinder|EngineFinder The requested finder instance.
      */
-    protected function getFinder(&$property, $key)
+    protected function getFinder($key)
     {
-        if (null === $property) {
-            $finderClass = $this->config->getKey($key, 'ClassName');
-            $property    = new $finderClass($this->config->getSubConfig($key));
-        }
-
-        return $property;
+        $finderClass = $this->config->getKey($key, 'ClassName');
+        return new $finderClass($this->config->getSubConfig($key));
     }
 
     /**
@@ -266,15 +262,15 @@ class ViewBuilder
 
         if (is_string($type) && $this->config->hasKey($configKey)) {
             $className = $this->config->getKey($configKey);
-            $type      = new $className($uri, $engine);
+            $type      = new $className($uri, $engine, $this);
         }
 
         if (is_string($type)) {
-            $type = new $type($uri, $engine);
+            $type = new $type($uri, $engine, $this);
         }
 
         if (is_callable($type)) {
-            $type = $type($uri, $engine);
+            $type = $type($uri, $engine, $this);
         }
 
         if (! $type instanceof View) {

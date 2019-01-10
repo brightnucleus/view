@@ -79,13 +79,15 @@ abstract class AbstractView implements View
      *
      * @since 0.1.0
      *
-     * @param string $uri    URI for the view.
-     * @param Engine $engine Engine to use for the view.
+     * @param string      $uri         URI for the view.
+     * @param Engine      $engine      Engine to use for the view.
+     * @param ViewBuilder $viewBuilder View builder instance to use.
      */
-    public function __construct(string $uri, Engine $engine)
+    public function __construct(string $uri, Engine $engine, ViewBuilder $viewBuilder = null)
     {
-        $this->_uri_    = $uri;
-        $this->_engine_ = $engine;
+        $this->_uri_     = $uri;
+        $this->_engine_  = $engine;
+        $this->_builder_ = $viewBuilder ?? Views::getViewBuilder();
     }
 
     /**
@@ -101,7 +103,6 @@ abstract class AbstractView implements View
      */
     public function render(array $context = [], bool $echo = false): string
     {
-        $this->initializeViewBuilder();
         $this->assimilateContext($context);
 
         $closure = Closure::bind(
@@ -138,7 +139,6 @@ abstract class AbstractView implements View
             $context = $this->_context_;
         }
 
-        $this->initializeViewBuilder();
         $viewObject = $this->_builder_->create($view, $type);
 
         return $viewObject->render($context);
@@ -170,20 +170,6 @@ abstract class AbstractView implements View
         $this->_builder_ = $builder;
 
         return $this;
-    }
-
-    /**
-     * Initialize the view builder associated with the view.
-     *
-     * @since 0.2.0
-     *
-     * @throws FailedToProcessConfigException If the Config could not be processed.
-     */
-    protected function initializeViewBuilder()
-    {
-        if (null === $this->_builder_) {
-            $this->_builder_ = Views::getViewBuilder();
-        }
     }
 
     /**

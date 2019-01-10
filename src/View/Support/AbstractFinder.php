@@ -99,7 +99,7 @@ abstract class AbstractFinder implements Finder
      * @return NullFindable NullObject for the current Finder.
      * @throws FailedToInstantiateFindable If the Findable could not be instantiated.
      */
-    public function getNullObject(): NullFindable
+    public function getNullObject()
     {
         $this->initializeNullObject();
 
@@ -151,11 +151,12 @@ abstract class AbstractFinder implements Finder
      *
      * @since 0.1.0
      *
+     * @return Findables Collection of Findables.
      * @throws FailedToInstantiateFindable If the Findable could not be instantiated.
      */
-    protected function initializeFindables($arguments = null)
+    protected function initializeFindables($arguments = null): Findables
     {
-        $this->findables = $this->findables->map(function ($findable) use ($arguments) {
+        return $this->findables->map(function ($findable) use ($arguments) {
             return $this->initializeFindable($findable, $arguments);
         });
     }

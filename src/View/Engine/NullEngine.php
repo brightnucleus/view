@@ -50,6 +50,6 @@ class NullEngine implements Engine, NullFindable
      */
     public function getRenderCallback(string $uri, array $context = []): callable
     {
-        return '';
+        return function () { return ''; };
     }
 }

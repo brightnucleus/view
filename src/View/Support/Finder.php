@@ -40,5 +40,5 @@ interface Finder
      *
      * @return NullFindable NullObject for the current Finder.
      */
-    public function getNullObject(): NullFindable;
+    public function getNullObject();
 }
