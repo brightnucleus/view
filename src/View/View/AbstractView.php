@@ -73,7 +73,7 @@ abstract class AbstractView implements View
      *
      * @var array
      */
-    protected $_context_ = [];
+    protected $_context_;
 
     /**
      * Instantiate an AbstractView object.
@@ -83,12 +83,14 @@ abstract class AbstractView implements View
      * @param string      $uri         URI for the view.
      * @param Engine      $engine      Engine to use for the view.
      * @param ViewBuilder $viewBuilder View builder instance to use.
+     * @param array       $context     Initial context to use.
      */
-    public function __construct(string $uri, Engine $engine, ViewBuilder $viewBuilder = null)
+    public function __construct(string $uri, Engine $engine, ViewBuilder $viewBuilder = null, array $context = [])
     {
         $this->_uri_     = $uri;
         $this->_engine_  = $engine;
         $this->_builder_ = $viewBuilder ?? Views::getViewBuilder();
+        $this->_context_ = $context;
     }
 
     /**
@@ -168,31 +170,33 @@ abstract class AbstractView implements View
     public function addToContext( string $key, $value, string $behavior ): View
     {
         switch ($behavior) {
-            case View::ADD_AND_REPLACE:
-                $this->_context_['key'] = $value;
+            case View::REPLACE:
+                $this->_context_[$key] = $value;
                 return $this;
-            case View::ADD_AND_MERGE:
-                $this->_context_['key'] = array_key_exists($key, $this->_context_)
-                    ? array_merge_recursive($this->_context_['key'], $value)
-                    : $value;
+            case View::MERGE:
+                if(array_key_exists($key, $this->_context_)) {
+                    $this->_context_ = array_merge_recursive($this->_context_, [$key => $value]);
+                    return $this;
+                }
+                $this->_context_[$key] = $value;
                 return $this;
             case View::ADD_ONLY:
                 if (array_key_exists($key, $this->_context_)) {
                     return $this;
                 }
-                $this->_context_['key'] = $value;
+                $this->_context_[$key] = $value;
                 return $this;
             case View::REPLACE_ONLY:
                 if (! array_key_exists($key, $this->_context_)) {
                     return $this;
                 }
-                $this->_context_['key'] = $value;
+                $this->_context_[$key] = $value;
                 return $this;
             case View::MERGE_ONLY:
                 if (! array_key_exists($key, $this->_context_)) {
                     return $this;
                 }
-                $this->_context_['key'] = array_merge_recursive($this->_context_['key'], $value);
+                $this->_context_ = array_merge_recursive($this->_context_, [$key => $value]);
                 return $this;
             default:
                 throw new InvalidContextAddingBehavior(

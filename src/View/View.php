@@ -24,11 +24,11 @@ use BrightNucleus\View\Support\Findable;
 interface View extends Findable
 {
 
-    const ADD_AND_MERGE   = 'merge';
-    const ADD_AND_REPLACE = 'replace';
-    const ADD_ONLY        = 'add-only';
-    const REPLACE_ONLY    = 'add-only';
-    const MERGE_ONLY      = 'merge-only';
+	const MERGE        = 'merge';
+	const REPLACE      = 'replace';
+	const ADD_ONLY     = 'add-only';
+	const REPLACE_ONLY = 'replace-only';
+	const MERGE_ONLY   = 'merge-only';
 
     /**
      * Check whether the Findable can handle an individual criterion.

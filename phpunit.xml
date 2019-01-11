@@ -8,6 +8,7 @@
          beStrictAboutChangesToGlobalState="false">
     <testsuites>
         <testsuite name="view">
+            <file>tests/ViewTest.php</file>
             <file>tests/ViewBuilderTest.php</file>
             <file>tests/ViewFacadeTest.php</file>
         </testsuite>
