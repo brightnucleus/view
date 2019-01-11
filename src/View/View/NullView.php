@@ -84,6 +84,18 @@ class NullView implements View, NullFindable
     }
 
     /**
+     * Add information to the context.
+     *
+     * @param string $key      Context key to add.
+     * @param mixed  $value    Value to add under the given key.
+     * @param string $behavior Behavior to use for adapting the context.
+     * @return View
+     */
+    public function addToContext( string $key, $value, string $behavior ): View {
+        return $this;
+    }
+
+    /**
      * Associate a view builder with this view.
      *
      * @since 0.2.0

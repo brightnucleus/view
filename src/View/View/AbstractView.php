@@ -13,6 +13,7 @@ namespace BrightNucleus\View\View;
 
 use BrightNucleus\Config\Exception\FailedToProcessConfigException;
 use BrightNucleus\View\Exception\FailedToInstantiateView;
+use BrightNucleus\View\Exception\InvalidContextAddingBehavior;
 use BrightNucleus\View\View;
 use BrightNucleus\View\Engine\Engine;
 use BrightNucleus\View\ViewBuilder;
@@ -154,6 +155,54 @@ abstract class AbstractView implements View
     public function getContext(): array
     {
         return $this->_context_;
+    }
+
+    /**
+     * Add information to the context.
+     *
+     * @param string $key      Context key to add.
+     * @param mixed  $value    Value to add under the given key.
+     * @param string $behavior Behavior to use for adapting the context.
+     * @return View
+     */
+    public function addToContext( string $key, $value, string $behavior ): View
+    {
+        switch ($behavior) {
+            case View::ADD_AND_REPLACE:
+                $this->_context_['key'] = $value;
+                return $this;
+            case View::ADD_AND_MERGE:
+                $this->_context_['key'] = array_key_exists($key, $this->_context_)
+                    ? array_merge_recursive($this->_context_['key'], $value)
+                    : $value;
+                return $this;
+            case View::ADD_ONLY:
+                if (array_key_exists($key, $this->_context_)) {
+                    return $this;
+                }
+                $this->_context_['key'] = $value;
+                return $this;
+            case View::REPLACE_ONLY:
+                if (! array_key_exists($key, $this->_context_)) {
+                    return $this;
+                }
+                $this->_context_['key'] = $value;
+                return $this;
+            case View::MERGE_ONLY:
+                if (! array_key_exists($key, $this->_context_)) {
+                    return $this;
+                }
+                $this->_context_['key'] = array_merge_recursive($this->_context_['key'], $value);
+                return $this;
+            default:
+                throw new InvalidContextAddingBehavior(
+                    sprintf(
+                        _('Invalid behavior "%s" for adding to the context of view "%s".'),
+                        $key,
+                        $this->_uri_
+                    )
+                );
+        }
     }
 
     /**
