@@ -103,7 +103,7 @@ To render a different template as a section from within the template currently b
 This does basically the same thing as an external `render()` call of a `View` object, with the following differences:
 
 * It reuses the parent's `ViewBuilder`, with the same rendering engine, and the same locations.
-* If you don't provide a context, it defaults to the parent's context. 
+* If you provide additional context, it is merged with the parent's context.
 
 Here's an example of how this works:
 

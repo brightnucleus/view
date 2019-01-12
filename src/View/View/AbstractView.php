@@ -138,9 +138,9 @@ abstract class AbstractView implements View
      */
     public function section(string $view, array $context = null, $type = null): string
     {
-        if (null === $context) {
-            $context = $this->_context_;
-        }
+        $context = (null === $context)
+            ? $this->_context_
+            : array_merge($this->_context_, $context);
 
         $viewObject = $this->_builder_->create($view, $type);
 
