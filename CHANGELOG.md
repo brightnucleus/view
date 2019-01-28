@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.4.6] - 2019-01-28
+### Changed
+- Cache `$uri`, `$engine` and `$view` for a given view name in `ViewBuilder`.
+
 ## [0.4.5] - 2019-01-12
 ### Changed
 - When adding custom context to a `section()` call, it is merged with the existing context instead of replacing it.
@@ -85,6 +89,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Initial release to GitHub.
 
+[0.4.6]: https://github.com/brightnucleus/view/compare/v0.4.5...v0.4.6
 [0.4.5]: https://github.com/brightnucleus/view/compare/v0.4.4...v0.4.5
 [0.4.4]: https://github.com/brightnucleus/view/compare/v0.4.3...v0.4.4
 [0.4.3]: https://github.com/brightnucleus/view/compare/v0.4.2...v0.4.3

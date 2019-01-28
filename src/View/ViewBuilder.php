@@ -66,6 +66,15 @@ class ViewBuilder
     protected $locations;
 
     /**
+     * Cache of already resolved view paths.
+     *
+     * @since 0.4.6
+     *
+     * @var string[]
+     */
+    protected $viewPathCache = [];
+
+    /**
      * Instantiate a ViewBuilder object.
      *
      * @since 0.1.0
@@ -100,15 +109,34 @@ class ViewBuilder
      */
     public function create(string $view, $type = null): View
     {
-        $uri    = $this->scanLocations([$view]);
+        if (!array_key_exists($view, $this->viewPathCache)) {
+            $uri    = $this->scanLocations([$view]);
+            $engine = $uri ? $this->getEngine($uri) : false;
 
-        $engine = $uri
-            ? $this->getEngine($uri)
-            : false;
+            $this->viewPathCache[$view]           = [];
+            $this->viewPathCache[$view]['uri']    = $uri;
+            $this->viewPathCache[$view]['engine'] = $engine;
 
-        return ($uri && $engine)
-            ? $this->getView($uri, $engine, $type)
-            : $this->getViewFinder()->getNullObject();
+            if ($type===null) {
+                $this->viewPathCache[$view]['view'] = $uri
+                    ? $this->getView($uri, $engine)
+                    : false;
+            }
+        } else {
+            $uri    = $this->viewPathCache[$view]['uri'];
+            $engine = $this->viewPathCache[$view]['engine'];
+        }
+
+
+        if (!$uri || !$engine) {
+            return $this->getViewFinder()->getNullObject();
+        }
+
+        if ($type === null) {
+            return $this->viewPathCache[$view]['view'];
+        }
+
+        return $this->getView($uri, $engine, $type);
     }
 
     /**
@@ -183,6 +211,9 @@ class ViewBuilder
     public function addLocation(Location $location)
     {
         $this->locations->add($location);
+
+        unset( $this->viewPathCache );
+        $this->viewPathCache = [];
 
         return $this;
     }
