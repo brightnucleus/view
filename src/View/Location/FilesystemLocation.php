@@ -95,9 +95,10 @@ class FilesystemLocation implements Location
             $finder = new Finder();
 
             try {
+            	bdump( $this->getPathPattern($this->getRelativePath($criteria)) );
                 $finder->files()
                     ->name($this->getNamePattern($criteria, $extension))
-                    ->in($this->getPathPattern());
+                    ->in($this->getPathPattern($this->getRelativePath($criteria)));
                 foreach ($finder as $file) {
                     /** @var SplFileInfo $file */
                     $uris->add($file->getPathname());
@@ -152,13 +153,39 @@ class FilesystemLocation implements Location
     /**
      * Get the path pattern to pass to the file finder.
      *
-     * @since 0.1.3
+     * @since 0.4.7
      *
+     * @param string $relativePath Relative path that was included in the
+     *                             criterion.
      * @return string Path pattern to pass to the file finder.
      */
-    protected function getPathPattern(): string
+    protected function getPathPattern(string $relativePath): string
     {
-        return $this->path;
+        if (empty($relativePath)) {
+            return $this->path;
+        }
+
+        return rtrim($this->path,'/') . '/' . ltrim($relativePath, '/');
+    }
+
+    /**
+     * Get the relative path that is included in the criterion.
+     *
+     * @since 0.4.7
+     *
+     * @param array $criteria Criteria to extract the relative path from.
+     * @return string Relative path included in the criterion.
+     */
+    protected function getRelativePath($criteria): string
+    {
+        $criterion  = current($criteria);
+        $components = explode('/', $criterion);
+
+        if (count($components) < 2) {
+            return '';
+        }
+
+        return implode('/', array_slice($components, 0, -1));
     }
 
     /**
