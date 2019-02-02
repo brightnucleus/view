@@ -95,7 +95,6 @@ class FilesystemLocation implements Location
             $finder = new Finder();
 
             try {
-            	bdump( $this->getPathPattern($this->getRelativePath($criteria)) );
                 $finder->files()
                     ->name($this->getNamePattern($criteria, $extension))
                     ->in($this->getPathPattern($this->getRelativePath($criteria)));
