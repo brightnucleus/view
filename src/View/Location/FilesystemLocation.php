@@ -142,8 +142,8 @@ class FilesystemLocation implements Location
             $criterion = preg_quote(URIHelper::getFilename($criterion), chr(1));
 
             return (empty($extension) || URIHelper::hasExtension($criterion, $extension))
-                ? "{$criterion}(?:\..*?)$"
-                : "{$criterion}\.{$extension}$";
+                ? "^{$criterion}(?:\..*?)$"
+                : "^{$criterion}\.{$extension}$";
         }, $criteria)[0];
 
         return chr(1) . implode('|', array_unique($names)) . chr(1);

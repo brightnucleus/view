@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.4.9] - 2019-06-10
+### Fixed
+- Make sure file names are exact matches and disallow prefixed versions.
+
 ## [0.4.8] - 2019-02-02
 ### Fixed
 - Remove left-over debugging code.
@@ -97,6 +101,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Initial release to GitHub.
 
+[0.4.9]: https://github.com/brightnucleus/view/compare/v0.4.8...v0.4.9
 [0.4.8]: https://github.com/brightnucleus/view/compare/v0.4.7...v0.4.8
 [0.4.7]: https://github.com/brightnucleus/view/compare/v0.4.6...v0.4.7
 [0.4.6]: https://github.com/brightnucleus/view/compare/v0.4.5...v0.4.6
