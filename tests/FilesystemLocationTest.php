@@ -9,10 +9,11 @@
  * @copyright 2016-2017 Alain Schlesser, Bright Nucleus
  */
 
-namespace BrightNucleus\View;
+namespace BrightNucleus\View\Tests;
 
 use BrightNucleus\View\Location\FilesystemLocation;
 use BrightNucleus\View\Location\URIs;
+use BrightNucleus\View\Tests\TestCase;
 
 /**
  * Class FilesystemLocationTest.
@@ -22,7 +23,7 @@ use BrightNucleus\View\Location\URIs;
  * @package BrightNucleus\View
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-class FilesystemLocationTest extends \PHPUnit_Framework_TestCase
+class FilesystemLocationTest extends TestCase
 {
 
     /**

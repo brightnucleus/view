@@ -167,14 +167,14 @@ abstract class AbstractView implements View
      * @param string $behavior Behavior to use for adapting the context.
      * @return View
      */
-    public function addToContext( string $key, $value, string $behavior ): View
+    public function addToContext(string $key, $value, string $behavior): View
     {
         switch ($behavior) {
             case View::REPLACE:
                 $this->_context_[$key] = $value;
                 return $this;
             case View::MERGE:
-                if(array_key_exists($key, $this->_context_)) {
+                if (array_key_exists($key, $this->_context_)) {
                     $this->_context_ = array_merge_recursive($this->_context_, [$key => $value]);
                     return $this;
                 }
@@ -247,8 +247,9 @@ abstract class AbstractView implements View
      * @param array  $arguments Array of arguments that were used.
      * @return mixed Return value of the invokable object.
      */
-    public function __call($method, $arguments) {
-        if ( ! property_exists($this, $method)
+    public function __call($method, $arguments)
+    {
+        if (! property_exists($this, $method)
              || ! is_callable($this->$method)) {
             trigger_error(
                 "Call to undefined method {$method} on a view.",

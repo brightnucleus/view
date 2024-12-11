@@ -37,7 +37,9 @@ class Locations extends ArrayCollection
             return false;
         }
 
-        return parent::add($location);
+        parent::add($location);
+
+        return true;
     }
 
     /**

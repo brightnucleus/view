@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<ruleset name="Bright Nucleus View">
+ <description>The coding standard for the Bright Nucleus View package.</description>
+
+ <file>src</file>
+ <file>tests</file>
+ 
+ <rule ref="PSR2"/>
+</ruleset>

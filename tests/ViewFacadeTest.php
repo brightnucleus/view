@@ -9,10 +9,11 @@
  * @copyright 2016-2017 Alain Schlesser, Bright Nucleus
  */
 
-namespace BrightNucleus\View;
+namespace BrightNucleus\View\Tests;
 
 use BrightNucleus\Views;
 use BrightNucleus\View\Location\FilesystemLocation;
+use BrightNucleus\View\Tests\TestCase;
 
 /**
  * Class ViewBuilderTest.
@@ -22,7 +23,7 @@ use BrightNucleus\View\Location\FilesystemLocation;
  * @package BrightNucleus\View
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-class ViewFacadeTest extends \PHPUnit_Framework_TestCase
+class ViewFacadeTest extends TestCase
 {
 
     /**

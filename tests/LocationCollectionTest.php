@@ -9,10 +9,11 @@
  * @copyright 2016-2017 Alain Schlesser, Bright Nucleus
  */
 
-namespace BrightNucleus\View;
+namespace BrightNucleus\View\Tests;
 
 use BrightNucleus\View\Location\FilesystemLocation;
 use BrightNucleus\View\Location\Locations;
+use BrightNucleus\View\Tests\TestCase;
 
 /**
  * Class LocationCollectionTest.
@@ -22,7 +23,7 @@ use BrightNucleus\View\Location\Locations;
  * @package BrightNucleus\View
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-class LocationCollectionTest extends \PHPUnit_Framework_TestCase
+class LocationCollectionTest extends TestCase
 {
 
     public function testAddingKnownLocations()

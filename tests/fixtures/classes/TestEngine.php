@@ -9,7 +9,7 @@
  * @copyright 2016-2017 Alain Schlesser, Bright Nucleus
  */
 
-namespace BrightNucleus\View\Tests;
+namespace BrightNucleus\View\Tests\Fixtures;
 
 use BrightNucleus\View\Engine\AbstractEngine;
 use BrightNucleus\View\Exception\FailedToLoadView;

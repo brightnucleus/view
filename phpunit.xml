@@ -1,25 +1,18 @@
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.8/phpunit.xsd"
-         bootstrap="vendor/autoload.php"
-         colors="true"
-         beStrictAboutTestsThatDoNotTestAnything="true"
-         beStrictAboutOutputDuringTests="true"
-         beStrictAboutTestSize="true"
-         beStrictAboutChangesToGlobalState="false">
-    <testsuites>
-        <testsuite name="view">
-            <file>tests/ViewTest.php</file>
-            <file>tests/ViewBuilderTest.php</file>
-            <file>tests/ViewFacadeTest.php</file>
-        </testsuite>
-        <testsuite name="location">
-            <file>tests/FilesystemLocationTest.php</file>
-            <file>tests/LocationCollectionTest.php</file>
-        </testsuite>
-    </testsuites>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">src</directory>
-        </whitelist>
-    </filter>
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
+	bootstrap="vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php"
+	verbose="true"
+    colors="true">
+	<testsuites>
+		<testsuite name="unit">
+			<directory suffix="Test.php">tests</directory>
+		</testsuite>
+	</testsuites>
+	<coverage processUncoveredFiles="true">
+		<include>
+			<directory suffix=".php">src</directory>
+		</include>
+	</coverage>
 </phpunit>

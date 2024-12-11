@@ -9,10 +9,14 @@
  * @copyright 2016-2017 Alain Schlesser, Bright Nucleus
  */
 
-namespace BrightNucleus\View;
+namespace BrightNucleus\View\Tests;
 
 use BrightNucleus\Config\ConfigFactory;
 use BrightNucleus\View\Location\FilesystemLocation;
+use BrightNucleus\View\Tests\Fixtures;
+use BrightNucleus\View\Tests\TestCase;
+use BrightNucleus\View\View;
+use BrightNucleus\View\ViewBuilder;
 
 /**
  * Class ViewBuilderTest.
@@ -22,17 +26,17 @@ use BrightNucleus\View\Location\FilesystemLocation;
  * @package BrightNucleus\View
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-class ViewBuilderTest extends \PHPUnit_Framework_TestCase
+class ViewBuilderTest extends TestCase
 {
 
     /** @var ViewBuilder */
     protected $viewBuilder;
 
-    public function setUp()
+    public function set_up()
     {
         $this->viewBuilder = new ViewBuilder(
             ConfigFactory::create(dirname(__DIR__) . '/config/defaults.php')
-                ->getSubConfig(__NAMESPACE__)
+                ->getSubConfig('BrightNucleus\\View')
         );
     }
 
@@ -74,7 +78,8 @@ class ViewBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(file_get_contents(__DIR__ . '/fixtures/php-view-result.html'), $html);
     }
 
-    public function testFullPathOutsideOfKnownLocation() {
+    public function testFullPathOutsideOfKnownLocation()
+    {
         $this->viewBuilder->addLocation(new FilesystemLocation(__DIR__ . '/../src', ['.php']));
         $view = $this->viewBuilder->create(__DIR__ . '/fixtures/php-view.php');
         $this->assertInstanceOf(View\BaseView::class, $view);
@@ -82,7 +87,8 @@ class ViewBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(file_get_contents(__DIR__ . '/fixtures/php-view-result.html'), $html);
     }
 
-    public function testFullPathWithoutLocation() {
+    public function testFullPathWithoutLocation()
+    {
         $view = $this->viewBuilder->create(__DIR__ . '/fixtures/php-view.php');
         $this->assertInstanceOf(View\BaseView::class, $view);
         $html = $view->render(['title' => 'Dynamic Title']);
@@ -111,7 +117,7 @@ class ViewBuilderTest extends \PHPUnit_Framework_TestCase
         $view = $this->viewBuilder->create($view);
         $this->assertInstanceOf(View\BaseView::class, $view);
         $html = $view->render(['title' => 'Dynamic Title']);
-        $this->assertContains($needle, $html);
+        $this->assertStringContainsString($needle, $html);
     }
 
     public function combinedPHPViewDataProvider(): array
@@ -138,7 +144,7 @@ class ViewBuilderTest extends \PHPUnit_Framework_TestCase
         $view = $this->viewBuilder->create($view);
         $this->assertInstanceOf(View\BaseView::class, $view);
         $html = $view->render(['title' => 'Dynamic Title']);
-        $this->assertContains($needle, $html);
+        $this->assertStringContainsString($needle, $html);
     }
 
     public function partialPHPViewDataProvider(): array
@@ -156,7 +162,7 @@ class ViewBuilderTest extends \PHPUnit_Framework_TestCase
                 'View' => [
                     'EngineFinder' => [
                         'Engines' => [
-                            'TestEngine' => Tests\TestEngine::class,
+                            'TestEngine' => Fixtures\TestEngine::class,
                         ],
                     ],
                 ],
@@ -167,5 +173,4 @@ class ViewBuilderTest extends \PHPUnit_Framework_TestCase
         $result = $view->render(['testdata' => 'testvalue']);
         $this->assertEquals('Test Data = testvalue', $result);
     }
-
 }

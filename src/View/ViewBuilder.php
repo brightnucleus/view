@@ -169,7 +169,7 @@ class ViewBuilder
     {
         if (null === $type) {
             $view = $this->getViewFinder()->find([$uri], $engine);
-            return $view->setBuilder( $this );
+            return $view->setBuilder($this);
         }
 
         return $this->resolveType($type, $uri, $engine);
@@ -212,7 +212,7 @@ class ViewBuilder
     {
         $this->locations->add($location);
 
-        unset( $this->viewPathCache );
+        unset($this->viewPathCache);
         $this->viewPathCache = [];
 
         return $this;
@@ -327,7 +327,7 @@ class ViewBuilder
      */
     protected function getConfig($config = []): ConfigInterface
     {
-        $defaults = ConfigFactory::create(dirname(__DIR__, 2) . '/config/defaults.php', $config);
+        $defaults = ConfigFactory::create(dirname(__DIR__, 2) . '/config/defaults.php');
         $config   = $config
             ? ConfigFactory::createFromArray(array_merge_recursive($defaults->getArrayCopy(), $config->getArrayCopy()))
             : $defaults;

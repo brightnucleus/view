@@ -130,12 +130,12 @@ class FilesystemLocation implements Location
                 $extension = ltrim($extension, '.');
 
                 if ($uriExtension === $extension) {
-                    $criterion = substr($criterion,0,-strlen(".{$extension}"));
+                    $criterion = substr($criterion, 0, -strlen(".{$extension}"));
                 }
             } else {
                 $extension = URIHelper::containsExtension($criterion);
                 if (!empty($extension)) {
-                    $criterion = substr($criterion,0,-strlen(".{$extension}"));
+                    $criterion = substr($criterion, 0, -strlen(".{$extension}"));
                 }
             }
 
@@ -164,7 +164,7 @@ class FilesystemLocation implements Location
             return $this->path;
         }
 
-        return rtrim($this->path,'/') . '/' . ltrim($relativePath, '/');
+        return rtrim($this->path, '/') . '/' . ltrim($relativePath, '/');
     }
 
     /**

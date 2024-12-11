@@ -24,11 +24,11 @@ use BrightNucleus\View\Support\Findable;
 interface View extends Findable
 {
 
-	const MERGE        = 'merge';
-	const REPLACE      = 'replace';
-	const ADD_ONLY     = 'add-only';
-	const REPLACE_ONLY = 'replace-only';
-	const MERGE_ONLY   = 'merge-only';
+    const MERGE        = 'merge';
+    const REPLACE      = 'replace';
+    const ADD_ONLY     = 'add-only';
+    const REPLACE_ONLY = 'replace-only';
+    const MERGE_ONLY   = 'merge-only';
 
     /**
      * Check whether the Findable can handle an individual criterion.
@@ -74,15 +74,15 @@ interface View extends Findable
      */
     public function getContext(): array;
 
-	/**
-	 * Add information to the context.
-	 *
-	 * @param string $key      Context key to add.
-	 * @param mixed  $value    Value to add under the given key.
-	 * @param string $behavior Behavior to use for adapting the context.
-	 * @return View
-	 */
-	public function addToContext( string $key, $value, string $behavior ): View;
+    /**
+     * Add information to the context.
+     *
+     * @param string $key      Context key to add.
+     * @param mixed  $value    Value to add under the given key.
+     * @param string $behavior Behavior to use for adapting the context.
+     * @return View
+     */
+    public function addToContext(string $key, $value, string $behavior): View;
 
     /**
      * Associate a view builder with this view.

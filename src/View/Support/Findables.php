@@ -25,4 +25,3 @@ class Findables extends ArrayCollection
 {
 
 }
-
