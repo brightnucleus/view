@@ -7,10 +7,10 @@ on:
       - main
       - master
   schedule:
-    - cron:  '17 1 * * *' # Run every day on a seemly random time.
+    - cron:  '17 1 * * *' # Run every day on a seemingly random time.
 
 jobs:
   test:
     uses: brightnucleus/.github/.github/workflows/reusable-testing.yml@main
     with:
-        minimum-php: '7.4'
+        minimum-php: '8.0'
