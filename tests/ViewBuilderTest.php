@@ -32,7 +32,7 @@ class ViewBuilderTest extends TestCase
     /** @var ViewBuilder */
     protected $viewBuilder;
 
-    public function set_up()
+    public function set_up() // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
         $this->viewBuilder = new ViewBuilder(
             ConfigFactory::create(dirname(__DIR__) . '/config/defaults.php')

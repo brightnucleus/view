@@ -27,6 +27,8 @@ use Closure;
  *
  * @package BrightNucleus\View\View
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
+ *
+ * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 abstract class AbstractView implements View
 {

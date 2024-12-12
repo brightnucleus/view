@@ -46,17 +46,22 @@ class ViewTest extends TestCase
 
     public function addToContextProvider()
     {
+        $kv = [ 'key' => 'value' ];
+        $kov = [ 'key' => 'other_value' ];
+        $kvov = [ 'key' => [ 'value', 'other_value' ] ];
+        $kvokov = [ 'key' => 'value', 'other_key' => 'other_value' ];
+
         return [
-            [ [ 'key' => 'value' ], 'key', 'other_value', View::REPLACE,      [ 'key' => 'other_value' ] ],
-            [ [ 'key' => 'value' ], 'key', 'other_value', View::MERGE,        [ 'key' => [ 'value', 'other_value' ] ] ],
-            [ [ 'key' => 'value' ], 'key', 'other_value', View::ADD_ONLY,     [ 'key' => 'value' ] ],
-            [ [ 'key' => 'value' ], 'key', 'other_value', View::REPLACE_ONLY, [ 'key' => 'other_value' ] ],
-            [ [ 'key' => 'value' ], 'key', 'other_value', View::MERGE_ONLY,   [ 'key' => [ 'value', 'other_value' ] ] ],
-            [ [ 'key' => 'value' ], 'other_key', 'other_value', View::REPLACE,      [ 'key' => 'value', 'other_key' => 'other_value' ] ],
-            [ [ 'key' => 'value' ], 'other_key', 'other_value', View::MERGE,        [ 'key' => 'value', 'other_key' => 'other_value' ] ],
-            [ [ 'key' => 'value' ], 'other_key', 'other_value', View::ADD_ONLY,     [ 'key' => 'value', 'other_key' => 'other_value' ] ],
-            [ [ 'key' => 'value' ], 'other_key', 'other_value', View::REPLACE_ONLY, [ 'key' => 'value' ] ],
-            [ [ 'key' => 'value' ], 'other_key', 'other_value', View::MERGE_ONLY,   [ 'key' => 'value' ] ],
+            [ $kv, 'key', 'other_value', View::REPLACE,      $kov ],
+            [ $kv, 'key', 'other_value', View::MERGE,        $kvov ],
+            [ $kv, 'key', 'other_value', View::ADD_ONLY,     $kv ],
+            [ $kv, 'key', 'other_value', View::REPLACE_ONLY, $kov ],
+            [ $kv, 'key', 'other_value', View::MERGE_ONLY,   $kvov ],
+            [ $kv, 'other_key', 'other_value', View::REPLACE,      $kvokov ],
+            [ $kv, 'other_key', 'other_value', View::MERGE,        $kvokov ],
+            [ $kv, 'other_key', 'other_value', View::ADD_ONLY,     $kvokov ],
+            [ $kv, 'other_key', 'other_value', View::REPLACE_ONLY, $kv ],
+            [ $kv, 'other_key', 'other_value', View::MERGE_ONLY,   $kv ],
         ];
     }
 }
