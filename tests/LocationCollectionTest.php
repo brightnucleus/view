@@ -26,6 +26,11 @@ use BrightNucleus\View\Tests\TestCase;
 class LocationCollectionTest extends TestCase
 {
 
+    /**
+     * @covers \BrightNucleus\View\Location\Locations::add
+     * @covers \BrightNucleus\View\Location\Locations::count
+     * @covers \BrightNucleus\View\Location\Locations::__construct
+     */
     public function testAddingKnownLocations()
     {
         $root = __DIR__ . '/fixtures/locations';

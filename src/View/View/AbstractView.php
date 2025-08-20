@@ -87,7 +87,7 @@ abstract class AbstractView implements View
      * @param ViewBuilder $viewBuilder View builder instance to use.
      * @param array       $context     Initial context to use.
      */
-    public function __construct(string $uri, Engine $engine, ViewBuilder $viewBuilder = null, array $context = [])
+    public function __construct(string $uri, Engine $engine, ?ViewBuilder $viewBuilder = null, array $context = [])
     {
         $this->_uri_     = $uri;
         $this->_engine_  = $engine;
@@ -138,7 +138,7 @@ abstract class AbstractView implements View
      * @throws FailedToProcessConfigException If the Config could not be processed.
      * @throws FailedToInstantiateView If the View could not be instantiated.
      */
-    public function section(string $view, array $context = null, $type = null): string
+    public function section(string $view, ?array $context = null, ?string $type = null): string
     {
         $context = (null === $context)
             ? $this->_context_

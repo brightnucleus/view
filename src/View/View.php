@@ -63,7 +63,7 @@ interface View extends Findable
      *
      * @return string Rendered HTML content.
      */
-    public function section(string $view, array $context = [], $type = null): string;
+    public function section(string $view, ?array $context = null, ?string $type = null): string;
 
     /**
      * Get the entire array of contextual data.

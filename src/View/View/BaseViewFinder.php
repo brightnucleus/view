@@ -38,7 +38,7 @@ class BaseViewFinder extends AbstractFinder implements ViewFinder
      * @return View View that was found.
      * @throws FailedToInstantiateFindable If the Findable could not be instantiated.
      */
-    public function find(array $criteria, Engine $engine = null): View
+    public function find(array $criteria, ?Engine $engine = null): View
     {
         $uri = $criteria[0];
 

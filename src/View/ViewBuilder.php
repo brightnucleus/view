@@ -86,9 +86,9 @@ class ViewBuilder
      * @throws FailedToProcessConfigException If the config could not be processed.
      */
     public function __construct(
-        ConfigInterface $config = null,
-        ViewFinder $viewFinder = null,
-        EngineFinder $engineFinder = null
+        ?ConfigInterface $config = null,
+        ?ViewFinder $viewFinder = null,
+        ?EngineFinder $engineFinder = null
     ) {
         $this->processConfig($this->getConfig($config));
         $this->viewFinder   = $viewFinder ?? $this->getViewFinder();
@@ -107,7 +107,7 @@ class ViewBuilder
      * @return View Instance of the requested view.
      * @throws FailedToInstantiateView If the view could not be instantiated.
      */
-    public function create(string $view, $type = null): View
+    public function create(string $view, ?string $type = null): View
     {
         if (!array_key_exists($view, $this->viewPathCache)) {
             $uri    = $this->scanLocations([$view]);
@@ -287,7 +287,7 @@ class ViewBuilder
      * @return View Resolved View object.
      * @throws FailedToInstantiateView If the view type could not be resolved.
      */
-    protected function resolveType($type, string $uri, Engine $engine = null): View
+    protected function resolveType($type, string $uri, ?Engine $engine = null): View
     {
         $configKey = [static::VIEW_FINDER_KEY, 'Views', $type];
 
@@ -332,6 +332,6 @@ class ViewBuilder
             ? ConfigFactory::createFromArray(array_merge_recursive($defaults->getArrayCopy(), $config->getArrayCopy()))
             : $defaults;
 
-        return $config->getSubConfig('BrightNucleus\View');
+        return $config->getSubConfig('BrightNucleus\\View');
     }
 }

@@ -79,7 +79,7 @@ class Views
      * @return ViewBuilder Instance of the ViewBuilder.
      * @throws FailedToProcessConfigException If the Config could not be processed.
      */
-    public static function instantiateViewBuilder(ConfigInterface $config = null)
+    public static function instantiateViewBuilder(?ConfigInterface $config = null)
     {
         return static::$viewBuilder = new ViewBuilder($config);
     }
@@ -95,7 +95,7 @@ class Views
      * @return View Instance of the requested view.
      * @throws FailedToProcessConfigException If the Config could not be processed.
      */
-    public static function create($view, $type = null)
+    public static function create(string $view, ?string $type = null)
     {
         $viewBuilder = static::getViewBuilder();
 
@@ -114,7 +114,7 @@ class Views
      * @return string Rendered HTML content.
      * @throws FailedToProcessConfigException If the Config could not be processed.
      */
-    public static function render($view, array $context = [], $type = null)
+    public static function render($view, array $context = [], ?string $type = null)
     {
         $viewBuilder = static::getViewBuilder();
         $viewObject  = $viewBuilder->create($view, $type);

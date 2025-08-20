@@ -19,6 +19,7 @@ namespace BrightNucleus\View\View;
  * @package BrightNucleus\View\View
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
+#[\AllowDynamicProperties]
 class BaseView extends AbstractView
 {
 

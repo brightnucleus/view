@@ -29,6 +29,9 @@ class ViewTest extends TestCase
 
     /**
      * @dataProvider addToContextProvider
+     * @covers \BrightNucleus\View\View\AbstractView::addToContext
+     * @covers \BrightNucleus\View\View\AbstractView::getContext
+     * @covers \BrightNucleus\View\View\AbstractView::__construct
      *
      * @param array  $context  Existing context to use.
      * @param string $key      Key to add.

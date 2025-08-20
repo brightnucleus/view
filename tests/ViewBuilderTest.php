@@ -36,12 +36,15 @@ class ViewBuilderTest extends TestCase
     {
         $this->viewBuilder = new ViewBuilder(
             ConfigFactory::create(dirname(__DIR__) . '/config/defaults.php')
-                ->getSubConfig('BrightNucleus\\View')
+                ->getSubConfig("BrightNucleus\\View")
         );
     }
 
     /**
      * @dataProvider PHPViewDataProvider
+     * @covers \BrightNucleus\View\ViewBuilder::create
+     * @covers \BrightNucleus\View\ViewBuilder::addLocation
+     * @covers \BrightNucleus\View\View\BaseView::render
      *
      * @param string     $view
      * @param array|null $extensions
@@ -69,6 +72,11 @@ class ViewBuilderTest extends TestCase
         ];
     }
 
+    /**
+     * @covers \BrightNucleus\View\ViewBuilder::create
+     * @covers \BrightNucleus\View\ViewBuilder::addLocation
+     * @covers \BrightNucleus\View\View\BaseView::render
+     */
     public function testPHPViewWithFullPath()
     {
         $this->viewBuilder->addLocation(new FilesystemLocation(__DIR__ . '/fixtures', ['.php']));
@@ -78,6 +86,11 @@ class ViewBuilderTest extends TestCase
         $this->assertEquals(file_get_contents(__DIR__ . '/fixtures/php-view-result.html'), $html);
     }
 
+    /**
+     * @covers \BrightNucleus\View\ViewBuilder::create
+     * @covers \BrightNucleus\View\ViewBuilder::addLocation
+     * @covers \BrightNucleus\View\View\BaseView::render
+     */
     public function testFullPathOutsideOfKnownLocation()
     {
         $this->viewBuilder->addLocation(new FilesystemLocation(__DIR__ . '/../src', ['.php']));
@@ -87,6 +100,10 @@ class ViewBuilderTest extends TestCase
         $this->assertEquals(file_get_contents(__DIR__ . '/fixtures/php-view-result.html'), $html);
     }
 
+    /**
+     * @covers \BrightNucleus\View\ViewBuilder::create
+     * @covers \BrightNucleus\View\View\BaseView::render
+     */
     public function testFullPathWithoutLocation()
     {
         $view = $this->viewBuilder->create(__DIR__ . '/fixtures/php-view.php');
@@ -95,6 +112,11 @@ class ViewBuilderTest extends TestCase
         $this->assertEquals(file_get_contents(__DIR__ . '/fixtures/php-view-result.html'), $html);
     }
 
+    /**
+     * @covers \BrightNucleus\View\ViewBuilder::create
+     * @covers \BrightNucleus\View\ViewBuilder::addLocation
+     * @covers \BrightNucleus\View\View\NullView::render
+     */
     public function testNullView()
     {
         $this->viewBuilder->addLocation(new FilesystemLocation(__DIR__ . '/nonsense', []));
@@ -106,6 +128,9 @@ class ViewBuilderTest extends TestCase
 
     /**
      * @dataProvider combinedPHPViewDataProvider
+     * @covers \BrightNucleus\View\ViewBuilder::create
+     * @covers \BrightNucleus\View\ViewBuilder::addLocation
+     * @covers \BrightNucleus\View\View\BaseView::render
      *
      * @param string $view
      * @param array  $extensions
@@ -133,6 +158,10 @@ class ViewBuilderTest extends TestCase
 
     /**
      * @dataProvider partialPHPViewDataProvider
+     * @covers \BrightNucleus\View\ViewBuilder::create
+     * @covers \BrightNucleus\View\ViewBuilder::addLocation
+     * @covers \BrightNucleus\View\View\BaseView::render
+     * @covers \BrightNucleus\View\View\AbstractView::section
      *
      * @param string $view
      * @param array  $extensions
@@ -155,6 +184,11 @@ class ViewBuilderTest extends TestCase
         ];
     }
 
+    /**
+     * @covers \BrightNucleus\View\ViewBuilder::__construct
+     * @covers \BrightNucleus\View\ViewBuilder::create
+     * @covers \BrightNucleus\View\ViewBuilder::addLocation
+     */
     public function testCustomConfig()
     {
         $viewBuilder = new ViewBuilder(ConfigFactory::create([

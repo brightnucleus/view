@@ -28,6 +28,9 @@ class ViewFacadeTest extends TestCase
 
     /**
      * @dataProvider PHPViewDataProvider
+     * @covers \BrightNucleus\Views::create
+     * @covers \BrightNucleus\Views::addLocation
+     * @covers \BrightNucleus\View\View\BaseView::render
      *
      * @param string     $view
      * @param array|null $extensions
@@ -43,6 +46,8 @@ class ViewFacadeTest extends TestCase
 
     /**
      * @dataProvider PHPViewDataProvider
+     * @covers \BrightNucleus\Views::render
+     * @covers \BrightNucleus\Views::addLocation
      *
      * @param string     $view
      * @param array|null $extensions
@@ -68,6 +73,11 @@ class ViewFacadeTest extends TestCase
         ];
     }
 
+    /**
+     * @covers \BrightNucleus\Views::create
+     * @covers \BrightNucleus\Views::addLocation
+     * @covers \BrightNucleus\View\View\BaseView::render
+     */
     public function testPHPViewWithFullPath()
     {
         Views::addLocation(new FilesystemLocation(__DIR__ . '/fixtures', ['.php']));

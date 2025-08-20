@@ -28,6 +28,9 @@ class FilesystemLocationTest extends TestCase
 
     /**
      * @dataProvider fileSystemLocationDataProvider
+     * @covers \BrightNucleus\View\Location\FilesystemLocation::getURI
+     * @covers \BrightNucleus\View\Location\FilesystemLocation::getURIs
+     * @covers \BrightNucleus\View\Location\FilesystemLocation::__construct
      *
      * @param string $path
      * @param array  $extensions
